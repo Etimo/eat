@@ -1,16 +1,8 @@
-import {
-  Box,
-  Button,
-  ButtonText,
-  Heading,
-  Input,
-  Text,
-  VStack,
-} from '@gluestack-ui/themed';
+import { Heading, VStack } from '@gluestack-ui/themed';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { Ref, forwardRef } from 'react';
 import { BottomSheet } from './BottomSheet';
-import { PlusIcon } from 'lucide-react-native';
+import { NewActivityForm } from '../Form/NewActivityForm';
 
 type NewActivitySheetProps = {};
 
@@ -29,28 +21,7 @@ export const NewActivitySheet = forwardRef<
         <Heading color="$white" size="xl">
           New Activity
         </Heading>
-        <Box>
-          <Text color="$white" size="lg">
-            Activity
-          </Text>
-          <Input size="xl" />
-          <Text size="xs" color="$white">
-            The performed activity
-          </Text>
-        </Box>
-        <Box>
-          <Text color="$white" size="lg">
-            Time
-          </Text>
-          <Input size="xl" />
-          <Text size="xs" color="$white">
-            Activity duration in minutes
-          </Text>
-        </Box>
-        <Button mt="$6">
-          <PlusIcon color="#ffffff" />
-          <ButtonText ml="$2">ADD ACTIVITY</ButtonText>
-        </Button>
+        <NewActivityForm />
       </VStack>
     </BottomSheet>
   );
