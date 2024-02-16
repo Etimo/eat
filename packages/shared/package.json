@@ -16,6 +16,7 @@
     "lucide-react-native": "^0.309.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-hook-form": "^7.50.1",
     "react-native": "^0.73.2",
     "react-native-pie-chart": "^3.0.2",
     "react-native-reanimated": "^3.6.1",

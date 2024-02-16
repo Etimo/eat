@@ -10,13 +10,15 @@
   },
   "dependencies": {
     "@expo/next-adapter": "^6",
+    "@hookform/resolvers": "^3.3.4",
     "expo": "49.0.21",
     "next": "14.0.4",
     "raf": "^3.4.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-native-web": "^0.19.10",
-    "shared": "*"
+    "shared": "*",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@types/babel__core": "^7",
