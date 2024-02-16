@@ -1,4 +1,4 @@
-import {Activity} from 'shared/types';
+import {ActivityType} from 'shared/types';
 import {db} from '../firebase';
 
 export const activityTypeList = async () => {
@@ -9,7 +9,7 @@ export const activityTypeList = async () => {
 
     const activities = activityTypeCollection.docs.map(doc => {
         const data = doc.data();
-        return { id: doc.id, ...data} as Activity
+        return { id: doc.id, ...data} as ActivityType
     });
 
     return activities;
@@ -27,5 +27,5 @@ export const activityTypeData = async (id:string) => {
     }
 
     const data = activityTypeDoc.data();
-    return { id, ...data} as Activity    
+    return { id, ...data} as ActivityType    
 }
