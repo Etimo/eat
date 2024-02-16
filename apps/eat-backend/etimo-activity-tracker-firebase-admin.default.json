@@ -1,13 +1,13 @@
 {
-  "type": "service_account",
-  "project_id": "etimo-activity-tracker",
-  "private_key_id": "0c7e6b5e13ccac4441a065c27978a0e580d373c2",
-  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC7oZKR8cyQO34D\nzzB9b/znWJvO4nXEijK2bNBL2JByMkwccYvfUjiFnoobKcHqVRZWNLC13+ny+/JY\nrLXjCirwnbRsP+uzBV0jmLvI1Kv8Z4o1vUFcQpQdxx0tS3Z6061tlpZOt6DHDF5+\nbdnCRqiTihn0++AXdW35pRXDifeJJEK5JKke66cGiDjX347JDPcRTV/pEzRsdYrM\nfSHT8mEds2s5jGsTAs8g1I1u9ftpSQsG+a3UUunX5wCy1L8Y3egvHdK2jI+8XR/8\nmWwOnANB6l1CRCjayexXCiR6DhbGpkZzgt0/tfCxSS3fnfgewOOXTa9PACeUwTf3\nQ6KOLRZrAgMBAAECggEANzVR7r6CjffrWsyWfHo8pIfGhKfOti9hv5qh6YdF7UwO\naBoi6WmEdxCQm3B8fepeYawsSL+jU1s90kizViQyQU1t/qIKRMkxwB0bN/sXxfNj\nT++pcS+n7GEfnSnEqVxqfcHe5TeTx63EihfhiJAI3yy1+Yc5Rz3Gx7uC/V+1pbSz\nn2s8kqU1e92DWIcKImv7YltTozNAXx3QEBBMhppa2sODCCBOsxYabyTo04zlVaCA\nfLQnIfq1/IcwXRhwmdAYYy6uY/YE821ozVdRBEioKljunfElvRF/gAu1lC0vW4Mz\nBqHCRRdD+pFubvsodfXiSsc5GPB3kFtYbMtNbt+nHQKBgQDwxftJrIE+b/CCU2nz\nMBKJqCXwHmNrBrkLmU8gs7M7iEnwFbGpAAzgo14iQPiWOe9nP7FN1L0QKxRZ2v4u\nR4Em5c/grWkP+wdoRGiSDOnq+uiq9pA5l16zwsJ8I4wStdkM4JVp8JgdzlMXt6/b\nQK8nPkrLAMN5wip6MEkcaCIJ1wKBgQDHfz2vQusghUtonZyOZvKVhm46mJe5RqR1\ngqfpvFRXhKqpCC8FSH9Ec/PjAXeXjxUpp0sV2+p4K1ZEd5e5GWm8Y/6A2JdL70N8\nud5dlGpQeRFPHYpESmsnWoIkPZe7+6+iEYNi5wPy3qQprczPy12ztbOJ4HC51uDI\nP/Z3HkhNjQKBgQCdcWkjwQj2si48mp0SqCHHIExGmyh5qPjCC+tBQCD40eM/eoAl\nOeIx1sJMdd3YJmRVSMIBWhaThwgUxe4mhx1+ORLZIawtBgLO/MTAlG81+ALDIN4o\nusHznGyezoPfDEi1cfpiPzDJdMzDGpuFLOQcLlCsNICekwhBxGdaiwGPGwKBgQCm\nm/ibP2r47PmOdFsEfqvH/s5eN4Q3Iu1EiorLZRKXSN/ybTg/1E0dkS00/8uuErwc\n3m+R4OlP1PmmEq7u0m+A+43Yc4rfywH0z5ILW2Dytjmjdks8P16ALlGUDLCFOWx0\nEOZGmiKtGg3GFTWAsRofdPdthbj/K5rtAqZG006VHQKBgBqNYj5gLW16i+jYNfan\n7CCaz5BWsCvtJlSdfxEqPLej7vkmXGwtTj0KR+fPbPAx3gt53ugDlBSXD9ZzyZ0m\n0bSj4UJt6blvqpOuAJoE6IjLjpRQ8zd+PJNh3Up/TQHgBG4RU2koJnv+pQaZg+t6\nhrby4+Rp5qAipSskj+tGvBae\n-----END PRIVATE KEY-----\n",
-  "client_email": "firebase-adminsdk-a28a4@etimo-activity-tracker.iam.gserviceaccount.com",
-  "client_id": "106126091131553165435",
-  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-  "token_uri": "https://oauth2.googleapis.com/token",
-  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-a28a4%40etimo-activity-tracker.iam.gserviceaccount.com",
-  "universe_domain": "googleapis.com"
+  "type": "<type>",
+  "project_id": "<project_id>",
+  "private_key_id": "<private_key_id>",
+  "private_key": "<private_key>",
+  "client_email": "<client_email>",
+  "client_id": "<client_id>",
+  "auth_uri": "<auth_uri>",
+  "token_uri": "token_uri",
+  "auth_provider_x509_cert_url": "<auth_provider_x509_cert_url>",
+  "client_x509_cert_url": "<client_x509_cert_url>",
+  "universe_domain": "<universe_domain>"
 }
