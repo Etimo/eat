@@ -31,7 +31,8 @@
   ],
   "scripts": {
     "native": "cd apps/eat-native && yarn start",
-    "web": "cd apps/eat-next && yarn dev"
+    "web": "cd apps/eat-next && yarn dev",
+    "backend": "cd apps/eat-backend && yarn start"
   },
   "nohoist": [
     "**/expo-router",
