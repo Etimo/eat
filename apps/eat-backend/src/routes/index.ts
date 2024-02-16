@@ -1,1 +1,1 @@
-export * from './activites';
+export * from './activityTypes';
