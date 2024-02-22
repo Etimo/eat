@@ -5,15 +5,15 @@ RUN yarn set version berry
 WORKDIR /app
 COPY package.json yarn.lock ./
 COPY packages/shared ./packages/shared
-COPY apps/eat-back/package.json ./apps/eat-back/package.json
+COPY apps/eat-backend/package.json ./apps/eat-backend/package.json
 # Create app directory
 
 # Install app dependencies
 RUN yarn install
 
 # Copy source files
-COPY ./apps/eat-back/ ./apps/eat-back/
+COPY ./apps/eat-backend/ ./apps/eat-backend/
 
-WORKDIR /app/apps/eat-back
+WORKDIR /app/apps/eat-backend
 
 CMD ["yarn", "dev"]
