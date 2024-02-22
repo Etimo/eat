@@ -1,0 +1,38 @@
+version: '3'
+services:
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    environment:
+      # Local dev info
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: eat
+      MYSQL_USER: mysql-eat
+      MYSQL_PASSWORD: etimo
+    volumes:
+      - ./docker/mysql:/var/lib/mysql
+    ports:
+      - '3308:3306'
+
+  app:
+    container_name: 'eat-backend'
+    build:
+      context: .
+      dockerfile: ./apps/eat-backend/Dockerfile
+    volumes:
+      - ./apps/eat-backend/:/app/apps/eat-backend
+    environment:
+      # Local dev info
+      NODE_ENV: development
+      DB_HOST: mysql
+      DB_USERNAME: mysql-eat
+      DB_PORT: 3306
+      DB_PASSWORD: etimo
+      DB_DATABASE: eat
+    depends_on:
+      - mysql
+    ports:
+      - '3100:3100'
+
+volumes:
+  mysql:
