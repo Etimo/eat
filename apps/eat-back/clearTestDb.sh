@@ -1,6 +1,0 @@
-#!/bin/bash
-container='mysql-test'
-echo Stopping...
-docker stop $container
-echo Removing...
-docker rm $container
