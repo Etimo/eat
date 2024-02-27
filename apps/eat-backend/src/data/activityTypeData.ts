@@ -17,9 +17,6 @@ const create = async (db: DatabaseServices, name: string) => {
 
 const update = async (db: DatabaseServices, id: string, name: string) => {
   const activityType = await db.activityTypes.findOneOrFail(id);
-  if (!activityType) {
-    throw new NotFoundError('Activity type not found');
-  }
   wrap(activityType).assign({ name });
 
   await db.em.flush();
@@ -28,9 +25,6 @@ const update = async (db: DatabaseServices, id: string, name: string) => {
 
 const remove = async (db: DatabaseServices, id: string) => {
   const activityType = await db.activityTypes.findOneOrFail(id);
-  if (!activityType) {
-    throw new NotFoundError('Activity type not found');
-  }
   return db.em.remove(activityType).flush();
 };
 

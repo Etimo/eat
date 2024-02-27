@@ -1,11 +1,8 @@
 import { FastifyInstance } from 'fastify';
 import { activityTypeData } from '../data';
 import { initORM } from '../db';
-import { Query, ValidationError } from '../types';
+import { Body, QueryId, ValidationError } from '../types';
 
-interface Body {
-  Body: { name: string };
-}
 // Arrow function not supported, the server is bound to this
 export async function activityTypesController(server: FastifyInstance) {
   const db = await initORM();
@@ -18,7 +15,7 @@ export async function activityTypesController(server: FastifyInstance) {
     return activityTypes.map(({ id, name }) => ({ id, name }));
   });
 
-  server.get<Query>('/:uuid', async (request, reply) => {
+  server.get<QueryId>('/:uuid', async (request, reply) => {
     const { uuid } = request.params;
     const { id, name } = await activityTypeData.getById(db, uuid);
     return { id, name };
@@ -35,7 +32,7 @@ export async function activityTypesController(server: FastifyInstance) {
     return { id, name };
   });
 
-  server.patch<Query & Body>('/:uuid', async (request, reply) => {
+  server.patch<QueryId & Body>('/:uuid', async (request, reply) => {
     const { uuid } = request.params;
     const body = request.body;
     if (!body.name) {
@@ -47,7 +44,7 @@ export async function activityTypesController(server: FastifyInstance) {
     return { id, name };
   });
 
-  server.delete<Query>('/:uuid', async (request) => {
+  server.delete<QueryId>('/:uuid', async (request) => {
     const { uuid } = request.params;
     await activityTypeData.remove(db, uuid);
 

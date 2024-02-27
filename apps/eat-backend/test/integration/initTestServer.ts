@@ -1,7 +1,6 @@
 import { initORM } from '../../src/db';
 import { initServer } from '../../src/initServer';
 import { TsMorphMetadataProvider } from '@mikro-orm/reflection';
-import { TestSeeder } from '../../src/seeders';
 
 export const initTestServer = async () => {
   const { orm } = await initORM({
@@ -14,8 +13,6 @@ export const initTestServer = async () => {
     metadataProvider: TsMorphMetadataProvider,
   });
   await orm.isConnected();
-  // await orm.schema.createSchema();
-  // await orm.seeder.seed(TestSeeder);
 
   const { server } = await initServer('localhost', 3100, false);
   return { server, orm };

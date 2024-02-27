@@ -6,8 +6,7 @@ import {
 } from '@mikro-orm/mysql';
 import { Activity, ActivityType, Team, User } from './entities';
 import config from '../config/mikro-orm-app.config';
-import { ActivityTypeSeeder } from './seeders';
-import { TeamSeeder } from './seeders/TeamSeeder';
+import { ActivityTypeSeeder, TeamSeeder, UserSeeder } from './seeders';
 
 export type DatabaseServices = {
   orm: MikroORM;
@@ -51,5 +50,12 @@ export const seedBaseData = async (db: DatabaseServices) => {
     return Promise.resolve();
   });
 
-  return Promise.all([activityTypesSeed, teamsSeed]);
+  const usersSeed = db.users.count().then(async (count) => {
+    if (count === 0) {
+      return db.orm.seeder.seed(UserSeeder);
+    }
+    return Promise.resolve();
+  });
+
+  return Promise.all([activityTypesSeed, teamsSeed, usersSeed]);
 };

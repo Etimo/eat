@@ -1,4 +1,4 @@
-import type { Dictionary, EntityManager } from '@mikro-orm/core';
+import type { EntityManager } from '@mikro-orm/core';
 import { Seeder } from '@mikro-orm/seeder';
 import { ActivityType, Team, User } from '../entities';
 import { TeamFactory, UserFactory } from '../entities/factories';
@@ -26,5 +26,8 @@ export class TestSeeder extends Seeder {
       })
       .make(4);
     usersTeamTwo.map((user) => em.create(User, user));
+
+    const usersNoTeam: User[] = new UserFactory(em).make(4);
+    usersNoTeam.map((user) => em.create(User, user));
   }
 }

@@ -14,7 +14,7 @@ export class User extends BaseEntity {
   @Property()
   name!: string;
 
-  @ManyToOne(() => Team)
+  @ManyToOne(() => Team, { nullable: true })
   team?: Team;
 
   @OneToMany(() => Activity, (a) => a.user)

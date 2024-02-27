@@ -30,7 +30,6 @@ describe('Activity types', () => {
   });
 
   afterAll(async () => {
-    // we close only the fastify app - it will close the database connection via onClose hook automatically
     await testServer.close();
   });
 
@@ -75,7 +74,9 @@ describe('Activity types', () => {
     expect(response.statusCode).toBe(404);
   });
 
-  it('Should create new activity type using post', async () => {
+  it<TestContext>('Should create new activity type using post', async ({
+    em,
+  }) => {
     const response = await testServer.inject({
       method: 'post',
       body: { name: 'Discgolf' },
@@ -85,6 +86,10 @@ describe('Activity types', () => {
 
     expect(response.statusCode).toBe(200);
     expect(data.name).toEqual('Discgolf');
+
+    const activityTypes = await em.findAll(ActivityType);
+    expect(activityTypes.length).toBe(4);
+    expect(activityTypes.map(({ name }) => name)).toContain('Discgolf');
   });
 
   it('Should not create new acitivty type using post if validation fails', async () => {

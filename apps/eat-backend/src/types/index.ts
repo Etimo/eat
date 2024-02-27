@@ -1,2 +1,2 @@
-export * from './QueryParams';
+export * from './RequestParams';
 export * from './ValidationError';

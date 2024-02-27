@@ -1,23 +1,12 @@
-import Fastify, { FastifyInstance, RouteShorthandOptions } from 'fastify';
-import { activityTypesController } from './controllers';
+import Fastify, { FastifyInstance } from 'fastify';
+import {
+  activityTypesController,
+  teamsController,
+  usersController,
+} from './controllers';
 import { initORM, seedBaseData } from './db';
 import { NotFoundError, RequestContext } from '@mikro-orm/core';
 import { ValidationError } from './types';
-
-const opts: RouteShorthandOptions = {
-  schema: {
-    response: {
-      200: {
-        type: 'object',
-        properties: {
-          pong: {
-            type: 'string',
-          },
-        },
-      },
-    },
-  },
-};
 
 export const initServer = async (
   host = '0.0.0.0',
@@ -42,13 +31,10 @@ export const initServer = async (
     await db.orm.close();
   });
 
-  // Routes
-  server.get('/ping', opts, async (request, reply) => {
-    return { pong: 'it worked!' };
-  });
-
   // Controllers
   server.register(activityTypesController, { prefix: 'activitytype' });
+  server.register(teamsController, { prefix: 'team' });
+  server.register(usersController, { prefix: 'user' });
 
   // Error handling
   server.setErrorHandler((error, request, reply) => {
@@ -68,7 +54,6 @@ export const initServer = async (
     if (error instanceof Error) {
       reply.status(500).send({ error: error.message });
     }
-    // reply.status(404).send({ error: error.message });
   });
 
   // Start server
