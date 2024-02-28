@@ -24,7 +24,7 @@ const update = async (db: DatabaseServices, id: string, name: string) => {
 };
 
 const remove = async (db: DatabaseServices, id: string) => {
-  const activityType = await db.activityTypes.findOneOrFail(id);
+  const activityType = await db.activityTypes.findOneOrFail({ id });
   return db.em.remove(activityType).flush();
 };
 

@@ -15,9 +15,9 @@ const getByIds = async (db: DatabaseServices, ids: string[]) => {
 };
 
 const create = async (db: DatabaseServices, name: string) => {
-  const team = db.users.create({ name });
+  const user = db.users.create({ name });
   await db.em.flush();
-  return team;
+  return user;
 };
 
 const update = async (
@@ -25,16 +25,16 @@ const update = async (
   id: string,
   update: Partial<Pick<User, 'name'>>,
 ) => {
-  const team = await db.users.findOneOrFail(id);
-  wrap(team).assign({ ...update });
+  const user = await db.users.findOneOrFail(id);
+  wrap(user).assign({ ...update });
 
   await db.em.flush();
-  return team;
+  return user;
 };
 
 const remove = async (db: DatabaseServices, id: string) => {
-  const team = await db.users.findOneOrFail(id);
-  return db.em.remove(team).flush();
+  const user = await db.users.findOneOrFail(id);
+  return db.em.remove(user).flush();
 };
 
 export const userData = {

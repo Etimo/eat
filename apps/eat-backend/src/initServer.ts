@@ -1,5 +1,6 @@
 import Fastify, { FastifyInstance } from 'fastify';
 import {
+  activitiesController,
   activityTypesController,
   teamsController,
   usersController,
@@ -32,6 +33,7 @@ export const initServer = async (
   });
 
   // Controllers
+  server.register(activitiesController, { prefix: 'activity' });
   server.register(activityTypesController, { prefix: 'activitytype' });
   server.register(teamsController, { prefix: 'team' });
   server.register(usersController, { prefix: 'user' });

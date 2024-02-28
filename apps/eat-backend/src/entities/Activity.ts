@@ -6,17 +6,14 @@ import { User } from './User';
 @Entity({ tableName: 'activities' })
 export class Activity extends BaseEntity {
   @Property()
-  name!: string;
-
-  @Property()
   time!: number;
 
   @Property()
   date!: string;
 
   @ManyToOne(() => ActivityType)
-  activityType?: ActivityType;
+  activityType!: ActivityType;
 
   @ManyToOne(() => User)
-  user?: User;
+  user!: User;
 }

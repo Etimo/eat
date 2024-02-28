@@ -134,18 +134,33 @@ describe('Activity types', () => {
   });
 
   it<TestContext>('Should delete activity type', async ({ em }) => {
-    const activityType = await em.findOne(ActivityType, {
-      name: 'Löpning',
+    const post = await testServer.inject({
+      method: 'post',
+      body: { name: 'Vedklyvning' },
+      url: '/activitytype',
     });
+    const data = post.json<{ id: string; name: string }>();
+
+    expect(post.statusCode).toBe(200);
+    expect(data.name).toEqual('Vedklyvning');
+
+    const activityTypesBeforeRemove = await em.findAll(ActivityType);
+    expect(activityTypesBeforeRemove.length).toBe(4);
+    expect(activityTypesBeforeRemove.map(({ name }) => name)).toContain(
+      'Vedklyvning',
+    );
+
     const response = await testServer.inject({
       method: 'delete',
-      url: `/activitytype/${activityType?.id}`,
+      url: `/activitytype/${data?.id}`,
     });
 
     expect(response.statusCode).toBe(200);
 
-    const activityTypes = await em.findAll(ActivityType);
-    expect(activityTypes.length).toBe(2);
-    expect(activityTypes.map(({ name }) => name)).to.not.contain('Löpning');
+    const activityTypesAfterRemove = await em.findAll(ActivityType);
+    expect(activityTypesAfterRemove.length).toBe(3);
+    expect(activityTypesAfterRemove.map(({ name }) => name)).to.not.contain(
+      'Vedklyvning',
+    );
   });
 });

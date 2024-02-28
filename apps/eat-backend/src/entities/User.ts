@@ -18,5 +18,6 @@ export class User extends BaseEntity {
   team?: Team;
 
   @OneToMany(() => Activity, (a) => a.user)
-  activity = new Collection<Activity>(this);
+  // activities = new Collection<Activity>(this); Renamed this.
+  activities = new Collection<Activity>(this);
 }
