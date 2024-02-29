@@ -1,8 +1,8 @@
-import { Activity } from '@shared/types';
+import { ActivityType } from '@shared/types';
 import { create } from 'zustand';
 
 interface ActivitiesState {
-  activities: Activity[];
+  activities: ActivityType[];
 }
 
 export const useActivitiesStore = create<ActivitiesState>((set) => ({

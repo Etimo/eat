@@ -1,4 +1,4 @@
-import { Activity, Team, User } from '@shared/types';
+import { ActivityType, Team, User } from '@shared/types';
 import { create } from 'zustand';
 
 type UserTime = {
@@ -8,7 +8,7 @@ type UserTime = {
 
 type ActivityDate = Record<
   string,
-  { user: User; activities: { activity: Activity; time: number }[] }[]
+  { user: User; activities: { activity: ActivityType; time: number }[] }[]
 >;
 
 interface ActivitiesState {
@@ -18,13 +18,13 @@ interface ActivitiesState {
   getAllTeamsTotalMinutes: () => UserTime[];
   getAllUserActivities: (currentUser: User) => {
     key: string;
-    data: { user: User; activities: { activity: Activity; time: number }[] }[];
+    data: { user: User; activities: { activity: ActivityType; time: number }[] }[];
   }[];
   getTeamTotalMinutes: (team: string) => UserTime[];
   getUserTotalMinutes: (user: User) => number;
   getTeamDayMinutes: (team: string, date: string) => UserTime[];
   getUserDayMinutes: (user: User, date: string) => number;
-  getUserActivityTypes: (currentUser: User) => Activity[];
+  getUserActivityTypes: (currentUser: User) => ActivityType[];
 }
 export const useDataStore = create<ActivitiesState>((set, get) => ({
   activities: {

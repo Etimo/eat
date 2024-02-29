@@ -5,7 +5,7 @@ import {
   Pressable,
   ScrollView,
 } from '@gluestack-ui/themed';
-import { Activity } from '@shared/types';
+import { ActivityType } from '@shared/types';
 import { FC, useCallback, useEffect } from 'react';
 import { Text, View } from 'react-native';
 import Reaniamted, {
@@ -20,7 +20,7 @@ import Reaniamted, {
 type ActivityFiltersProps = {
   active: string;
   setActive: (filter: string) => void;
-  activityTypes: Activity[];
+  activityTypes: ActivityType[];
 };
 export const ActivityFilters: FC<ActivityFiltersProps> = (props) => {
   const { activityTypes, active, setActive } = props;
