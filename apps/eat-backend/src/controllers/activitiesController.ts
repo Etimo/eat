@@ -1,8 +1,9 @@
 import { FastifyInstance } from 'fastify';
 import { activityData } from '../data';
 import { initORM } from '../db';
-import { QueryId, ValidationError } from '../types';
+import { ParamId, ValidationError } from '../types';
 import { Activity } from 'src/entities';
+import dayjs from 'dayjs';
 
 // Arrow function not supported, the server is bound to this
 export async function activitiesController(server: FastifyInstance) {
@@ -17,27 +18,70 @@ export async function activitiesController(server: FastifyInstance) {
     return activites.map((activity) => mapActivity(activity));
   });
 
-  server.get<QueryId>('/:uuid', async (request) => {
+  server.get<ParamId>('/:uuid', async (request) => {
     const { uuid } = request.params;
     const activity = await activityData.getById(db, uuid);
 
     return mapActivity(activity);
   });
 
-  server.get<QueryId>('/user/:uuid', async (request) => {
+  server.get<ParamId>('/user/:uuid', async (request) => {
     const { uuid } = request.params;
-    const activites = await activityData.getByUser(db, uuid);
+    const activities = await activityData.getByUser(db, uuid);
 
-    return activites.map((activity) =>
+    return activities.map((activity) =>
       mapActivity(activity, { includeUser: false }),
     );
   });
 
-  server.get<QueryId>('/team/:uuid', async (request) => {
+  server.get<ParamId>('/team/:uuid', async (request) => {
     const { uuid } = request.params;
-    const activites = await activityData.getByTeam(db, uuid);
+    const activities = await activityData.getByTeam(db, uuid);
 
-    return activites.map((activity) => mapActivity(activity));
+    return activities.map((activity) => mapActivity(activity));
+  });
+
+  server.get<ParamId>('/user/:uuid/months', async (request) => {
+    const { uuid } = request.params;
+    const activities = await activityData.getByUser(db, uuid);
+
+    const months = [
+      ...new Set(
+        activities
+          .sort((a, b) =>
+            dayjs(a.date).month() > dayjs(b.date).month() ? 1 : -1,
+          )
+          .map(({ date }) => dayjs(date).format('MMMM')),
+      ),
+    ].filter(Boolean);
+
+    return months;
+  });
+
+  server.get<ParamId>('/user/:uuid/groupByMonth', async (request) => {
+    const { uuid } = request.params;
+    const activities = await activityData.getByUser(db, uuid);
+
+    const months = [
+      ...new Set(
+        activities
+          .sort((a, b) =>
+            dayjs(a.date).month() > dayjs(b.date).month() ? 1 : -1,
+          )
+          .map(({ date }) => dayjs(date).format('MMMM')),
+      ),
+    ].filter(Boolean);
+
+    const activitiesPerMonth = (month: string) => {
+      return activities
+        .filter(({ date }) => dayjs(date).format('MMMM') === month)
+        .sort((a, b) => (a.date > b.date ? -1 : 1));
+    };
+
+    return months.map((month) => ({
+      month,
+      activities: activitiesPerMonth(month),
+    }));
   });
 
   server.post<ActivityRequest>('/', async (request, reply) => {
@@ -52,7 +96,7 @@ export async function activitiesController(server: FastifyInstance) {
     return mapActivity(activity);
   });
 
-  server.delete<QueryId>('/:uuid', async (request) => {
+  server.delete<ParamId>('/:uuid', async (request) => {
     const { uuid } = request.params;
     await activityData.remove(db, uuid);
     return { sucess: true };

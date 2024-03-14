@@ -31,7 +31,7 @@
   ],
   "scripts": {
     "native": "cd apps/eat-native && yarn start",
-    "web": "cd apps/eat-next && yarn dev",
+    "web": "cd apps/web && yarn dev",
     "backend": "cd apps/eat-backend && yarn start"
   },
   "nohoist": [

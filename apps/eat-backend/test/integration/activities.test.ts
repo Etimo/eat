@@ -94,7 +94,7 @@ describe('Activities', () => {
     expect(response.statusCode).toBe(200);
     expect(data.length).toBeGreaterThan(0);
     expect(data.length).toBe(user?.activities.length);
-    expect(data[0].user).toBeFalsy();
+    expect(data[0]?.user).toBeFalsy();
   });
 
   it<TestContext>('Should fetch all activities for one team using its id', async ({
@@ -130,7 +130,7 @@ describe('Activities', () => {
     expect(response.statusCode).toBe(200);
     expect(data.length).toBeGreaterThan(0);
     expect(data.length).toBe(numberOfActivites);
-    expect(data[0].user).toBeTruthy();
+    expect(data[0]?.user).toBeTruthy();
   });
 
   it('Should respond 404 when fetching user with invalid id', async () => {
