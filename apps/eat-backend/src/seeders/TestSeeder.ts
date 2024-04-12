@@ -1,6 +1,12 @@
 import type { EntityManager } from '@mikro-orm/core';
 import { Seeder } from '@mikro-orm/seeder';
-import { Activity, ActivityType, Team, User } from '../entities';
+import {
+  Activity,
+  ActivityType,
+  Team,
+  TeamMembership,
+  User,
+} from '../entities';
 import { TeamFactory, UserFactory } from '../entities/factories';
 import dayjs from 'dayjs';
 
@@ -12,30 +18,23 @@ export class TestSeeder extends Seeder {
       }),
     );
 
-    const teamOne = em.create(Team, new TeamFactory(em).makeOne());
-    const usersTeamOne: User[] = new UserFactory(em)
-      .each((user) => {
-        user.team = teamOne;
-      })
-      .make(4);
-    usersTeamOne.map((user) => em.create(User, user));
+    const teams: Team[] = new TeamFactory(em).make(3);
+    const users: User[] = new UserFactory(em).make(12);
 
-    const teamTwo = em.create(Team, new TeamFactory(em).makeOne());
-    const usersTeamTwo: User[] = new UserFactory(em)
-      .each((user) => {
-        user.team = teamTwo;
-      })
-      .make(4)
-      .map((user) => em.create(User, user));
-
-    const usersNoTeam: User[] = new UserFactory(em)
-      .make(4)
-      .map((user) => em.create(User, user));
+    const teamMemberships: TeamMembership[] = Array.from({ length: 8 }).map(
+      (_, index) => {
+        return em.create(TeamMembership, {
+          user: users[index],
+          team: teams[index % 2],
+          memberFrom: new Date().toISOString(),
+        });
+      },
+    );
 
     Array.from({ length: 6 }).map((_, index) => {
       em.create(Activity, {
         activityType: activityTypes[index % activityTypes.length],
-        user: usersNoTeam[index % usersNoTeam.length],
+        user: users[index % users.length],
         time: 30 * (index + 1),
         date: dayjs('2024-02-28').add(index, 'day').format('YYYY-MM-DD'),
       });
@@ -44,7 +43,7 @@ export class TestSeeder extends Seeder {
     Array.from({ length: 6 }).map((_, index) => {
       em.create(Activity, {
         activityType: activityTypes[index % activityTypes.length],
-        user: usersTeamTwo[index % usersTeamTwo.length],
+        user: users[index % users.length],
         time: 30 * (index + 1),
         date: dayjs('2024-02-28').add(index, 'day').format('YYYY-MM-DD'),
       });

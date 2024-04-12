@@ -253,30 +253,10 @@
           "primary": false,
           "nullable": false,
           "mappedType": "string"
-        },
-        "team_id": {
-          "name": "team_id",
-          "type": "varchar(36)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 36,
-          "mappedType": "string"
         }
       },
       "name": "users",
       "indexes": [
-        {
-          "columnNames": [
-            "team_id"
-          ],
-          "composite": false,
-          "keyName": "users_team_id_index",
-          "constraint": false,
-          "primary": false,
-          "unique": false
-        },
         {
           "keyName": "PRIMARY",
           "columnNames": [
@@ -289,25 +269,39 @@
         }
       ],
       "checks": [],
-      "foreignKeys": {
-        "users_team_id_foreign": {
-          "constraintName": "users_team_id_foreign",
-          "columnNames": [
-            "team_id"
-          ],
-          "localTableName": "users",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "teams",
-          "deleteRule": "set null",
-          "updateRule": "cascade"
-        }
-      },
+      "foreignKeys": {},
       "nativeEnums": {}
     },
     {
       "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(36)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 36,
+          "mappedType": "string"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
         "team_id": {
           "name": "team_id",
           "type": "varchar(36)",
@@ -327,16 +321,34 @@
           "nullable": false,
           "length": 36,
           "mappedType": "string"
+        },
+        "member_from": {
+          "name": "member_from",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "member_to": {
+          "name": "member_to",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "string"
         }
       },
-      "name": "teams_users",
+      "name": "team_memberships",
       "indexes": [
         {
           "columnNames": [
             "team_id"
           ],
           "composite": false,
-          "keyName": "teams_users_team_id_index",
+          "keyName": "team_memberships_team_id_index",
           "constraint": false,
           "primary": false,
           "unique": false
@@ -346,7 +358,7 @@
             "user_id"
           ],
           "composite": false,
-          "keyName": "teams_users_user_id_index",
+          "keyName": "team_memberships_user_id_index",
           "constraint": false,
           "primary": false,
           "unique": false
@@ -354,10 +366,9 @@
         {
           "keyName": "PRIMARY",
           "columnNames": [
-            "team_id",
-            "user_id"
+            "id"
           ],
-          "composite": true,
+          "composite": false,
           "constraint": true,
           "primary": true,
           "unique": true
@@ -365,30 +376,28 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "teams_users_team_id_foreign": {
-          "constraintName": "teams_users_team_id_foreign",
+        "team_memberships_team_id_foreign": {
+          "constraintName": "team_memberships_team_id_foreign",
           "columnNames": [
             "team_id"
           ],
-          "localTableName": "teams_users",
+          "localTableName": "team_memberships",
           "referencedColumnNames": [
             "id"
           ],
           "referencedTableName": "teams",
-          "deleteRule": "cascade",
           "updateRule": "cascade"
         },
-        "teams_users_user_id_foreign": {
-          "constraintName": "teams_users_user_id_foreign",
+        "team_memberships_user_id_foreign": {
+          "constraintName": "team_memberships_user_id_foreign",
           "columnNames": [
             "user_id"
           ],
-          "localTableName": "teams_users",
+          "localTableName": "team_memberships",
           "referencedColumnNames": [
             "id"
           ],
           "referencedTableName": "users",
-          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       },

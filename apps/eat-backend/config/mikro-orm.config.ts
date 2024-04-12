@@ -3,6 +3,7 @@ import {
   ActivityType,
   Competition,
   Team,
+  TeamMembership,
   User,
 } from '../src/entities';
 import { Migrator } from '@mikro-orm/migrations';
@@ -15,7 +16,7 @@ dotenv.config();
 const config = {
   dbName: process.env.DB_DATABASENAME,
   debug: true,
-  entities: [Activity, ActivityType, Competition, Team, User],
+  entities: [Activity, ActivityType, Competition, Team, TeamMembership, User],
   extensions: [SeedManager, Migrator],
   highlighter: new SqlHighlighter(),
   password: process.env.DB_PASSWORD,
