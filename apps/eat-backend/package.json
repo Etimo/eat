@@ -29,8 +29,9 @@
     "dev": "nodemon src/main.ts",
     "start": "node dist/main.js",
     "build": "tsc",
-    "test:integration": "./startTestDb.sh && vitest run integration && ./clearTestDb.sh",
-    "test:integration:watch": "./startTestDb.sh && vitest watch integration && ./clearTestDb.sh"
+    "test:integration": "bash ./startTestDb.sh && vitest run integration && bash ./clearTestDb.sh",
+    "test:integration:watch": "bash ./startTestDb.sh && vitest watch integration && bash ./clearTestDb.sh"
+
   },
   "mikro-orm": {
     "useTsNode": true,
