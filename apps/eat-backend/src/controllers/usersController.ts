@@ -12,27 +12,24 @@ export async function usersController(server: FastifyInstance) {
     if (!users.length) {
       return [];
     }
-    return users.map(({ id, name, team }) => ({
+    return users.map(({ id, name, teamMemberships }) => ({
       id,
       name,
-      team: team ? { id: team?.id, name: team?.name } : null,
+      team: teamMemberships
+        .filter((tm) => !tm.memberTo)
+        .map((tm) => ({ id: tm.team.id, name: tm.team.name }))[0],
     }));
   });
 
   server.get<ParamId>('/:uuid', async (request) => {
     const { uuid } = request.params;
-    const { id, name, team, previousTeams } = await userData.getById(db, uuid);
+    const { id, name, teamMemberships } = await userData.getById(db, uuid);
     return {
       id,
       name,
-      team: {
-        id: team?.id,
-        name: team?.name,
-      },
-      previousTeams: previousTeams.map((pt) => ({
-        id: pt.id,
-        name: pt.name,
-      })),
+      team: teamMemberships
+        .filter((tm) => !tm.memberTo)
+        .map((tm) => ({ id: tm.team.id, name: tm.team.name }))[0],
     };
   });
 }

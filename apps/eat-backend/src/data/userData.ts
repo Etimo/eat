@@ -3,13 +3,16 @@ import { DatabaseServices } from '../db';
 import { wrap } from '@mikro-orm/core';
 
 const list = async (db: DatabaseServices) => {
-  return db.users.findAll({ populate: ['team'], orderBy: { name: 'ASC' } });
+  return db.users.findAll({
+    populate: ['teamMemberships', 'teamMemberships.team'],
+    orderBy: { name: 'ASC' },
+  });
 };
 
 const getById = async (db: DatabaseServices, id: string) => {
   return db.users.findOneOrFail(
     { id },
-    { populate: ['team', 'previousTeams'] },
+    { populate: ['teamMemberships', 'teamMemberships.team'] },
   );
 };
 

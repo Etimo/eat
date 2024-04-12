@@ -13,7 +13,7 @@ interface TestContext {
   em: EntityManager;
 }
 
-describe.only('Users', () => {
+describe('Users', () => {
   beforeAll(async () => {
     const { server, orm } = await initTestServer();
     testServer = server;
@@ -50,8 +50,8 @@ describe.only('Users', () => {
   it<TestContext>('Should fetch one user using id', async ({ em }) => {
     const user = (
       await em.findAll(User, {
-        where: { team: { $ne: null } },
-        populate: ['team'],
+        where: { teamMemberships: { $ne: null } },
+        populate: ['teamMemberships', 'teamMemberships.team'],
       })
     ).pop();
 
@@ -59,17 +59,15 @@ describe.only('Users', () => {
       method: 'get',
       url: `/user/${user?.id}`,
     });
-    const data = response.json<{ id: string; name: string }>();
+    const data = response.json();
 
     expect(response.statusCode).toBe(200);
     expect(data).toEqual({
       id: user?.id,
       name: user?.name,
-      previousTeams: [],
-      team: {
-        id: user?.team?.id,
-        name: user?.team?.name,
-      },
+      team: user?.teamMemberships
+        .filter((tm) => !tm.memberTo)
+        .map((tm) => ({ id: tm.team.id, name: tm.team.name }))[0],
     });
   });
 
