@@ -1,7 +1,8 @@
 import { FastifyInstance } from 'fastify';
 import { teamData } from '../data';
 import { initORM } from '../db';
-import { Body, QueryId, ValidationError } from '../types';
+import { Body, ParamId, ValidationError } from '../types';
+import { Team } from '../entities';
 
 // Arrow function not supported, the server is bound to this
 export async function teamsController(server: FastifyInstance) {
@@ -19,23 +20,23 @@ export async function teamsController(server: FastifyInstance) {
     }));
   });
 
-  server.get<QueryId>('/:uuid', async (request, reply) => {
+  server.get<ParamId>('/:uuid', async (request, reply) => {
     const { uuid } = request.params;
     const { id, name, users } = await teamData.getById(db, uuid);
     return { id, name, users: users.map(({ id, name }) => ({ id, name })) };
   });
 
-  server.post<Body>('/', async (request, reply) => {
+  server.post<CreateTeamRequest>('/', async (request, reply) => {
     const body = request.body;
-    if (!body.name) {
+    if (!body.team.name) {
       const error = new ValidationError('Team name is required');
       return reply.code(400).send(error);
     }
-    const { id, name } = await teamData.create(db, body.name);
+    const { id, name } = await teamData.create(db, body.team);
     return { id, name };
   });
 
-  server.patch<QueryId & Body>('/:uuid', async (request, reply) => {
+  server.patch<ParamId & Body>('/:uuid', async (request, reply) => {
     const { uuid } = request.params;
     const body = request.body;
     if (!body.name) {
@@ -46,13 +47,13 @@ export async function teamsController(server: FastifyInstance) {
     return { id, name };
   });
 
-  server.delete<QueryId>('/:uuid', async (request) => {
+  server.delete<ParamId>('/:uuid', async (request) => {
     const { uuid } = request.params;
     await teamData.remove(db, uuid);
     return { sucess: true };
   });
 
-  server.post<QueryId & UsersRequest>(
+  server.post<ParamId & UsersRequest>(
     '/addMembers/:uuid',
     async (request, reply) => {
       const { uuid } = request.params;
@@ -65,7 +66,7 @@ export async function teamsController(server: FastifyInstance) {
       return team;
     },
   );
-  server.post<QueryId & UsersRequest>(
+  server.post<ParamId & UsersRequest>(
     '/removeMembers/:uuid',
     async (request, reply) => {
       const { uuid } = request.params;
@@ -83,4 +84,9 @@ export async function teamsController(server: FastifyInstance) {
 
 interface UsersRequest {
   Body: { users: string[] };
+}
+interface CreateTeamRequest {
+  Body: {
+    team: Team;
+  };
 }

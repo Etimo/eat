@@ -11,10 +11,19 @@ const getById = async (db: DatabaseServices, id: string) => {
   return db.teams.findOneOrFail({ id }, { populate: ['users'] });
 };
 
-const create = async (db: DatabaseServices, name: string) => {
-  const team = db.teams.create({ name });
+const getByIds = async (db: DatabaseServices, ids: string[]) => {
+  return db.teams.find(ids);
+};
+
+const create = async (db: DatabaseServices, team: Team) => {
+  const t = db.teams.create(team);
   await db.em.flush();
-  return team;
+
+  t.users.map((user) => {
+    wrap(user).assign({ team: t.id });
+  });
+  await db.em.flush();
+  return t;
 };
 
 const update = async (db: DatabaseServices, id: string, name: string) => {
@@ -38,6 +47,7 @@ const addMembers = async (
   const team = await db.teams.findOneOrFail(id, { populate: ['users'] });
   const users = await userData.getByIds(db, userIds);
   wrap(team).assign({ users: [...team.users, ...users] });
+  users.map((user) => wrap(user).assign({ team }));
 
   await db.em.flush();
   return team;
@@ -60,6 +70,7 @@ const removeMembers = async (
 export const teamData = {
   list,
   getById,
+  getByIds,
   create,
   update,
   remove,

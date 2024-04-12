@@ -9,6 +9,13 @@ const getById = async (db: DatabaseServices, id: string) => {
   return db.activityTypes.findOneOrFail({ id });
 };
 
+const getByUser = async (db: DatabaseServices, id: string) => {
+  return db.activityTypes.find(
+    { activities: { user: id } },
+    { populate: ['activities', 'activities.user'], orderBy: { name: 'ASC' } },
+  );
+};
+
 const create = async (db: DatabaseServices, name: string) => {
   const acitivtyType = db.activityTypes.create({ name });
   await db.em.flush();
@@ -31,6 +38,7 @@ const remove = async (db: DatabaseServices, id: string) => {
 export const activityTypeData = {
   list,
   getById,
+  getByUser,
   create,
   update,
   remove,

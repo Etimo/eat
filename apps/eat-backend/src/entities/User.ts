@@ -1,6 +1,7 @@
 import {
   Collection,
   Entity,
+  ManyToMany,
   ManyToOne,
   OneToMany,
   Property,
@@ -17,7 +18,9 @@ export class User extends BaseEntity {
   @ManyToOne(() => Team, { nullable: true })
   team?: Team;
 
+  @ManyToMany({ entity: 'Team', mappedBy: 'users' })
+  previousTeams = new Collection<Team>(this);
+
   @OneToMany(() => Activity, (a) => a.user)
-  // activities = new Collection<Activity>(this); Renamed this.
   activities = new Collection<Activity>(this);
 }

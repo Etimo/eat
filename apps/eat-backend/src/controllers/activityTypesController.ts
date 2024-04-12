@@ -1,7 +1,7 @@
 import { FastifyInstance } from 'fastify';
 import { activityTypeData } from '../data';
 import { initORM } from '../db';
-import { Body, QueryId, ValidationError } from '../types';
+import { Body, ParamId, ValidationError } from '../types';
 
 // Arrow function not supported, the server is bound to this
 export async function activityTypesController(server: FastifyInstance) {
@@ -15,10 +15,16 @@ export async function activityTypesController(server: FastifyInstance) {
     return activityTypes.map(({ id, name }) => ({ id, name }));
   });
 
-  server.get<QueryId>('/:uuid', async (request, reply) => {
+  server.get<ParamId>('/:uuid', async (request, reply) => {
     const { uuid } = request.params;
     const { id, name } = await activityTypeData.getById(db, uuid);
     return { id, name };
+  });
+
+  server.get<ParamId>('/user/:uuid', async (request, reply) => {
+    const { uuid } = request.params;
+    const activityTypes = await activityTypeData.getByUser(db, uuid);
+    return activityTypes.map(({ id, name }) => ({ id, name }));
   });
 
   server.post<Body>('/', async (request, reply) => {
@@ -32,7 +38,7 @@ export async function activityTypesController(server: FastifyInstance) {
     return { id, name };
   });
 
-  server.patch<QueryId & Body>('/:uuid', async (request, reply) => {
+  server.patch<ParamId & Body>('/:uuid', async (request, reply) => {
     const { uuid } = request.params;
     const body = request.body;
     if (!body.name) {
@@ -44,7 +50,7 @@ export async function activityTypesController(server: FastifyInstance) {
     return { id, name };
   });
 
-  server.delete<QueryId>('/:uuid', async (request) => {
+  server.delete<ParamId>('/:uuid', async (request) => {
     const { uuid } = request.params;
     await activityTypeData.remove(db, uuid);
 

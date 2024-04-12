@@ -4,7 +4,7 @@ import {
   MikroORM,
   Options,
 } from '@mikro-orm/mysql';
-import { Activity, ActivityType, Team, User } from './entities';
+import { Activity, ActivityType, Competition, Team, User } from './entities';
 import config from '../config/mikro-orm-app.config';
 import {
   ActivityTypeSeeder,
@@ -18,6 +18,7 @@ export type DatabaseServices = {
   em: EntityManager;
   activities: EntityRepository<Activity>;
   activityTypes: EntityRepository<ActivityType>;
+  competitions: EntityRepository<Competition>;
   teams: EntityRepository<Team>;
   users: EntityRepository<User>;
 };
@@ -36,6 +37,7 @@ export const initORM = async (options?: Options): Promise<DatabaseServices> => {
     em: orm.em,
     activities: orm.em.getRepository(Activity),
     activityTypes: orm.em.getRepository(ActivityType),
+    competitions: orm.em.getRepository(Competition),
     teams: orm.em.getRepository(Team),
     users: orm.em.getRepository(User),
   });
