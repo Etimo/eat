@@ -13,7 +13,7 @@ interface TestContext {
   em: EntityManager;
 }
 
-describe('Users', () => {
+describe.only('Users', () => {
   beforeAll(async () => {
     const { server, orm } = await initTestServer();
     testServer = server;
@@ -65,6 +65,7 @@ describe('Users', () => {
     expect(data).toEqual({
       id: user?.id,
       name: user?.name,
+      previousTeams: [],
       team: {
         id: user?.team?.id,
         name: user?.team?.name,
