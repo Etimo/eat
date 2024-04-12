@@ -37,7 +37,7 @@ export async function activitiesController(server: FastifyInstance) {
   server.get<ParamId>('/team/:uuid', async (request) => {
     const { uuid } = request.params;
     const activities = await activityData.getByTeam(db, uuid);
-
+    console.log(activities);
     return activities.map((activity) => mapActivity(activity));
   });
 
