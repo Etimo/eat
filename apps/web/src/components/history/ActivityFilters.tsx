@@ -1,4 +1,4 @@
-import { getActivityTypesByUser } from '@/api';
+import { getActivityTypesByUser } from '@/server/activityTypes';
 import classNames from 'classnames';
 import { FC } from 'react';
 

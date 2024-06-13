@@ -4,6 +4,7 @@ import { NavigationItem } from './NavigationItem';
 import Image from 'next/image';
 import etimoLogo from '@/assets/Etimo-white.png';
 import Link from 'next/link';
+import { CurrentUserMenu } from './CurrentUserMenu';
 
 const navigation = [
   { label: 'Dashboard', href: '/' },
@@ -29,18 +30,7 @@ export const Navigation: FC = () => {
         </div>
         <div className="flex-1 flex justify-end items-center gap-3">
           <NewActivity />
-          <div className="h-12 w-12 rounded-full bg-etimo flex justify-center items-center">
-            <ModalButton
-              modal={
-                <div className="text-4xl p-4 bg-white text-black relative rounded-t-lg md:rounded-lg flex flex-col">
-                  <ModalCloseButton />
-                  <div>Modal!</div>
-                </div>
-              }
-            >
-              AH
-            </ModalButton>
-          </div>
+          <CurrentUserMenu />
         </div>
       </div>
       {/* 

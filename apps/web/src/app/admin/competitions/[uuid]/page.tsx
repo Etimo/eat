@@ -1,4 +1,4 @@
-import { getCompetition } from '@/api';
+import { getCompetition } from '@/server/competition';
 import { Button } from '@/components/buttons';
 import { Card } from '@/components/card/Card';
 import { AddTeam, SeedTeams } from '@/components/modals';

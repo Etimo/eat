@@ -1,5 +1,5 @@
 'use server';
-import { getActivityTypes } from '@/api';
+import { getActivityTypes } from '@/server/activityTypes';
 
 export const GET = async () => {
   const activityTypes = await getActivityTypes();

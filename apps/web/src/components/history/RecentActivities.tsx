@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { getActivitiesByUser } from '@/api';
+import { getActivitiesByUser } from '@/server/activity';
 import { HistoryItem } from './HistoryItem';
 import Link from 'next/link';
 

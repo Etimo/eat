@@ -1,4 +1,4 @@
-import { getActivityTypes } from '@/api';
+import { getActivityTypes } from '@/server/activityTypes';
 import { NavigationTrail } from '@/components/navigation';
 import { Icon } from '@/icons';
 

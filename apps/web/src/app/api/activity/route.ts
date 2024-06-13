@@ -1,5 +1,5 @@
 'use server';
-import { createActivity } from '@/api';
+import { createActivity } from '@/server/activity';
 import { revalidateTag } from 'next/cache';
 import { NextRequest } from 'next/server';
 

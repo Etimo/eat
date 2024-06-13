@@ -3,17 +3,20 @@
 @tailwind utilities;
 
 @layer base {
-    body {
-        @apply min-h-screen pt-4;
-        @apply text-white;
-        @apply bg-gradient-to-b from-gradient-start from-15% to-gradient-stop to-100%;
-    }
+  body {
+    @apply min-h-dvh flex flex-col;
+    @apply text-white;
+    @apply bg-gradient-to-b from-gradient-start from-15% to-gradient-stop to-100%;
+  }
 
-    main {
-        @apply max-w-4xl mx-auto;
-    }
+  main {
+    @apply max-w-4xl w-full mx-auto;
+  }
+
+  body > section {
+    @apply flex-1 flex flex-col;
+  }
 }
-
 
 /* Pie chart */
 @import './piechart.css';

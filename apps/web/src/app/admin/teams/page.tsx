@@ -1,4 +1,4 @@
-import { getTeams } from '@/api';
+import { getTeams } from '@/server/team';
 import { Card } from '@/components/card/Card';
 import { NavigationTrail } from '@/components/navigation';
 

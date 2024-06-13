@@ -1,5 +1,5 @@
 'use server';
-import { getCompetitionsGroupedByYear } from '@/api';
+import { getCompetitionsGroupedByYear } from '@/server/competition';
 
 export const GET = async () => {
   const competitions = await getCompetitionsGroupedByYear();
