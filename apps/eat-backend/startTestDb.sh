@@ -1,5 +1,11 @@
 #!/bin/bash
 
+container='mysql-test'
+echo Stopping...
+docker stop $container
+echo Removing...
+docker rm $container
+
 docker run -d -t -i \
     -e MYSQL_ROOT_PASSWORD='root' \
     -e MYSQL_DATABASE='eat' \

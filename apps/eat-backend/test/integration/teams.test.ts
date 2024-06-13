@@ -37,11 +37,9 @@ describe('Teams', () => {
       method: 'get',
       url: '/team',
     });
-    const data = response.json<{ id: string; name: string; users: User[] }[]>();
+    const data = response.json<{ id: string; name: string }[]>();
     expect(response.statusCode).toBe(200);
-    expect(data.length).toEqual(2);
-    expect(data[0].users.length).toEqual(4);
-    expect(data[1].users.length).toEqual(4);
+    expect(data.length).toEqual(3);
   });
 
   it<TestContext>('Should fetch team using id', async ({ em }) => {
@@ -70,7 +68,7 @@ describe('Teams', () => {
   it<TestContext>('Should create new team using post', async ({ em }) => {
     const response = await testServer.inject({
       method: 'post',
-      body: { name: 'The new cool team' },
+      body: { team: { name: 'The new cool team' } },
       url: '/team',
     });
     const data = response.json<{ id: string; name: string }>();
@@ -79,7 +77,7 @@ describe('Teams', () => {
     expect(data.name).toEqual('The new cool team');
 
     const teams = await em.findAll(Team);
-    expect(teams.length).toBe(3);
+    expect(teams.length).toBe(4);
     expect(teams.map(({ name }) => name)).toContain('The new cool team');
   });
 
@@ -122,26 +120,40 @@ describe('Teams', () => {
     expect(response.statusCode).toBe(404);
   });
 
-  it<TestContext>('Should delete activity type', async ({ em }) => {
+  it<TestContext>('Should delete team', async ({ em }) => {
     const team = (await em.findAll(Team)).shift();
-    const teamName = team?.id;
+    const teamId = team?.id;
+    expect(teamId).toBeTruthy();
+
     const response = await testServer.inject({
       method: 'delete',
-      url: `/team/${team?.id}`,
+      url: `/team/${teamId}`,
     });
 
     expect(response.statusCode).toBe(200);
 
     const teams = await em.findAll(Team);
-    expect(teams.length).toBe(1);
-    expect(teams.map(({ name }) => name)).to.not.contain(teamName);
+    expect(teams.length).toBe(2);
+    expect(teams.map(({ name }) => name)).to.not.contain(teamId);
   });
 
   it<TestContext>('Should add a new user to the team', async ({ em }) => {
-    const team = (await em.findAll(Team, { populate: ['users'] })).shift();
-    const user = (await em.find(User, { team: null })).pop();
+    const team = (
+      await em.find(
+        Team,
+        { teamMemberships: { $ne: null } },
+        { populate: ['teamMemberships'] },
+      )
+    ).shift();
+    const user = (
+      await em.find(
+        User,
+        { teamMemberships: null },
+        { populate: ['teamMemberships'] },
+      )
+    ).pop();
 
-    expect(team?.users.length).toBe(4);
+    expect(team?.teamMemberships.length).toBe(4);
     expect(user).toBeTruthy();
 
     const response = await testServer.inject({
@@ -153,15 +165,27 @@ describe('Teams', () => {
 
     expect(response.statusCode).toBe(200);
     expect(data.id).toBe(team?.id);
-    expect(data.users.length).toBe((team?.users.length ?? 0) + 1);
+    expect(data.users.length).toBe((team?.teamMemberships.length ?? 0) + 1);
     expect(data.users.map(({ id }) => id)).toContain(user?.id);
   });
 
   it<TestContext>('Should add a two new users to the team', async ({ em }) => {
-    const team = (await em.findAll(Team, { populate: ['users'] })).shift();
-    const users = (await em.find(User, { team: null })).slice(0, 2);
+    const team = (
+      await em.find(
+        Team,
+        { teamMemberships: { $ne: null } },
+        { populate: ['teamMemberships'] },
+      )
+    ).shift();
+    const users = (
+      await em.find(
+        User,
+        { teamMemberships: null },
+        { populate: ['teamMemberships'] },
+      )
+    ).slice(0, 2);
 
-    expect(team?.users.length).toBe(4);
+    expect(team?.teamMemberships.length).toBe(4);
     expect(users.length).toBe(2);
 
     const response = await testServer.inject({
@@ -172,15 +196,21 @@ describe('Teams', () => {
     const data = response.json<{ id: string; name: string; users: User[] }>();
 
     expect(response.statusCode).toBe(200);
-    expect(data.users.length).toBe((team?.users.length ?? 0) + 2);
+    expect(data.users.length).toBe((team?.teamMemberships.length ?? 0) + 2);
   });
 
   it<TestContext>('Should return 404 if no users are provided during add', async ({
     em,
   }) => {
-    const team = (await em.findAll(Team, { populate: ['users'] })).shift();
+    const team = (
+      await em.find(
+        Team,
+        { teamMemberships: { $ne: null } },
+        { populate: ['teamMemberships'] },
+      )
+    ).shift();
 
-    expect(team?.users.length).toBe(4);
+    expect(team?.teamMemberships.length).toBe(4);
 
     let response = await testServer.inject({
       method: 'post',
@@ -205,10 +235,16 @@ describe('Teams', () => {
   });
 
   it<TestContext>('Should remove a user from the team', async ({ em }) => {
-    const team = (await em.findAll(Team, { populate: ['users'] })).shift();
-    const user = team?.users[0];
+    const team = (
+      await em.find(
+        Team,
+        { teamMemberships: { $ne: null } },
+        { populate: ['teamMemberships', 'teamMemberships.user'] },
+      )
+    ).shift();
+    const user = team?.teamMemberships.map((tm) => tm.user)[0];
 
-    expect(team?.users.length).toBe(4);
+    expect(team?.teamMemberships.length).toBe(4);
 
     const response = await testServer.inject({
       method: 'post',
@@ -224,11 +260,14 @@ describe('Teams', () => {
 
   it<TestContext>('Should remove two users from the team', async ({ em }) => {
     const team = (
-      await em.find(Team, { users: { $ne: null } }, { populate: ['users'] })
+      await em.find(
+        Team,
+        { teamMemberships: { $ne: null } },
+        { populate: ['teamMemberships', 'teamMemberships.user'] },
+      )
     ).shift();
-    const users = team?.users.slice(0, 2);
-
-    expect(team?.users.length).toBe(4);
+    const users = team?.teamMemberships.map((tm) => tm.user).slice(0, 2);
+    expect(team?.teamMemberships.length).toBe(4);
 
     const response = await testServer.inject({
       method: 'post',
@@ -244,9 +283,15 @@ describe('Teams', () => {
   it<TestContext>('Should return 404 if no users are provided during remove', async ({
     em,
   }) => {
-    const team = (await em.findAll(Team, { populate: ['users'] })).shift();
+    const team = (
+      await em.find(
+        Team,
+        { teamMemberships: { $ne: null } },
+        { populate: ['teamMemberships', 'teamMemberships.user'] },
+      )
+    ).shift();
 
-    expect(team?.users.length).toBe(4);
+    expect(team?.teamMemberships.length).toBe(4);
 
     let response = await testServer.inject({
       method: 'post',

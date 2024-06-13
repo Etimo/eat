@@ -13,22 +13,34 @@ export async function teamsController(server: FastifyInstance) {
     if (!teams.length) {
       return [];
     }
-    return teams.map(({ id, name, users }) => ({
+    return teams.map(({ id, name, teamMemberships }) => ({
       id,
       name,
-      users: users.map(({ id, name }) => ({ id, name })),
+      users: teamMemberships.map(({ user }) => ({
+        id: user.id,
+        name: user.name,
+      })),
     }));
   });
 
   server.get<ParamId>('/:uuid', async (request, reply) => {
     const { uuid } = request.params;
-    const { id, name, users } = await teamData.getById(db, uuid);
-    return { id, name, users: users.map(({ id, name }) => ({ id, name })) };
+    const { id, name, teamMemberships } = await teamData.getById(db, uuid);
+    return {
+      id,
+      name,
+      users: teamMemberships
+        .filter((tm) => !tm.memberTo)
+        .map(({ user }) => ({
+          id: user.id,
+          name: user.name,
+        })),
+    };
   });
 
   server.post<CreateTeamRequest>('/', async (request, reply) => {
     const body = request.body;
-    if (!body.team.name) {
+    if (!body.team || !body.team.name) {
       const error = new ValidationError('Team name is required');
       return reply.code(400).send(error);
     }
@@ -49,6 +61,7 @@ export async function teamsController(server: FastifyInstance) {
 
   server.delete<ParamId>('/:uuid', async (request) => {
     const { uuid } = request.params;
+
     await teamData.remove(db, uuid);
     return { sucess: true };
   });
@@ -62,8 +75,22 @@ export async function teamsController(server: FastifyInstance) {
         const error = new ValidationError('At least one user is required');
         return reply.code(400).send(error);
       }
-      const team = await teamData.addMembers(db, uuid, body.users);
-      return team;
+
+      const { id, name, teamMemberships } = await teamData.addMembers(
+        db,
+        uuid,
+        body.users,
+      );
+      return {
+        id,
+        name,
+        users: teamMemberships
+          .filter((tm) => !tm.memberTo)
+          .map(({ user }) => ({
+            id: user.id,
+            name: user.name,
+          })),
+      };
     },
   );
   server.post<ParamId & UsersRequest>(
@@ -76,8 +103,21 @@ export async function teamsController(server: FastifyInstance) {
         return reply.code(400).send(error);
       }
 
-      const team = await teamData.removeMembers(db, uuid, body.users);
-      return team;
+      const { id, name, teamMemberships } = await teamData.removeMembers(
+        db,
+        uuid,
+        body.users,
+      );
+      return {
+        id,
+        name,
+        users: teamMemberships
+          .filter((tm) => !tm.memberTo)
+          .map(({ user }) => ({
+            id: user.id,
+            name: user.name,
+          })),
+      };
     },
   );
 }
