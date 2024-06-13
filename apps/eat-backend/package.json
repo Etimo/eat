@@ -31,7 +31,6 @@
     "build": "tsc",
     "test:integration": "bash ./startTestDb.sh && vitest run integration && bash ./clearTestDb.sh",
     "test:integration:watch": "bash ./startTestDb.sh && vitest watch integration && bash ./clearTestDb.sh"
-
   },
   "mikro-orm": {
     "useTsNode": true,

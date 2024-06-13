@@ -30,6 +30,8 @@
     "packages/*"
   ],
   "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
     "native": "cd apps/eat-native && yarn start",
     "web": "cd apps/web && yarn dev",
     "backend": "cd apps/eat-backend && yarn start"
