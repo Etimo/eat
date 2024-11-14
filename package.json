@@ -5,25 +5,16 @@
   "private": true,
   "packageManager": "yarn@4.5.1",
   "dependencies": {
-    "@gluestack-style/react": "^1.0.15",
-    "@gluestack-ui/config": "^1.0.3",
-    "@gluestack-ui/themed": "^1.0.13",
-    "@gluestack/ui-next-adapter": "^2.1.10",
     "mysql2": "^3.9.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-native": "^0.73.2",
-    "react-native-gesture-handler": "^2.14.1",
-    "react-native-svg": "^14.0.0",
-    "react-native-web": "^0.19.9"
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@types/react": "~18.2.21",
     "@types/react-dom": "^18",
-    "@types/react-native": "^0.73.0",
     "eslint": "^8.56.0",
     "prettier": "^3.1.1",
-    "turbo": "^2.0.3"
+    "turbo": "^2.2.3"
   },
   "workspaces": [
     "apps/*",
@@ -32,12 +23,7 @@
   "scripts": {
     "dev": "turbo dev",
     "build": "turbo build",
-    "native": "cd apps/eat-native && yarn start",
     "web": "cd apps/web && yarn dev",
     "backend": "cd apps/eat-backend && yarn start"
-  },
-  "nohoist": [
-    "**/expo-router",
-    "**/expo-router/**"
-  ]
+  }
 }
