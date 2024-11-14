@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Card } from './Card';
-import { getActivitiesByTeam } from '@/api';
+import { getActivitiesByTeam } from '@/server/activity';
 import { TeamRatioGraph } from '../graphs';
 
 const currentUser = '98027300-446b-4f8b-b2dc-a050d410d604';

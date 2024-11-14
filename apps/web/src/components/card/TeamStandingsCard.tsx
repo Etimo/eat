@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Card } from './Card';
-import { getActivitiesByTeam } from '@/api';
+import { getActivitiesByTeam } from '@/server/activity';
 import { BarGraph } from '../graphs';
 
 const currentTeam = '574d2932-8919-469b-aef0-535534494c96';

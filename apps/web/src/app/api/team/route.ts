@@ -1,5 +1,5 @@
 'use server';
-import { createTeam, getTeams } from '@/api';
+import { createTeam, getTeams } from '@/server/team';
 import { revalidateTag } from 'next/cache';
 import { NextRequest } from 'next/server';
 

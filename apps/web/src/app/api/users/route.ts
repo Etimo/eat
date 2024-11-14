@@ -1,5 +1,5 @@
 'use server';
-import { getUsers } from '@/api';
+import { getUsers } from '@/server/user';
 
 export const GET = async () => {
   const users = await getUsers();

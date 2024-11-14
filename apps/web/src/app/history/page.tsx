@@ -1,4 +1,4 @@
-import { getActivitiesByUserGroupedByMonth } from '@/api';
+import { getActivitiesByUserGroupedByMonth } from '@/server/activity';
 import { ActivityFilters } from '@/components/history/ActivityFilters';
 import { HistoryItem } from '@/components/history/HistoryItem';
 import { NavigationTrail } from '@/components/navigation';

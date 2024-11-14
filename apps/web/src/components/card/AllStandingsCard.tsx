@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { Card } from './Card';
-import { getActivitiesByTeam, getTeams } from '@/api';
+import { getActivitiesByTeam } from '@/server/activity';
+import { getTeams } from '@/server/team';
 import { BarGraph } from '../graphs';
 
 type AllStandingsCardProps = {};

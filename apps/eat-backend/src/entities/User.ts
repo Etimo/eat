@@ -8,6 +8,15 @@ export class User extends BaseEntity {
   @Property()
   name!: string;
 
+  @Property({ unique: true, nullable: false })
+  email!: string;
+
+  @Property({ nullable: false })
+  picture!: string;
+
+  @Property({ nullable: false, default: 'member' })
+  role!: string;
+
   @OneToMany(() => TeamMembership, (tm) => tm.user, { nullable: true })
   teamMemberships = new Collection<TeamMembership>(this);
 

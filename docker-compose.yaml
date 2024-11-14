@@ -1,8 +1,7 @@
-version: '3'
 services:
   mysql:
     image: mysql:latest
-    container_name: mysql
+    container_name: eat-mysql
     environment:
       # Local dev info
       MYSQL_ROOT_PASSWORD: root
@@ -14,15 +13,27 @@ services:
     ports:
       - '3308:3306'
 
-  app:
-    container_name: 'eat-backend'
+  redis:
+    image: redis/redis-stack:7.2.0-v10
+    container_name: eat-redis
+    environment:
+      # Local dev info
+      REDIS_ARGS: '--requirepass etimo'
+    volumes:
+      - ./docker/redis:/var/lib/redis
+    ports:
+      - '6379:6379'
+
+  backend:
+    container_name: eat-backend
     build:
       context: .
       dockerfile: ./apps/eat-backend/Dockerfile
     volumes:
       - ./apps/eat-backend/:/app/apps/eat-backend
     environment:
-      # Local dev info
+      TZ: Europe/Stockholm
+      JWT_SECRET: EtimoActivityTracker
       NODE_ENV: development
       DB_HOST: mysql
       DB_USERNAME: mysql-eat
@@ -33,6 +44,30 @@ services:
       - mysql
     ports:
       - '3100:3100'
+
+  auth:
+    container_name: eat-auth
+    build:
+      context: .
+      dockerfile: ./apps/auth/Dockerfile
+      target: dev
+    command: yarn dev --filter=auth
+    volumes:
+      - ./apps/auth/:/app/apps/auth
+    environment:
+      TZ: Europe/Stockholm
+      JWT_SECRET: EtimoActivityTracker
+      NODE_ENV: development
+      BACKEND_URL: http://backend:3100
+      EAT_REDIS_HOST: redis
+      EAT_REDIS_PASSWORD: etimo
+      EAT_REDIS_PORT: 6379
+    depends_on:
+      - redis
+      - backend
+    ports:
+      - '3101:3101'
+      - 9229:9229
 
 volumes:
   mysql:

@@ -82,3 +82,4 @@ build/**
 !.yarn/versions
 
 docker/
+apps/web/.env

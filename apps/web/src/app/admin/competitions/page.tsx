@@ -1,4 +1,4 @@
-import { getCompetitionsGroupedByYear } from '@/api';
+import { getCompetitionsGroupedByYear } from '@/server/competition';
 import { NavigationTrail } from '@/components/navigation';
 import { Icon } from '@/icons';
 import { dayjs } from '@/utils';

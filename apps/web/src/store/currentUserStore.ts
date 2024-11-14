@@ -1,14 +1,25 @@
-import { create } from 'zustand';
-import { createJSONStorage, persist } from 'zustand/middleware';
+import { createStore } from 'zustand/vanilla';
 
-interface CurrentUserState {
-  currentUser: string;
-  setCurrentUser: (id: string) => void;
-}
-export const useCurrentUserStore = create<CurrentUserState>()((set, get) => ({
-  currentUser: '941a7069-ba45-4670-ab27-6411b9049441',
-  setCurrentUser: (id) =>
-    set({
-      currentUser: id,
-    }),
-}));
+export type CurrentUserState = {
+  currentUser?: {
+    name?: string | null;
+    email?: string | null;
+    picture?: string | null;
+  };
+};
+
+export type CurrentUserActions = {};
+
+export type CurrentUserStore = CurrentUserState & CurrentUserActions;
+
+export const defaultInitState: CurrentUserState = {
+  currentUser: undefined,
+};
+
+export const createCurrentUserStore = (
+  initState: CurrentUserState = defaultInitState,
+) => {
+  return createStore<CurrentUserStore>()((set) => ({
+    ...initState,
+  }));
+};
