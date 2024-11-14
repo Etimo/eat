@@ -71,7 +71,6 @@ const AnimatedBadge: FC<AnimatedBadgeProps> = ({ active, name }) => {
   const isActive = useSharedValue(0);
 
   useEffect(() => {
-    console.log(active);
     if (active === name) {
       isActive.value = withTiming(1);
     } else {

@@ -8,24 +8,42 @@ import {
 } from './controllers';
 import { initORM, seedBaseData } from './db';
 import { NotFoundError, RequestContext } from '@mikro-orm/core';
-import { ValidationError } from './types';
+import { AuthError, ValidationError } from './types';
+import { validateToken } from './utils';
+import { User } from './entities';
 
-export const initServer = async (
-  host = '0.0.0.0',
-  port = 3100,
-  migrate: boolean,
-) => {
+declare module 'fastify' {
+  export interface FastifyRequest {
+    currentUser: User;
+  }
+}
+
+export const initServer = async (host = '0.0.0.0', port = 3100) => {
   const server: FastifyInstance = Fastify();
   const db = await initORM();
 
   // Run migrations
-  if (migrate) {
-    await db.orm.migrator.up();
-
+  await db.orm.migrator.up();
+  if ((await db.users.count()) === 0) {
     await seedBaseData(db);
   }
 
   // Hooks
+  server.addHook('preParsing', async (request, reply) => {
+    try {
+      const { currentUserId } = validateToken(request.headers.authorization);
+
+      if (currentUserId) {
+        const currentUser = await db.users.findOneOrFail({
+          id: currentUserId,
+        });
+        request.currentUser = currentUser;
+      }
+    } catch (e) {
+      console.error('preParsing', e);
+      return reply.code(500).send('asd asd asd');
+    }
+  });
   server.addHook('onRequest', (request, reply, done) => {
     RequestContext.create(db.em, done);
   });
@@ -42,10 +60,9 @@ export const initServer = async (
 
   // Error handling
   server.setErrorHandler((error, request, reply) => {
-    console.log(typeof error);
-    // if (error instanceof AuthError) {
-    //   return reply.status(401).send({ error: error.message });
-    // }
+    if (error instanceof AuthError) {
+      return reply.status(401).send({ error: error.message });
+    }
 
     if (error instanceof ValidationError) {
       return reply.status(400).send({ error: error.message });

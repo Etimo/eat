@@ -8,11 +8,15 @@ export const getActivitiesByTeam = async (
   team: string,
 ): Promise<{ team: string; activities: Activity[] }> => {
   const url = `${BASE_URL}/activity/team/${team}`;
+  const options = await getOptions('GET');
+
   try {
-    const activities = await fetch(
-      url,
-      revalidateCacheTags(['activities']),
-    ).then((res) => res.json());
+    const res = await fetch(url, {
+      ...options,
+      ...revalidateCacheTags(['activities']),
+    });
+    const activities = await res.json();
+
     return { team, activities };
   } catch (error) {
     console.error(error);
@@ -25,11 +29,14 @@ export const getActivitiesByUser = async (
   sortMostRecent: boolean = false,
 ): Promise<Activity[]> => {
   const url = `${BASE_URL}/activity/user/${user}`;
+  const options = await getOptions('GET');
+
   try {
-    const activities: Activity[] = await fetch(
-      url,
-      revalidateCacheTags(['activities']),
-    ).then((res) => res.json());
+    const activities: Activity[] = await fetch(url, {
+      ...options,
+      ...revalidateCacheTags(['activities']),
+    }).then((res) => res.json());
+
     return activities.sort((a, b) =>
       sortMostRecent ? (a.date > b.date ? -1 : 1) : a.date > b.date ? 1 : -1,
     );
@@ -41,11 +48,14 @@ export const getActivitiesByUser = async (
 
 export const getActivities = async () => {
   const url = `${BASE_URL}/activity`;
+  const options = await getOptions('GET');
+
   try {
-    const activities: Activity[] = await fetch(
-      url,
-      revalidateCacheTags(['activities']),
-    ).then((res) => res.json());
+    const activities: Activity[] = await fetch(url, {
+      ...options,
+      ...revalidateCacheTags(['activities']),
+    }).then((res) => res.json());
+
     return activities.sort((a, b) => (a.date > b.date ? -1 : 1));
   } catch (error) {
     console.error(error);
@@ -92,7 +102,7 @@ export const createActivity = async (
   activity: CreateActivity,
 ): Promise<Activity | null> => {
   const url = `${BASE_URL}/activity`;
-  const options = getOptions<{ activity: CreateActivity }>('POST', {
+  const options = await getOptions<{ activity: CreateActivity }>('POST', {
     activity,
   });
 

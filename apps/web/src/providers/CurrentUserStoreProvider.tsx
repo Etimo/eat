@@ -15,7 +15,7 @@ export interface CurrentUserStoreProviderProps {
   currentUser?: {
     name?: string | null;
     email?: string | null;
-    image?: string | null;
+    picture?: string | null;
   };
   children: ReactNode;
 }

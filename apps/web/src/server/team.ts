@@ -5,10 +5,13 @@ import { BASE_URL, getOptions, revalidateCacheTags } from './utils';
 // GET
 export const getTeams = async (): Promise<Team[]> => {
   const url = `${BASE_URL}/team`;
+  const options = await getOptions('GET');
+
   try {
-    const teams = await fetch(url, revalidateCacheTags(['teams'])).then((res) =>
-      res.json(),
-    );
+    const teams = await fetch(url, {
+      ...options,
+      ...revalidateCacheTags(['teams']),
+    }).then((res) => res.json());
     return teams;
   } catch (error) {
     console.error(error);
@@ -19,7 +22,7 @@ export const getTeams = async (): Promise<Team[]> => {
 // POST
 export const createTeam = async (team: CreateTeam): Promise<Team | null> => {
   const url = `${BASE_URL}/team`;
-  const options = getOptions<{ team: CreateTeam }>('POST', {
+  const options = await getOptions<{ team: CreateTeam }>('POST', {
     team,
   });
 
