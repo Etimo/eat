@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "main": "src/main.ts",
+  "exports": {
+    "./trpc": "./src/trpc/trpc.ts"
+  },
   "scripts": {
     "dev": "nodemon src/main.ts",
     "start": "node dist/src/main.js",
@@ -11,15 +14,19 @@
     "migrate": "mikro-orm migration:create"
   },
   "dependencies": {
-    "@fastify/redis": "^6.1.1",
+    "@fastify/redis": "^7.0.1",
+    "@trpc/client": "^11.0.0-rc.633",
+    "@trpc/server": "^11.0.0-rc.633",
     "axios": "^1.6.8",
     "dotenv": "^16.4.5",
-    "fastify": "^4.26.2",
+    "eat-backend": "workspace:*",
+    "fastify": "^5.1.0",
     "google-auth-library": "^9.11.0",
     "https": "^1.0.0",
     "jsonwebtoken": "^9.0.2",
     "redis": "^4.6.13",
-    "uuid": "^9.0.1"
+    "uuid": "^9.0.1",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/jsonwebtoken": "^9",

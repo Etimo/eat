@@ -1,15 +1,12 @@
-import { FC } from 'react';
 import { Card } from './Card';
-import { getActivitiesByTeam } from '@/server/activity';
-import { getTeams } from '@/server/team';
 import { BarGraph } from '../graphs';
+import { trpc } from '@/trpc/server';
 
-type AllStandingsCardProps = {};
-export const AllStandingsCard: FC<AllStandingsCardProps> = async () => {
-  const teams = await getTeams();
-  const teamActivities = await Promise.all(
-    teams.map((team) => getActivitiesByTeam(team.id)),
-  );
+export const AllStandingsCard = async () => {
+  const teams = await trpc.teams.list();
+  // const teamActivities = await Promise.all(
+  //   teams.map((team) => trpc.activities.byTeam(team.id)),
+  // );
 
   const activityTimePerTeam = (id: string) => {
     const activities = teamActivities.find(

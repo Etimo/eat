@@ -1,8 +1,13 @@
-import Fastify, { FastifyInstance } from 'fastify';
-import { authController } from '#controllers';
+import fastify, { FastifyInstance } from 'fastify';
 import { ValidationError } from '#types';
 import redis, { FastifyRedis } from '@fastify/redis';
 import dotenv from 'dotenv';
+import {
+  fastifyTRPCPlugin,
+  FastifyTRPCPluginOptions,
+} from '@trpc/server/adapters/fastify';
+import { AuthRouter, authRouter } from './trpc/trpc';
+import { createAuthContext } from './trpc/init';
 
 // type definitions
 declare module 'fastify' {
@@ -13,7 +18,7 @@ declare module 'fastify' {
 
 export const initServer = async (host = '0.0.0.0', port = 3101) => {
   dotenv.config();
-  const server: FastifyInstance = Fastify();
+  const server: FastifyInstance = fastify();
 
   // Redis
   // const scheme = process.env.NODE_ENV !== 'development' ? 'rediss' : 'redis';
@@ -22,12 +27,17 @@ export const initServer = async (host = '0.0.0.0', port = 3101) => {
     url: `${scheme}://default:${process.env.EAT_REDIS_PASSWORD}@${process.env.EAT_REDIS_HOST}:${process.env.EAT_REDIS_PORT}`,
   });
 
-  server.get('/', async (request, reply) => {
-    return reply.send('hej');
+  server.register(fastifyTRPCPlugin, {
+    prefix: '/trpc',
+    trpcOptions: {
+      router: authRouter,
+      createContext: createAuthContext,
+      onError({ path, error }) {
+        // report to error monitoring
+        console.error(`Error in tRPC handler on path '${path}':`, error);
+      },
+    } satisfies FastifyTRPCPluginOptions<AuthRouter>['trpcOptions'],
   });
-
-  // Controllers
-  server.register(authController, { prefix: 'auth' });
 
   // Error handling
   server.setErrorHandler((error, request, reply) => {

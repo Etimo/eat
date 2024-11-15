@@ -1,12 +1,10 @@
-import { FC } from 'react';
 import { Card } from './Card';
 import { getActivitiesByTeam } from '@/server/activity';
 import { BarGraph } from '../graphs';
 
 const currentTeam = '574d2932-8919-469b-aef0-535534494c96';
 
-type TeamStandingsCardProps = {};
-export const TeamStandingsCard: FC<TeamStandingsCardProps> = async () => {
+export const TeamStandingsCard = async () => {
   const teamActivities = await getActivitiesByTeam(currentTeam);
   const members = teamActivities.activities
     .map(({ user }) => user)

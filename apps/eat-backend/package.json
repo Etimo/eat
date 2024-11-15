@@ -2,6 +2,9 @@
   "name": "eat-backend",
   "private": true,
   "main": "src/main.ts",
+  "exports": {
+    "./trpc": "./src/trpc/trpc.ts"
+  },
   "dependencies": {
     "@mikro-orm/core": "^6.1.4",
     "@mikro-orm/migrations": "^6.1.4",
@@ -9,11 +12,14 @@
     "@mikro-orm/reflection": "^6.1.4",
     "@mikro-orm/seeder": "^6.1.4",
     "@mikro-orm/sql-highlighter": "^1.0.1",
+    "@trpc/client": "^11.0.0-rc.633",
+    "@trpc/server": "^11.0.0-rc.633",
     "dayjs": "^1.11.10",
     "dotenv": "^16.4.4",
-    "fastify": "^4.26.1",
+    "fastify": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
-    "uuid": "^9.0.1"
+    "uuid": "^9.0.1",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",

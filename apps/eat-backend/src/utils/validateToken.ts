@@ -11,7 +11,9 @@ export const validateToken = (
   matchUserId?: string,
 ): { currentUserId: string; currentUserRole: string } => {
   const token = bearerWithToken?.split('Bearer ')[1];
-  if (!token) {
+
+  if (token === 'undefined' || !token) {
+    console.log('TOKEN', token);
     throw new AuthError('Error.unauthorized');
   }
 
