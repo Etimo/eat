@@ -24,6 +24,7 @@
     "dev": "turbo dev",
     "build": "turbo build",
     "web": "cd apps/web && yarn dev",
-    "backend": "cd apps/eat-backend && yarn start"
+    "backend": "cd apps/eat-backend && yarn start",
+    "flush-db": "cd apps/eat-backend &&npx mikro-orm migration:fresh"
   }
 }
