@@ -1,11 +1,5 @@
 import fastify, { FastifyInstance } from 'fastify';
-import {
-  activitiesController,
-  activityTypesController,
-  competitionsController,
-  teamsController,
-  usersController,
-} from './controllers';
+import { usersController } from './controllers';
 import { initORM, seedBaseData, seedUsers } from './db';
 import { NotFoundError, RequestContext } from '@mikro-orm/core';
 import { AuthError, ValidationError } from './types';
@@ -68,10 +62,6 @@ export const initServer = async (host = '0.0.0.0', port = 3100) => {
   });
 
   // Controllers
-  // server.register(activitiesController, { prefix: 'activity' });
-  // server.register(activityTypesController, { prefix: 'activitytype' });
-  // server.register(competitionsController, { prefix: 'competition' });
-  // server.register(teamsController, { prefix: 'team' });
   server.register(usersController, { prefix: 'user' });
 
   // Error handling

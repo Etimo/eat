@@ -2,7 +2,7 @@
 
 import { FC } from 'react';
 import { motion } from 'framer-motion';
-import classNames from 'classnames';
+import { cn } from '@/lib/utils';
 
 type AnimatedBarProps = {
   currentUser: boolean;
@@ -14,7 +14,7 @@ export const AnimatedBar: FC<AnimatedBarProps> = (props) => {
   const { currentUser, height, label, value } = props;
   return (
     <motion.div
-      className={classNames(
+      className={cn(
         'flex flex-col justify-between items-center flex-1 rounded-t-lg',
         'font-medium text-white text-xs min-w-0 overflow-hidden',
         currentUser ? 'bg-green-400' : 'bg-red-400',

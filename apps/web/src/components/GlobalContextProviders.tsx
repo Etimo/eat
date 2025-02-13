@@ -1,5 +1,4 @@
 import { FC } from 'react';
-import { ModalProvider } from './modals';
 
 type GlobalContextProvidersProps = {
   children: React.ReactNode;
@@ -8,7 +7,9 @@ type GlobalContextProvidersProps = {
 /**
  * Component for all global context providers
  */
-export const GlobalContextProviders: FC<GlobalContextProvidersProps> = ({ children }) => {
-  return <ModalProvider>{children}</ModalProvider>;
+export const GlobalContextProviders: FC<GlobalContextProvidersProps> = ({
+  children,
+}) => {
+  return <>{children}</>;
 };
 GlobalContextProviders.displayName = 'GlobalContextProviders';
