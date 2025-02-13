@@ -25,6 +25,10 @@ export const initServer = async (host = '0.0.0.0', port = 3101) => {
   dotenv.config();
   const server: FastifyInstance = fastify();
 
+  server.get('/', async (request, reply) => {
+    reply.send({ hello: 'world' });
+  });
+
   // Redis
   // const scheme = process.env.NODE_ENV !== 'development' ? 'rediss' : 'redis';
   const scheme = 'redis';
@@ -37,10 +41,14 @@ export const initServer = async (host = '0.0.0.0', port = 3101) => {
   });
 
   server.register(fastifySecureSession, {
-    key: Buffer.from('60397fda-c71c-460f-97b7-c2e31df026db', 'utf-8'),
+    // The key should be a Buffer of at least 32 bytes
+    key: Buffer.from(process.env.SESSION_KEY || 'a'.repeat(32), 'utf8'),
     cookie: {
+      path: '/',
+      // secure should be true in production
       secure: process.env.NODE_ENV === 'production',
       httpOnly: true,
+      maxAge: 7 * 24 * 60 * 60, // 7 days in seconds
     },
   });
   server.register(fastifyCors, {
@@ -132,6 +140,7 @@ export const initServer = async (host = '0.0.0.0', port = 3101) => {
 
   // Error handling
   server.setErrorHandler((error, request, reply) => {
+    console.log('error', error);
     if (error instanceof ValidationError) {
       return reply.status(400).send({ error: error.message });
     }
@@ -147,7 +156,7 @@ export const initServer = async (host = '0.0.0.0', port = 3101) => {
       console.log(`Listening on port ${port}...`),
     );
   } catch (err) {
-    // server.log.error(err);
+    server.log.error(err);
     process.exit(1);
   }
 
