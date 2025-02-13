@@ -4818,6 +4818,9 @@ __metadata:
   resolution: "eat-backend@workspace:apps/eat-backend"
   dependencies:
     "@faker-js/faker": "npm:^8.4.1"
+    "@fastify/cors": "npm:^10.0.2"
+    "@fastify/passport": "npm:^3.0.2"
+    "@fastify/secure-session": "npm:^8.1.1"
     "@mikro-orm/cli": "npm:^6.1.4"
     "@mikro-orm/core": "npm:^6.1.4"
     "@mikro-orm/migrations": "npm:^6.1.4"

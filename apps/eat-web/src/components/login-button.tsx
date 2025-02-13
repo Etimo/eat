@@ -1,7 +1,12 @@
+import { trpc } from '../trpc';
 import { useAuth } from '../hooks';
 
 export const LoginButton = () => {
-  const { loginWithGoogle } = useAuth();
+  const { loginWithGoogle, user } = useAuth();
+
+  const { data } = trpc.teams.list.useQuery();
+
+  console.log(data, user);
 
   return (
     <button

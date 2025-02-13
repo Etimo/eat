@@ -11,6 +11,9 @@ import {
 } from '@trpc/server/adapters/fastify';
 import { ServerRouter, serverRouter } from './trpc/trpc';
 import { createServerContext } from './trpc/init';
+import fastifyCors from '@fastify/cors';
+import fastifySecureSession from '@fastify/secure-session';
+import fastifyPassport from '@fastify/passport';
 
 declare module 'fastify' {
   export interface FastifyRequest {
@@ -31,11 +34,29 @@ export const initServer = async (host = '0.0.0.0', port = 3100) => {
     await seedUsers(db);
   }
 
+  server.register(fastifySecureSession, {
+    // The key should be a Buffer of at least 32 bytes
+    key: Buffer.from(process.env.SESSION_KEY || 'a'.repeat(32), 'utf8'),
+    cookie: {
+      path: '/',
+      // secure should be true in production
+      secure: process.env.NODE_ENV === 'production',
+      httpOnly: true,
+      maxAge: 7 * 24 * 60 * 60, // 7 days in seconds
+    },
+  });
+  server.register(fastifyCors, {
+    origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+    credentials: true,
+  });
+
   // Hooks
   server.addHook('preParsing', async (request, reply) => {
     try {
-      validateToken(request.headers.authorization);
+      console.log('request', request.session.get('user'));
+      // validateToken(request.headers.authorization);
     } catch (e) {
+      console.log(e);
       if (e instanceof AuthError) {
         return reply.code(401);
       }

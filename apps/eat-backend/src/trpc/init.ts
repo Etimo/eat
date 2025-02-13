@@ -7,7 +7,6 @@ export async function createServerContext({
   req,
   res,
 }: CreateFastifyContextOptions) {
-  console.log('createServerContext', req);
   const token = req.headers.authorization ?? 'default-token';
 
   return { token };
@@ -19,17 +18,17 @@ export const protectedProcedure = procedure.use(async (opts) => {
   const { ctx } = opts;
   const db = await initORM();
 
-  const { currentUserId, currentUserRole } = validateToken(ctx.token);
-  const currentUser = await db.users.findOne({ id: currentUserId });
+  // const { currentUserId, currentUserRole } = validateToken(ctx.token);
+  // const currentUser = await db.users.findOne({ id: currentUserId });
 
   return opts.next({
     ...opts,
     ctx: {
       ...ctx,
       db,
-      currentUserId,
-      currentUserRole,
-      currentUser,
+      // currentUserId,
+      // currentUserRole,
+      // currentUser,
     },
   });
 });
