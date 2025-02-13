@@ -1,9 +1,11 @@
-import { z } from 'zod';
 import { procedure, router } from '../init';
-import { getActivitiesByTeam } from '@/server/activity';
+import { createServerTrpc } from '../trpc';
 
 export const activitiesRouter = router({
-  byTeam: procedure.input(z.string()).query(async ({ input: id }) => {
-    return getActivitiesByTeam(id);
+  dashboard: router({
+    today: procedure.query(async ({ ctx }) => {
+      const trpc = createServerTrpc(ctx.token);
+      return trpc.activities.dashboard.today.query();
+    }),
   }),
 });
