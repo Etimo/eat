@@ -52,6 +52,10 @@ export const initORM = async (options?: Options): Promise<DatabaseServices> => {
   });
 };
 
+export const seedUsers = async (db: DatabaseServices) => {
+  return await db.orm.seeder.seed(UserSeeder);
+};
+
 export const seedBaseData = async (db: DatabaseServices) => {
   return db.activityTypes.count().then(async (count) => {
     if (count === 0) {

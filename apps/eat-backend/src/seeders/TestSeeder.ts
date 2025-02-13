@@ -26,27 +26,26 @@ export class TestSeeder extends Seeder {
         return em.create(TeamMembership, {
           user: users[index],
           team: teams[index % 2],
-          memberFrom: new Date().toISOString(),
         });
       },
     );
 
-    Array.from({ length: 6 }).map((_, index) => {
-      em.create(Activity, {
-        activityType: activityTypes[index % activityTypes.length],
-        user: users[index % users.length],
-        time: 30 * (index + 1),
-        date: dayjs('2024-02-28').add(index, 'day').format('YYYY-MM-DD'),
-      });
-    });
+    // Array.from({ length: 6 }).map((_, index) => {
+    //   em.create(Activity, {
+    //     activityType: activityTypes[index % activityTypes.length],
+    //     user: users[index % users.length],
+    //     time: 30 * (index + 1),
+    //     date: dayjs('2024-02-28').add(index, 'day').format('YYYY-MM-DD'),
+    //   });
+    // });
 
-    Array.from({ length: 6 }).map((_, index) => {
-      em.create(Activity, {
-        activityType: activityTypes[index % activityTypes.length],
-        user: users[index % users.length],
-        time: 30 * (index + 1),
-        date: dayjs('2024-02-28').add(index, 'day').format('YYYY-MM-DD'),
-      });
-    });
+    // Array.from({ length: 6 }).map((_, index) => {
+    //   em.create(Activity, {
+    //     activityType: activityTypes[index % activityTypes.length],
+    //     user: users[index % users.length],
+    //     time: 30 * (index + 1),
+    //     date: dayjs('2024-02-28').add(index, 'day').format('YYYY-MM-DD'),
+    //   });
+    // });
   }
 }

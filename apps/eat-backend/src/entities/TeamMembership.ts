@@ -10,10 +10,4 @@ export class TeamMembership extends BaseEntity {
 
   @ManyToOne(() => User, { nullable: false })
   user!: User;
-
-  @Property({ nullable: false })
-  memberFrom!: string;
-
-  @Property({ nullable: true })
-  memberTo?: string;
 }

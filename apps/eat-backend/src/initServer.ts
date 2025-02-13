@@ -6,7 +6,7 @@ import {
   teamsController,
   usersController,
 } from './controllers';
-import { initORM, seedBaseData } from './db';
+import { initORM, seedBaseData, seedUsers } from './db';
 import { NotFoundError, RequestContext } from '@mikro-orm/core';
 import { AuthError, ValidationError } from './types';
 import { validateToken } from './utils';
@@ -33,6 +33,8 @@ export const initServer = async (host = '0.0.0.0', port = 3100) => {
   await db.orm.migrator.up();
   if ((await db.users.count()) === 0) {
     await seedBaseData(db);
+  } else {
+    await seedUsers(db);
   }
 
   // Hooks

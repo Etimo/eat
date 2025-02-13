@@ -58,7 +58,6 @@ const addMembers = async (
     db.teamMemberships.create({
       team: id,
       user: userId,
-      memberFrom: new Date().toISOString(),
     }),
   );
 
@@ -77,10 +76,6 @@ const removeMembers = async (
     team: { id },
     user: { id: { $in: userIds } },
   });
-
-  teamMemberships.map((tm) =>
-    wrap(tm).assign({ memberTo: new Date().toISOString() }),
-  );
 
   await db.em.flush();
   return await db.teams.findOneOrFail(id, {

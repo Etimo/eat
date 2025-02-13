@@ -16,9 +16,10 @@ export async function usersController(server: FastifyInstance) {
     return users.map(({ id, name, teamMemberships }) => ({
       id,
       name,
-      team: teamMemberships
-        .filter((tm) => !tm.memberTo)
-        .map((tm) => ({ id: tm.team.id, name: tm.team.name }))[0],
+      team: teamMemberships.map((tm) => ({
+        id: tm.team.id,
+        name: tm.team.name,
+      }))[0],
     }));
   });
 
@@ -33,9 +34,10 @@ export async function usersController(server: FastifyInstance) {
       name,
       picture,
       role,
-      team: teamMemberships
-        .filter((tm) => !tm.memberTo)
-        .map((tm) => ({ id: tm.team.id, name: tm.team.name }))[0],
+      team: teamMemberships.map((tm) => ({
+        id: tm.team.id,
+        name: tm.team.name,
+      }))[0],
     };
   });
 

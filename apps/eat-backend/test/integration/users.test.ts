@@ -65,9 +65,10 @@ describe('Users', () => {
     expect(data).toEqual({
       id: user?.id,
       name: user?.name,
-      team: user?.teamMemberships
-        .filter((tm) => !tm.memberTo)
-        .map((tm) => ({ id: tm.team.id, name: tm.team.name }))[0],
+      team: user?.teamMemberships.map((tm) => ({
+        id: tm.team.id,
+        name: tm.team.name,
+      }))[0],
     });
   });
 

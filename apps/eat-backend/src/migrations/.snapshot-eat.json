@@ -359,24 +359,6 @@
           "nullable": false,
           "length": 36,
           "mappedType": "string"
-        },
-        "member_from": {
-          "name": "member_from",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
-        },
-        "member_to": {
-          "name": "member_to",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "string"
         }
       },
       "name": "team_memberships",
@@ -508,6 +490,16 @@
           "nullable": false,
           "length": 36,
           "mappedType": "string"
+        },
+        "competition_id": {
+          "name": "competition_id",
+          "type": "varchar(36)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 36,
+          "mappedType": "string"
         }
       },
       "name": "activities",
@@ -528,6 +520,16 @@
           ],
           "composite": false,
           "keyName": "activities_user_id_index",
+          "constraint": false,
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "competition_id"
+          ],
+          "composite": false,
+          "keyName": "activities_competition_id_index",
           "constraint": false,
           "primary": false,
           "unique": false
@@ -567,6 +569,18 @@
             "id"
           ],
           "referencedTableName": "users",
+          "updateRule": "cascade"
+        },
+        "activities_competition_id_foreign": {
+          "constraintName": "activities_competition_id_foreign",
+          "columnNames": [
+            "competition_id"
+          ],
+          "localTableName": "activities",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "competitions",
           "updateRule": "cascade"
         }
       },
