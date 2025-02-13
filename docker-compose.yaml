@@ -24,26 +24,26 @@ services:
     ports:
       - '6379:6379'
 
-  backend:
-    container_name: eat-backend
-    build:
-      context: .
-      dockerfile: ./apps/eat-backend/Dockerfile
-    volumes:
-      - ./apps/eat-backend/:/app/apps/eat-backend
-    environment:
-      TZ: Europe/Stockholm
-      JWT_SECRET: EtimoActivityTracker
-      NODE_ENV: development
-      DB_HOST: mysql
-      DB_USERNAME: mysql-eat
-      DB_PORT: 3306
-      DB_PASSWORD: etimo
-      DB_DATABASE: eat
-    depends_on:
-      - mysql
-    ports:
-      - '3100:3100'
+  # backend:
+  #   container_name: eat-backend
+  #   build:
+  #     context: .
+  #     dockerfile: ./apps/eat-backend/Dockerfile
+  #   volumes:
+  #     - ./apps/eat-backend/:/app/apps/eat-backend
+  #   environment:
+  #     TZ: Europe/Stockholm
+  #     JWT_SECRET: EtimoActivityTracker
+  #     NODE_ENV: development
+  #     DB_HOST: mysql
+  #     DB_USERNAME: mysql-eat
+  #     DB_PORT: 3306
+  #     DB_PASSWORD: etimo
+  #     DB_DATABASE: eat
+  #   depends_on:
+  #     - mysql
+  #   ports:
+  #     - '3100:3100'
 
   auth:
     container_name: eat-auth
@@ -58,13 +58,13 @@ services:
       TZ: Europe/Stockholm
       JWT_SECRET: EtimoActivityTracker
       NODE_ENV: development
-      BACKEND_URL: http://backend:3100
+      BACKEND_URL: http://host.docker.internal:3100
       EAT_REDIS_HOST: redis
       EAT_REDIS_PASSWORD: etimo
       EAT_REDIS_PORT: 6379
     depends_on:
       - redis
-      - backend
+      # - backend
     ports:
       - '3101:3101'
       - 9229:9229

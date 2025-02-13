@@ -1,4 +1,4 @@
-import Fastify, { FastifyInstance } from 'fastify';
+import fastify, { FastifyInstance } from 'fastify';
 import {
   activitiesController,
   activityTypesController,
@@ -11,6 +11,12 @@ import { NotFoundError, RequestContext } from '@mikro-orm/core';
 import { AuthError, ValidationError } from './types';
 import { validateToken } from './utils';
 import { User } from './entities';
+import {
+  fastifyTRPCPlugin,
+  FastifyTRPCPluginOptions,
+} from '@trpc/server/adapters/fastify';
+import { ServerRouter, serverRouter } from './trpc/trpc';
+import { createServerContext } from './trpc/init';
 
 declare module 'fastify' {
   export interface FastifyRequest {
@@ -19,7 +25,8 @@ declare module 'fastify' {
 }
 
 export const initServer = async (host = '0.0.0.0', port = 3100) => {
-  const server: FastifyInstance = Fastify();
+  const server: FastifyInstance = fastify({ maxParamLength: 5000 });
+
   const db = await initORM();
 
   // Run migrations
@@ -31,17 +38,12 @@ export const initServer = async (host = '0.0.0.0', port = 3100) => {
   // Hooks
   server.addHook('preParsing', async (request, reply) => {
     try {
-      const { currentUserId } = validateToken(request.headers.authorization);
-
-      if (currentUserId) {
-        const currentUser = await db.users.findOneOrFail({
-          id: currentUserId,
-        });
-        request.currentUser = currentUser;
-      }
+      validateToken(request.headers.authorization);
     } catch (e) {
-      console.error('preParsing', e);
-      return reply.code(500).send('asd asd asd');
+      if (e instanceof AuthError) {
+        return reply.code(401);
+      }
+      return reply.code(500);
     }
   });
   server.addHook('onRequest', (request, reply, done) => {
@@ -51,11 +53,23 @@ export const initServer = async (host = '0.0.0.0', port = 3100) => {
     await db.orm.close();
   });
 
+  server.register(fastifyTRPCPlugin, {
+    prefix: '/trpc',
+    trpcOptions: {
+      router: serverRouter,
+      createContext: createServerContext,
+      onError({ path, error }) {
+        // report to error monitoring
+        console.error(`Error in tRPC handler on path '${path}':`, error);
+      },
+    } satisfies FastifyTRPCPluginOptions<ServerRouter>['trpcOptions'],
+  });
+
   // Controllers
-  server.register(activitiesController, { prefix: 'activity' });
-  server.register(activityTypesController, { prefix: 'activitytype' });
-  server.register(competitionsController, { prefix: 'competition' });
-  server.register(teamsController, { prefix: 'team' });
+  // server.register(activitiesController, { prefix: 'activity' });
+  // server.register(activityTypesController, { prefix: 'activitytype' });
+  // server.register(competitionsController, { prefix: 'competition' });
+  // server.register(teamsController, { prefix: 'team' });
   server.register(usersController, { prefix: 'user' });
 
   // Error handling
@@ -83,6 +97,7 @@ export const initServer = async (host = '0.0.0.0', port = 3100) => {
       console.log(`Listening on port ${port}...`),
     );
   } catch (err) {
+    console.log(err);
     server.log.error(err);
     process.exit(1);
   }

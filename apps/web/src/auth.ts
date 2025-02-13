@@ -6,6 +6,7 @@ import type {
 import type { NextAuthOptions } from 'next-auth';
 import { getServerSession } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
+import { createAuthTrpc } from './trpc/trpc';
 
 const getSessionId = async (identityToken: string) => {
   const headers = new Headers({
@@ -69,7 +70,9 @@ export const authConfig = {
   callbacks: {
     async jwt({ token, account }) {
       if (account && account.id_token) {
-        const { sessionId, userId } = await getSessionId(account.id_token);
+        const authTrpc = createAuthTrpc(account.id_token);
+        const { sessionId, userId } = await authTrpc.auth.session.query();
+
         if (sessionId && userId) {
           token.userId = userId;
           token.sessionId = sessionId;
@@ -80,8 +83,9 @@ export const authConfig = {
     async session({ session, token }) {
       if (token && token.sessionId) {
         try {
-          const { token: accessToken } = await getAccessToken(
-            token.sessionId as string,
+          const authTrpc = createAuthTrpc('default-token');
+          const { token: accessToken } = await authTrpc.auth.accessToken.mutate(
+            { sessionId: token.sessionId },
           );
 
           if (accessToken) {
@@ -112,7 +116,8 @@ export const authConfig = {
     },
   },
   secret: process.env.JWT_SECRET,
-  debug: process.env.NODE_ENV === 'development',
+  // debug: process.env.NODE_ENV === 'development',
+  debug: false,
 } satisfies NextAuthOptions;
 
 export function getAuthSession(

@@ -2,11 +2,12 @@ import { FC } from 'react';
 import { Card } from './Card';
 import { getActivitiesByTeam } from '@/server/activity';
 import { TeamRatioGraph } from '../graphs';
+import { trpc } from '@/trpc/server';
 
 const currentUser = '98027300-446b-4f8b-b2dc-a050d410d604';
 const currentTeam = '574d2932-8919-469b-aef0-535534494c96';
 
-export const ActivityCard: FC = async () => {
+export const ActivityCard = async () => {
   const teamActivities = await getActivitiesByTeam(currentTeam);
 
   const user = teamActivities.activities
