@@ -25,6 +25,7 @@ export const protectedProcedure = procedure.use(async (opts) => {
     ...opts,
     ctx: {
       ...ctx,
+      db,
       currentUserId,
       currentUserRole,
       currentUser,
