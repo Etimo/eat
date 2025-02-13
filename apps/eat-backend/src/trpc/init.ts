@@ -7,6 +7,7 @@ export async function createServerContext({
   req,
   res,
 }: CreateFastifyContextOptions) {
+  console.log('createServerContext', req);
   const token = req.headers.authorization ?? 'default-token';
 
   return { token };
