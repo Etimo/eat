@@ -6,6 +6,7 @@ import { getAuthSession } from '@/auth';
 import { GlobalContextProviders } from '@/components/GlobalContextProviders';
 import { Navigation } from '@/components/navigation';
 import { redirect } from 'next/navigation';
+import { TRPCProvider } from '@/trpc/client';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -30,10 +31,12 @@ export default async function RootLayout({
       <body className={inter.className}>
         <ClientSessionProvider session={session}>
           <CurrentUserStoreProvider currentUser={{ ...session?.user }}>
-            <GlobalContextProviders>
-              <Navigation />
-              {children}
-            </GlobalContextProviders>
+            <TRPCProvider>
+              <TRPCProvider>
+                <Navigation />
+                {children}
+              </TRPCProvider>
+            </TRPCProvider>
           </CurrentUserStoreProvider>
         </ClientSessionProvider>
       </body>

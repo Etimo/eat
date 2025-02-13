@@ -8,34 +8,6 @@ import { Team } from '../entities';
 export async function teamsController(server: FastifyInstance) {
   const db = await initORM();
 
-  server.get('/', async (_, reply) => {
-    const teams = await teamData.list(db);
-    if (!teams.length) {
-      return [];
-    }
-    return teams.map(({ id, name, teamMemberships }) => ({
-      id,
-      name,
-      users: teamMemberships.map(({ user }) => ({
-        id: user.id,
-        name: user.name,
-      })),
-    }));
-  });
-
-  server.get<ParamId>('/:uuid', async (request, reply) => {
-    const { uuid } = request.params;
-    const { id, name, teamMemberships } = await teamData.getById(db, uuid);
-    return {
-      id,
-      name,
-      users: teamMemberships.map(({ user }) => ({
-        id: user.id,
-        name: user.name,
-      })),
-    };
-  });
-
   server.post<CreateTeamRequest>('/', async (request, reply) => {
     const body = request.body;
     if (!body.team || !body.team.name) {
