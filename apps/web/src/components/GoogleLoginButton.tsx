@@ -1,14 +1,14 @@
 'use client';
 
 import { GoogleIcon } from '@/icons';
-import classNames from 'classnames';
 import { FC } from 'react';
 import { signOut } from 'next-auth/react';
+import { cn } from '@/lib/utils';
 
 export const GoogleLoginButton: FC = () => {
   return (
     <button
-      className={classNames(
+      className={cn(
         'flex items-center gap-2 bg-etimo text-white border border-etimo shadow-lg rounded-md',
         'active:scale-[0.99]',
       )}
