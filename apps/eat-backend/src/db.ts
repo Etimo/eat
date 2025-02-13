@@ -57,24 +57,5 @@ export const seedUsers = async (db: DatabaseServices) => {
 };
 
 export const seedBaseData = async (db: DatabaseServices) => {
-  return db.activityTypes.count().then(async (count) => {
-    if (count === 0) {
-      return await db.orm.seeder.seed(DatabaseSeeder);
-    }
-    return Promise.resolve();
-  });
-
-  // const teamsSeed = db.teams.count().then(async (count) => {
-  //   if (count === 0) {
-  //     return db.orm.seeder.seed(TeamSeeder);
-  //   }
-  //   return Promise.resolve();
-  // });
-  // const usersSeed = db.users.count().then(async (count) => {
-  //   if (count === 0) {
-  //     return db.orm.seeder.seed(UserSeeder);
-  //   }
-  //   return Promise.resolve();
-  // });
-  // return Promise.all([activityTypesSeed, teamsSeed, usersSeed]);
+  return await db.orm.seeder.seed(DatabaseSeeder);
 };

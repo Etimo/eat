@@ -6,6 +6,6 @@ import type { EntityManager } from '@mikro-orm/core';
 
 export class DatabaseSeeder extends Seeder {
   async run(em: EntityManager): Promise<void> {
-    this.call(em, [ActivityTypeSeeder, TeamSeeder]);
+    this.call(em, [ActivityTypeSeeder, TeamSeeder, UserSeeder]);
   }
 }
