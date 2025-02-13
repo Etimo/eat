@@ -36,7 +36,7 @@ export const updateUser = async (user: {
   email: string;
   name: string;
   picture: string;
-}): Promise<UserDto> => {
+}): Promise<UserDto | null> => {
   try {
     const secret = process.env.JWT_SECRET;
     if (!secret) {
@@ -56,8 +56,7 @@ export const updateUser = async (user: {
 
     return response.data as UserDto;
   } catch (error) {
-    console.log('error', error);
-    return {} as UserDto;
+    return null;
   }
 };
 
