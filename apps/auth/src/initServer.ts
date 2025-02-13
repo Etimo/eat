@@ -36,10 +36,6 @@ export const initServer = async (host = '0.0.0.0', port = 3101) => {
     url: `${scheme}://default:${process.env.EAT_REDIS_PASSWORD}@${process.env.EAT_REDIS_HOST}:${process.env.EAT_REDIS_PORT}`,
   });
 
-  server.addHook('preParsing', async (request, reply) => {
-    console.log('preParsing', request.headers);
-  });
-
   server.register(fastifySecureSession, {
     // The key should be a Buffer of at least 32 bytes
     key: Buffer.from(process.env.SESSION_KEY || 'a'.repeat(32), 'utf8'),
@@ -71,8 +67,7 @@ export const initServer = async (host = '0.0.0.0', port = 3101) => {
       },
       async (accessToken, refreshToken, profile, done) => {
         try {
-          console.log('profile', profile);
-
+          // console.log('profile', profile);
           const tokenUser = {
             id: profile.id,
             email: profile.emails?.[0]?.value ?? '',
@@ -92,9 +87,9 @@ export const initServer = async (host = '0.0.0.0', port = 3101) => {
     ),
   );
 
-  fastifyPassport.registerUserSerializer(
-    async (user: { email: string }) => user.email,
-  );
+  fastifyPassport.registerUserSerializer(async (user: { email: string }) => {
+    return user.email;
+  });
   fastifyPassport.registerUserDeserializer(async (email: string) => {
     return getUserByEmail(email);
   });
