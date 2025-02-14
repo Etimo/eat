@@ -3,6 +3,7 @@ import {
   AdminLayout,
   CompetitionsPage,
   CreateCompetition,
+  AddActivityPage,
   HomePage,
   LoginPage,
   TeamsPage,
@@ -29,6 +30,8 @@ export const Router = (): JSX.Element => {
       </Route>
 
       <Route index path="/competition" element={<CreateCompetition />} />
+
+      <Route index path="/register-activity" element={<AddActivityPage />} />
     </Routes>
   );
 };

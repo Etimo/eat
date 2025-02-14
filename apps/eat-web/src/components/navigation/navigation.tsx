@@ -18,6 +18,7 @@ const navigation = [
   { title: 'Historik', href: '/history' },
   { title: 'Standing', href: '/standings' },
   { title: 'Admin', href: '/admin' },
+  { title: 'Ny aktivtet', href: '/register-activity' },
 ];
 
 export const Navigation: FC = () => {
