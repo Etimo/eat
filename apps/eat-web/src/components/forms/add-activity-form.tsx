@@ -20,7 +20,7 @@ import { DatePicker } from '../datepicker';
 const formSchema = z.object({
   activityType: z.string(),
   date: z.date(),
-  time: z.number()
+  time: z.number(),
 });
 
 type Props = {
@@ -41,19 +41,19 @@ export function AddActivityForm(props: Props) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      activityType: "",
+      activityType: '',
       date: new Date(),
       time: 0,
     },
   });
-  
+
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
 
     submitForm.mutate({
       activityType: values.activityType,
       date: dayjs(values.date).toISOString(),
-      minutes: values.time,      
+      minutes: values.time,
     });
   }
 
@@ -63,7 +63,7 @@ export function AddActivityForm(props: Props) {
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex flex-col gap-2"
       >
-        <h2 className="text-lg font-semibold">Lägg till aktivtet</h2>
+        <h2 className="text-lg font-semibold text-etimo">Lägg till aktivtet</h2>
         <FormField
           control={form.control}
           name="activityType"
@@ -94,7 +94,7 @@ export function AddActivityForm(props: Props) {
           control={form.control}
           name="date"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="flex flex-col">
               <FormLabel>Datum</FormLabel>
               <FormControl>
                 <DatePicker />
@@ -103,7 +103,10 @@ export function AddActivityForm(props: Props) {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+
+        <div className="flex justify-end pt-4">
+          <Button type="submit">Lägg till</Button>
+        </div>
       </form>
     </Form>
   );
