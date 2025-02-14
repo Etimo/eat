@@ -1,38 +1,30 @@
 import { FastifyInstance } from 'fastify';
-import { userData } from '../data';
 import { initORM } from '../db';
-import { ParamId } from '../types';
+import { User } from '../entities';
+import { wrap } from '@mikro-orm/core';
 
+// This is only used by auth. Use trpc for the rest
 // Arrow function not supported, the server is bound to this
 export async function usersController(server: FastifyInstance) {
   const db = await initORM();
 
-  server.get('/', async () => {
-    const users = await userData.list(db);
-    if (!users.length) {
-      return [];
-    }
-    return users.map(({ id, name, team }) => ({
-      id,
-      name,
-      team: team ? { id: team?.id, name: team?.name } : null,
-    }));
+  server.post<{
+    Body: { user: { name: string; email: string; picture: string } };
+  }>('/', async (request) => {
+    const { user } = request.body;
+    const createdUser = await db.users.create(user as User);
+    await db.em.flush();
+    return createdUser;
   });
 
-  server.get<ParamId>('/:uuid', async (request) => {
-    const { uuid } = request.params;
-    const { id, name, team, previousTeams } = await userData.getById(db, uuid);
-    return {
-      id,
-      name,
-      team: {
-        id: team?.id,
-        name: team?.name,
-      },
-      previousTeams: previousTeams.map((pt) => ({
-        id: pt.id,
-        name: pt.name,
-      })),
-    };
+  server.patch<{
+    Body: { user: { name: string; email: string; picture: string } };
+  }>('/', async (request) => {
+    const { user } = request.body;
+    const createdUser = await db.users.findOneOrFail({ email: user.email });
+    wrap(user).assign({ ...user });
+    await db.em.flush();
+
+    return createdUser;
   });
 }

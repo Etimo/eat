@@ -1,6 +1,6 @@
 import { Collection, Entity, OneToMany, Property } from '@mikro-orm/core';
 import { BaseEntity } from './BaseEntity';
-import { Team } from '.';
+import { Activity, Team } from '.';
 
 @Entity({ tableName: 'competitions' })
 export class Competition extends BaseEntity {
@@ -12,4 +12,7 @@ export class Competition extends BaseEntity {
 
   @OneToMany(() => Team, (t) => t.competition)
   teams = new Collection<Team>(this);
+
+  @OneToMany(() => Activity, (a) => a.competition)
+  activities = new Collection<Activity>(this);
 }

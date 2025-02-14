@@ -1,6 +1,6 @@
 'use client';
 
-import classNames from 'classnames';
+import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { FC, useMemo } from 'react';
@@ -23,7 +23,7 @@ export const NavigationItem: FC<NavigationItemProps> = (props) => {
   return (
     <Link
       href={href}
-      className={classNames(
+      className={cn(
         active
           ? 'bg-etimo text-white'
           : 'text-gray-300 hover:bg-white/10 hover:text-white',

@@ -1,15 +1,15 @@
 import { FC } from 'react';
-import { ModalButton, ModalCloseButton, NewActivity } from '../modals';
 import { NavigationItem } from './NavigationItem';
 import Image from 'next/image';
 import etimoLogo from '@/assets/Etimo-white.png';
 import Link from 'next/link';
+import { CurrentUserMenu } from './CurrentUserMenu';
 
 const navigation = [
-  { label: 'Dashboard', href: '/' },
-  { label: 'Team', href: '/team' },
-  { label: 'History', href: '/history' },
-  { label: 'Standings', href: '/standings' },
+  { label: 'Översikt', href: '/' },
+  { label: 'Lag', href: '/team' },
+  { label: 'Historik', href: '/history' },
+  { label: 'Standing', href: '/standings' },
   { label: 'Admin', href: '/admin' },
 ];
 
@@ -28,25 +28,9 @@ export const Navigation: FC = () => {
           ))}
         </div>
         <div className="flex-1 flex justify-end items-center gap-3">
-          <NewActivity />
-          <div className="h-12 w-12 rounded-full bg-etimo flex justify-center items-center">
-            <ModalButton
-              modal={
-                <div className="text-4xl p-4 bg-white text-black relative rounded-t-lg md:rounded-lg flex flex-col">
-                  <ModalCloseButton />
-                  <div>Modal!</div>
-                </div>
-              }
-            >
-              AH
-            </ModalButton>
-          </div>
+          <CurrentUserMenu />
         </div>
       </div>
-      {/* 
-        TODO: 2024-03-14, André
-        Add UI for mobile navigation
-      */}
     </nav>
   );
 };

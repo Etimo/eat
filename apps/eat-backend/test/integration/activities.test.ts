@@ -100,22 +100,24 @@ describe('Activities', () => {
   it<TestContext>('Should fetch all activities for one team using its id', async ({
     em,
   }) => {
-    const team = (
-      await em.find(
-        Team,
-        { users: { activities: { $ne: null } } },
-        {
-          orderBy: { users: { activities: { activityType: { name: 'ASC' } } } },
-          populate: [
-            'users',
-            'users.activities',
-            'users.activities.activityType',
-          ],
-        },
-      )
-    ).pop();
-    const numberOfActivites = team?.users
-      .map(({ activities: activity }) => activity.length)
+    const teams = await em.find(
+      Team,
+      { teamMemberships: { user: { activities: { $ne: null } } } },
+      {
+        populate: [
+          'teamMemberships',
+          'teamMemberships.user',
+          'teamMemberships.user.activities',
+          'teamMemberships.user.activities.activityType',
+        ],
+      },
+    );
+    const team = teams.find((t) =>
+      t.teamMemberships.map((tm) => tm.user.activities.length > 0),
+    );
+
+    const numberOfActivites = team?.teamMemberships
+      .map(({ user }) => user.activities.length)
       .reduce((total, current) => total + current, 0);
 
     expect(team).toBeTruthy();

@@ -30,3 +30,5 @@ export const Icon = {
   Sun: SunIcon,
 };
 export type IconVariants = keyof typeof Icon;
+
+export * from './GoogleIcon';

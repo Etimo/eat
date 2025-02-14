@@ -1,25 +1,24 @@
-import {
-  Collection,
-  Entity,
-  ManyToMany,
-  ManyToOne,
-  OneToMany,
-  Property,
-} from '@mikro-orm/core';
+import { Collection, Entity, OneToMany, Property } from '@mikro-orm/core';
 import { BaseEntity } from './BaseEntity';
-import { Team } from './Team';
 import { Activity } from './Activity';
+import { TeamMembership } from './TeamMembership';
 
 @Entity({ tableName: 'users' })
 export class User extends BaseEntity {
   @Property()
   name!: string;
 
-  @ManyToOne(() => Team, { nullable: true })
-  team?: Team;
+  @Property({ unique: true, nullable: false })
+  email!: string;
 
-  @ManyToMany({ entity: 'Team', mappedBy: 'users' })
-  previousTeams = new Collection<Team>(this);
+  @Property({ nullable: false })
+  picture!: string;
+
+  @Property({ nullable: false, default: 'member' })
+  role!: string;
+
+  @OneToMany(() => TeamMembership, (tm) => tm.user, { nullable: true })
+  teamMemberships = new Collection<TeamMembership>(this);
 
   @OneToMany(() => Activity, (a) => a.user)
   activities = new Collection<Activity>(this);

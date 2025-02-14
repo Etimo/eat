@@ -1,22 +1,21 @@
 import {
   Collection,
   Entity,
-  ManyToMany,
   ManyToOne,
   OneToMany,
   Property,
 } from '@mikro-orm/core';
 import { BaseEntity } from './BaseEntity';
-import { User } from './User';
 import { Competition } from './Competition';
+import { TeamMembership } from './TeamMembership';
 
 @Entity({ tableName: 'teams' })
 export class Team extends BaseEntity {
   @Property()
   name!: string;
 
-  @ManyToMany('User')
-  users = new Collection<User>(this);
+  @OneToMany(() => TeamMembership, (tm) => tm.team, { nullable: true })
+  teamMemberships = new Collection<TeamMembership>(this);
 
   @ManyToOne(() => Competition, { nullable: true })
   competition?: Competition;

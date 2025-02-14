@@ -1,5 +1,6 @@
+import { AddCompetitionForm } from '@/components/forms/AddCompetitionForm';
 import { NavigationTrail } from '@/components/navigation';
-import classNames from 'classnames';
+import { cn } from '@/lib/utils';
 import Link from 'next/link';
 
 const navigation = [
@@ -17,7 +18,7 @@ export default async function Page() {
         {navigation.map(({ label, path }, index) => (
           <Link
             key={index}
-            className={classNames(
+            className={cn(
               'text-gray-300 hover:border-etimo hover:text-white',
               'transition-colors duration-200',
               'border border-transparent rounded-md px-3 py-2 text-sm font-medium cursor-pointer relative',
@@ -28,6 +29,7 @@ export default async function Page() {
           </Link>
         ))}
       </div>
+      <AddCompetitionForm />
     </main>
   );
 }

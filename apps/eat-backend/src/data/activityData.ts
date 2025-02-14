@@ -24,10 +24,15 @@ const getByUser = async (db: DatabaseServices, userId: string) => {
 
 const getByTeam = async (db: DatabaseServices, teamId: string) => {
   return db.activities.find(
-    { user: { team: { id: teamId } } },
+    { user: { teamMemberships: { team: { id: teamId } } } },
     {
       orderBy: { activityType: { name: 'ASC' } }, // This should probably be creation date when all the data isn't created at the same time..
-      populate: ['activityType', 'user'],
+      populate: [
+        'activityType',
+        'user',
+        'user.teamMemberships',
+        'user.teamMemberships.team',
+      ],
     },
   );
 };

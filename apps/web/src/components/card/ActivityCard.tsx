@@ -1,42 +1,66 @@
-import { FC } from 'react';
+'use client';
+
+import { trpc } from '@/trpc/client';
 import { Card } from './Card';
-import { getActivitiesByTeam } from '@/api';
 import { TeamRatioGraph } from '../graphs';
+import { Icon } from '@/icons';
+import { useMemo, useState } from 'react';
 
-const currentUser = '98027300-446b-4f8b-b2dc-a050d410d604';
-const currentTeam = '574d2932-8919-469b-aef0-535534494c96';
+export const ActivityCard = () => {
+  const [period, setPeriod] = useState<'today' | 'week' | 'total'>('today');
 
-export const ActivityCard: FC = async () => {
-  const teamActivities = await getActivitiesByTeam(currentTeam);
+  const title = useMemo(() => {
+    switch (period) {
+      case 'today':
+        return 'Idag';
+      case 'week':
+        return 'Vecka';
+      case 'total':
+        return 'Totalt';
+    }
+  }, [period]);
 
-  const user = teamActivities.activities
-    .filter((activity) => activity.user.id === currentUser)
-    .reduce((total, { time }) => total + time, 0);
-  const team = teamActivities.activities
-    .filter((activity) => activity.user.id !== currentUser)
-    .reduce((total, { time }) => total + time, 0);
+  const { data } = trpc.activities.dashboard.today.useQuery();
 
   return (
-    <Card title="Today's activity">
+    <Card title="Mitt lag">
+      <div className="flex justify-between items-center">
+        <h2 className="font-semibold text-2xl">{title}</h2>
+        <div className="flex gap-1 items-center text-gray-300">
+          <button onClick={() => setPeriod('today')}>
+            <Icon.Calendar />
+          </button>
+          <button onClick={() => setPeriod('week')}>
+            <Icon.Calendar />
+          </button>
+          <button onClick={() => setPeriod('total')}>
+            <Icon.Calendar />
+          </button>
+        </div>
+      </div>
       <div className="flex justify-between items-center">
         <div className="flex flex-col gap-2">
           <div className="flex flex-col">
-            <div className="text-2xl font-semibold">You</div>
-            <div className="text-2xl text-green-400">{user} min</div>
+            <div className="text-xl font-medium">Min aktivitet</div>
+            <div className="text-xl text-green-400">{data?.user ?? 0} min</div>
           </div>
           <div className="flex flex-col">
-            <div className="text-2xl font-semibold">Team</div>
-            <div className="text-2xl text-red-400">{team} min</div>
+            <div className="text-xl font-medium">Lag</div>
+            <div className="text-xl text-red-400">{data?.team ?? 0} min</div>
           </div>
         </div>
         <div>
-          <TeamRatioGraph data={{ user, team }} />
+          <TeamRatioGraph
+            data={{ user: data?.user ?? 0, team: data?.team ?? 0 }}
+          />
         </div>
       </div>
-      <hr className="-mx-6 my-4 h-0.5 border-t-gradient-start" />
+      <hr className="-mx-6 my-2 h-0.5 border-t-gradient-start" />
       <div className="flex justify-between">
         <div className="text-3xl font-semibold">Total</div>
-        <div className="text-3xl font-semibold">{user + team} min</div>
+        <div className="text-3xl font-semibold">
+          {data?.user ?? 0 + (data?.team ?? 0)} min
+        </div>
       </div>
     </Card>
   );

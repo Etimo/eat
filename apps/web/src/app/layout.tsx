@@ -1,9 +1,12 @@
 import '@/assets/globals.css';
-import { GlobalContextProviders } from '@/components/GlobalContextProviders';
 import { Inter } from 'next/font/google';
 import type { Metadata } from 'next';
+import { ClientSessionProvider, CurrentUserStoreProvider } from '@/providers';
+import { getAuthSession } from '@/auth';
+import { GlobalContextProviders } from '@/components/GlobalContextProviders';
 import { Navigation } from '@/components/navigation';
-import { dayjs } from '@/utils';
+import { redirect } from 'next/navigation';
+import { TRPCProvider } from '@/trpc/client';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -12,18 +15,30 @@ export const metadata: Metadata = {
   description: '',
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await getAuthSession();
+
+  if (!session) {
+    redirect('/api/auth/signin');
+  }
+
   return (
     <html lang="en" className="bg-etimo">
       <body className={inter.className}>
-        <GlobalContextProviders>
-          <Navigation />
-          {children}
-        </GlobalContextProviders>
+        <ClientSessionProvider session={session}>
+          <CurrentUserStoreProvider currentUser={{ ...session?.user }}>
+            <TRPCProvider>
+              <TRPCProvider>
+                <Navigation />
+                {children}
+              </TRPCProvider>
+            </TRPCProvider>
+          </CurrentUserStoreProvider>
+        </ClientSessionProvider>
       </body>
     </html>
   );
