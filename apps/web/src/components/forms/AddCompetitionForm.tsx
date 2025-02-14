@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 
 import { Button } from "@/components/ui/button"
+import { DatePickerWithRange } from "@/components/ui/datepickerwithrange"
 import {
   Form,
   FormControl,
@@ -17,17 +18,17 @@ import {
 import { Input } from "@/components/ui/input"
 
 const formSchema = z.object({
-  username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
+  fromdate: z.date(),
+  todate: z.date()
 })
 
-export function AddActivityForm() {
+export function AddCompetitionForm() {
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "",
+      fromdate: new Date(),
+      todate: new Date()
     },
   })
  
@@ -43,20 +44,20 @@ export function AddActivityForm() {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}
-          name="username"
+          name="fromdate"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Username</FormLabel>
+              <FormLabel>Aktivitet</FormLabel>
               <FormControl>
-                <Input placeholder="shadcn" {...field} />
+                <DatePickerWithRange/>
               </FormControl>
               <FormDescription>
                 This is your public display name.
               </FormDescription>
               <FormMessage />
-            </FormItem>
+            </FormItem>            
           )}
-        />
+        />        
         <Button type="submit">Submit</Button>
       </form>
     </Form>
