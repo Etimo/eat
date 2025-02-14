@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { LoginButton } from './components/login-button';
 import { trpc } from './trpc';
 import { httpLink } from '@trpc/client';
 import { QueryClient } from '@tanstack/react-query';
 import { Router } from './Router';
+import { Navigation } from './components/navigation';
 
 export default function App() {
   const [queryClient] = useState(
@@ -34,7 +34,8 @@ export default function App() {
 
   return (
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
-      <main className="text-4xl text-white h-dvh bg-gray-600 w-full flex justify-center items-center">
+      <main className="flex-1 flex flex-col">
+        <Navigation />
         <Router />
       </main>
     </trpc.Provider>
