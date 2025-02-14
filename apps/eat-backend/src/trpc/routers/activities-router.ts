@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import z from 'zod';
 import { protectedProcedure, router } from '../init';
 import z from 'zod';
 
@@ -122,4 +123,26 @@ export const activitesRouter = router({
       };
     }),
   }),
+  create: protectedProcedure
+      .input(
+        z.object({
+          activityType : z.string(),
+          date: z.string(),
+          minutes: z.number()          
+        }),
+      )
+      .mutation(async ({ ctx, input }) => {
+        const db = ctx.db;
+  
+        const activity = db.activities.create({
+          activityType: input.activityType,
+          date: input.date,
+          time: input.minutes,
+          competition: "",
+          user: ""
+        });
+        await db.em.flush();
+  
+        return activity;
+      }),
 });

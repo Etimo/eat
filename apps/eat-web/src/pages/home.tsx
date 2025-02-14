@@ -1,4 +1,4 @@
-import { CompetitionActivityCard } from '@/components/competition-activity-card copy';
+import { CompetitionActivityCard } from '@/components/competition-activity-card';
 import { TodaysActivityCard } from '@/components/todays-activity-card';
 import { TableHeader, TableRow, TableHead, TableBody, TableCell, Table } from '@/components/ui/table';
 import { trpc } from '@/trpc';
