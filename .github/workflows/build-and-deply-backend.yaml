@@ -49,7 +49,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build-docker
     steps:
-      - uses: Etimo/etimo-kubernetes/.github/actions/deploy/action.yaml@main
+      - uses: Etimo/etimo-kubernetes/.github/actions/deploy@main
         with:
           image: "eat-backend"
           tag: ${{ github.sha }}
