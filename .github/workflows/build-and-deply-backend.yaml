@@ -33,7 +33,7 @@ jobs:
           push: true
           context: .
           file: apps/eat-backend/Dockerfile
-          tags: eat-backend:${{ github.sha }}
+          tags: ghcr.io/${{github.repository_owner}}/eat-backend:${{ github.sha }}
         
         
   deploy:
