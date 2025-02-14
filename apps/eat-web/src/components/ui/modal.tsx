@@ -23,13 +23,13 @@ export const Modal = (props: React.PropsWithChildren<Props>) => {
         <div className="flex min-h-full items-center justify-center p-4">
           <DialogPanel
             transition
-            className="relative w-full max-w-md rounded-xl bg-white/5 p-6 backdrop-blur-2xl duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0"
+            className="relative w-full max-w-md rounded-xl bg-white p-6 backdrop-blur-2xl duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0"
           >
             <div className="absolute top-[8px] right-[12px] hidden sm:block">
               <button
                 data-testid="close-modal-button"
                 type="button"
-                className="cursor-pointer rounded-md text-gray-400 hover:text-gray-500 focus:outline-none"
+                className="cursor-pointer rounded-md text-etimo hover:text-etimo/75 focus:outline-none"
                 onClick={closeModal}
               >
                 <XIcon className="w-5 h-5" />

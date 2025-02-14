@@ -1,15 +1,16 @@
 import z from 'zod';
 import { teamData } from '../../data';
 import { protectedProcedure, router } from '../init';
+import { create } from 'domain';
 
 export const teamsRouter = router({
   list: protectedProcedure.query(async ({ ctx }) => {
     const db = ctx.db;
 
-    const teams = await teamData.list(db);
-    if (!teams.length) {
-      return [];
-    }
+    const teams = await db.teams.findAll({
+      populate: ['teamMemberships', 'teamMemberships.user'],
+    });
+
     return teams.map(({ id, name, teamMemberships }) => ({
       id,
       name,
@@ -33,5 +34,17 @@ export const teamsRouter = router({
           name: user.name,
         })),
       };
+    }),
+  create: protectedProcedure
+    .input(z.object({ name: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const db = ctx.db;
+
+      const team = db.teams.create({
+        name: input.name,
+      });
+      await db.em.flush();
+
+      return team;
     }),
 });
