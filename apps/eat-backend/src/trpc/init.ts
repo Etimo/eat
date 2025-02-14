@@ -1,7 +1,9 @@
 import { initTRPC, TRPCError } from '@trpc/server';
 import { type CreateFastifyContextOptions } from '@trpc/server/adapters/fastify';
-import { validateToken } from '../utils';
 import { initORM } from '../db';
+import { SessionData } from '@fastify/secure-session';
+import { PassportUser } from 'fastify';
+import { User } from '../entities';
 
 export async function createServerContext({
   req,

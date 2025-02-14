@@ -1,13 +1,13 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { trpc } from '@/trpc';
 
-export const TodaysActivityCard = () => {
-  const { data } = trpc.activities.dashboard.today.useQuery();
+export const CompetitionActivityCard = () => {
+  const { data } = trpc.activities.dashboard.total.useQuery();
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Idag</CardTitle>
+        <CardTitle>Totalt</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="flex justify-between items-center">
@@ -29,7 +29,7 @@ export const TodaysActivityCard = () => {
         </div>
         <hr className="-mx-6 my-4 h-0.5 border-t-gradient-start" />
         <div className="flex justify-between">
-          <div className="text-2xl font-semibold">Totalt idag</div>
+          <div className="text-2xl font-semibold">Total</div>
           <div className="text-2xl font-semibold">
             {data?.user ?? 0 + (data?.team ?? 0)} min
           </div>
