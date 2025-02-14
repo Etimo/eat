@@ -1,17 +1,9 @@
-import { Button } from '@/components/ui/button';
-import { DatePickerWithRange } from '../components/datepickerwithrange';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { AddCompetitionForm } from '@/components/forms/AddCompetitionForm';
 
 export const CreateCompetition = () => {
     return (
     <div>
-      <Label>Skapa ny tävling</Label> 
-      <Input />
-      <DatePickerWithRange />
-      <Button>      
-      <span className="text-lg">Spara tävling</span>
-      </Button>
+      <AddCompetitionForm />      
     </div>
   );
 };
