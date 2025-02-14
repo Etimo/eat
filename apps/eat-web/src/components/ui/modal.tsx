@@ -2,12 +2,14 @@ import { useModal } from '@/hooks/use-modal';
 import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
 import { XIcon } from 'lucide-react';
 
-type Props = {};
+type Props = {
+  isOpen: boolean;
+};
 
 export const Modal = (props: React.PropsWithChildren<Props>) => {
-  const { children } = props;
+  const { children, isOpen } = props;
 
-  const { isOpen, onClose } = useModal();
+  const { onClose } = useModal();
 
   return (
     <Dialog

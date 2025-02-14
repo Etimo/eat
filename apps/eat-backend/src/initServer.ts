@@ -70,6 +70,8 @@ export const initServer = async (host = '0.0.0.0', port = 3101) => {
             picture: profile.photos?.[0]?.value ?? '',
           };
 
+          console.log('token', tokenUser);
+
           const user = await db.users.findOne({ email: tokenUser.email });
           let newUser: User;
           if (!user) {
@@ -79,6 +81,10 @@ export const initServer = async (host = '0.0.0.0', port = 3101) => {
               picture: tokenUser.picture,
               role: 'user',
             });
+          } else {
+            user.name = tokenUser.name;
+            user.picture = tokenUser.picture;
+            await db.em.persistAndFlush(user);
           }
 
           return done(null, user ?? newUser!);

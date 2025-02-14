@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import { Modal } from '@/components/ui/modal';
 import {
   Table,
   TableHeader,
@@ -7,22 +8,26 @@ import {
   TableBody,
   TableCell,
 } from '@/components/ui/table';
+import { useModal } from '@/hooks/use-modal';
 import { trpc } from '@/trpc';
 import dayjs from 'dayjs';
 
 export const CompetitionsPage = () => {
   const { data } = trpc.competitions.list.useQuery();
+  const { modalName, open } = useModal();
 
   if (!data) return null;
   return (
     <div className="flex-1 flex flex-col gap-2 pt-4">
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-semibold">Tävlingar</h1>
-        <Button className="dark">Lägg till</Button>
+        <Button className="dark" onClick={() => open('comp')}>
+          Lägg till
+        </Button>
       </div>
       <Table>
         <TableHeader>
-          <TableRow>
+          <TableRow className="hover:bg-transparent">
             <TableHead>Tävling</TableHead>
             <TableHead>Startdatum</TableHead>
             <TableHead>Slutdatum</TableHead>
@@ -30,10 +35,8 @@ export const CompetitionsPage = () => {
         </TableHeader>
         <TableBody>
           {data?.map((competition) => (
-            <TableRow>
-              <TableCell>
-                {dayjs(competition.startDate).format('YYYY')}
-              </TableCell>
+            <TableRow key={competition.id} className="whitespace-nowrap">
+              <TableCell className="w-full">{competition.name}</TableCell>
               <TableCell>
                 {dayjs(competition.startDate).format('YYYY-MM-DD')}
               </TableCell>
@@ -45,7 +48,7 @@ export const CompetitionsPage = () => {
         </TableBody>
       </Table>
 
-      {/* <Modal open={true} onClose={() => {}}></Modal> */}
+      <Modal isOpen={modalName === 'comp'}>hej</Modal>
     </div>
   );
 };

@@ -6,11 +6,10 @@ export const competitionsRouter = router({
     const db = ctx.db;
     const competitions = await db.competitions.findAll();
 
-    console.log(competitions);
-
     return competitions.length
       ? competitions.map((competition) => ({
           id: competition.id,
+          name: competition.name,
           startDate: competition.startDate,
           endDate: competition.endDate,
         }))

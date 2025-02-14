@@ -4,12 +4,12 @@ import { PropsWithChildren, useState } from 'react';
 export const ModalProvider = (props: PropsWithChildren<{}>) => {
   const { children } = props;
 
-  const [isOpen, setOpen] = useState(false);
-  const onClose = () => setOpen(false);
-  const open = () => setOpen(true);
+  const [modalName, setModalName] = useState<string>('');
+  const onClose = () => setModalName('');
+  const open = (name: string) => setModalName(name);
 
   return (
-    <ModalContext.Provider value={{ isOpen, open, onClose }}>
+    <ModalContext.Provider value={{ modalName, open, onClose }}>
       {children}
     </ModalContext.Provider>
   );
