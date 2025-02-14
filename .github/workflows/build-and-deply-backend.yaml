@@ -59,4 +59,9 @@ jobs:
           ingress: true
           private: false
           targetPort: 80
+          memoryLimit: 512Mi
+          env: |
+            GOOGLE_CLIENT_ID=""
+            GOOGLE_CLIENT_SECRET=""
+            NODE_ENV="production"
           kubeconfig: ${{secrets.KUBECONFIG}}
