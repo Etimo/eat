@@ -1,20 +1,14 @@
-import { trpc } from '../trpc';
 import { useAuth } from '../hooks';
+import google from '../assets/google.svg';
+import { Button } from './ui/button';
 
 export const LoginButton = () => {
-  const { loginWithGoogle, user } = useAuth();
-
-  const { data } = trpc.teams.list.useQuery();
-
-  console.log(data, user);
+  const { loginWithGoogle } = useAuth();
 
   return (
-    <button
-      onClick={loginWithGoogle}
-      className="flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-gray-50"
-    >
-      <img src="/google-icon.svg" alt="Google" className="w-6 h-6" />
-      Sign in with Google
-    </button>
+    <Button onClick={loginWithGoogle}>
+      <img src={google} alt="Google" className="w-6 h-6" />
+      <span className="text-lg">Logga in med Google</span>
+    </Button>
   );
 };

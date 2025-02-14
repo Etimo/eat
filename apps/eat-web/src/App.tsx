@@ -3,6 +3,7 @@ import { LoginButton } from './components/login-button';
 import { trpc } from './trpc';
 import { httpLink } from '@trpc/client';
 import { QueryClient } from '@tanstack/react-query';
+import { Router } from './Router';
 
 export default function App() {
   const [queryClient] = useState(
@@ -19,12 +20,11 @@ export default function App() {
     trpc.createClient({
       links: [
         httpLink({
-          url: 'http://localhost:3100/trpc',
+          url: 'http://localhost:3101/trpc',
           fetch(url, options) {
             return fetch(url, {
               ...options,
-              credentials: 'same-origin',
-              // headers: getHeaders(),
+              credentials: 'include',
             });
           },
         }),
@@ -34,8 +34,8 @@ export default function App() {
 
   return (
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
-      <main className="text-4xl text-white h-dvh bg-gray-600 w-full">
-        <LoginButton />
+      <main className="text-4xl text-white h-dvh bg-gray-600 w-full flex justify-center items-center">
+        <Router />
       </main>
     </trpc.Provider>
   );

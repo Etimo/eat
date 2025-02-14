@@ -19,10 +19,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       });
       if (response.ok) {
         const { user } = await response.json();
+        console.log('Auth check success', user);
         setUser(user);
       }
     } catch (error) {
       console.error('Auth check failed:', error);
+      setUser(null);
     } finally {
       setIsLoading(false);
     }

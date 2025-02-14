@@ -1,6 +1,6 @@
 import z from 'zod';
 import { teamData } from '../../data';
-import { procedure, protectedProcedure, router } from '../init';
+import { protectedProcedure, router } from '../init';
 
 export const teamsRouter = router({
   list: protectedProcedure.query(async ({ ctx }) => {

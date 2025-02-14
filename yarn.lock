@@ -2386,6 +2386,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/cookie@npm:^0.6.0":
+  version: 0.6.0
+  resolution: "@types/cookie@npm:0.6.0"
+  checksum: 10c0/5b326bd0188120fb32c0be086b141b1481fec9941b76ad537f9110e10d61ee2636beac145463319c71e4be67a17e85b81ca9e13ceb6e3bb63b93d16824d6c149
+  languageName: node
+  linkType: hard
+
 "@types/d3-array@npm:*":
   version: 3.2.1
   resolution: "@types/d3-array@npm:3.2.1"
@@ -4852,6 +4859,7 @@ __metadata:
   resolution: "eat-web@workspace:apps/eat-web"
   dependencies:
     "@eslint/js": "npm:^9.19.0"
+    "@radix-ui/react-slot": "npm:^1.1.2"
     "@tailwindcss/vite": "npm:^4.0.6"
     "@tanstack/react-query": "npm:^5.66.0"
     "@trpc/client": "npm:^11.0.0-rc.764"
@@ -4868,6 +4876,7 @@ __metadata:
     lucide-react: "npm:^0.475.0"
     react: "npm:^19.0.0"
     react-dom: "npm:^19.0.0"
+    react-router: "npm:^7.1.5"
     tailwind-merge: "npm:^3.0.1"
     tailwindcss: "npm:^4.0.6"
     tailwindcss-animate: "npm:^1.0.7"
@@ -9182,6 +9191,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-router@npm:^7.1.5":
+  version: 7.1.5
+  resolution: "react-router@npm:7.1.5"
+  dependencies:
+    "@types/cookie": "npm:^0.6.0"
+    cookie: "npm:^1.0.1"
+    set-cookie-parser: "npm:^2.6.0"
+    turbo-stream: "npm:2.4.0"
+  peerDependencies:
+    react: ">=18"
+    react-dom: ">=18"
+  peerDependenciesMeta:
+    react-dom:
+      optional: true
+  checksum: 10c0/c0013102c7a02d26cd2353fa3749bd229fbcfedd291710540be1765d703861f96a34ef0114dd5ee8d9a728e87f3a5698387058f9539b39604f331505f507d912
+  languageName: node
+  linkType: hard
+
 "react@npm:^18, react@npm:^18.2.0":
   version: 18.3.1
   resolution: "react@npm:18.3.1"
@@ -10667,6 +10694,13 @@ __metadata:
   version: 2.2.3
   resolution: "turbo-linux-arm64@npm:2.2.3"
   conditions: os=linux & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"turbo-stream@npm:2.4.0":
+  version: 2.4.0
+  resolution: "turbo-stream@npm:2.4.0"
+  checksum: 10c0/e68b2569f1f16e6e9633d090c6024b2ae9f0e97bfeacb572451ca3732e120ebbb546f3bc4afc717c46cb57b5aea6104e04ef497f9912eef6a7641e809518e98a
   languageName: node
   linkType: hard
 
