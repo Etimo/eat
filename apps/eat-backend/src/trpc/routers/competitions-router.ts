@@ -1,6 +1,5 @@
 import z from 'zod';
 import { protectedProcedure, router } from '../init';
-import { Competition } from '../../entities';
 
 export const competitionsRouter = router({
   list: protectedProcedure.query(async ({ ctx }) => {

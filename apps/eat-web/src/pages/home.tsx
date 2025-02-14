@@ -1,4 +1,4 @@
-import { CompetitionActivityCard } from '@/components/competition-activity-card copy';
+import { CompetitionActivityCard } from '@/components/competition-activity-card';
 import { TodaysActivityCard } from '@/components/todays-activity-card';
 
 export const HomePage = () => {
