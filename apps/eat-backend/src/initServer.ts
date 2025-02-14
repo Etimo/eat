@@ -3,7 +3,6 @@ import { usersController } from './controllers';
 import { initORM, seedBaseData, seedUsers } from './db';
 import { NotFoundError, RequestContext } from '@mikro-orm/core';
 import { AuthError, ValidationError } from './types';
-import { validateToken } from './utils';
 import { User } from './entities';
 import {
   fastifyTRPCPlugin,

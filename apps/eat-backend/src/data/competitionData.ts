@@ -72,6 +72,7 @@ export const competitionData = {
 };
 
 type Competition = {
+  name: string;
   startDate: string;
   endDate: string;
 };
