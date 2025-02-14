@@ -1,3 +1,4 @@
+import { AddCompetitionForm } from '@/components/forms/AddCompetitionForm';
 import { NavigationTrail } from '@/components/navigation';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
@@ -28,6 +29,7 @@ export default async function Page() {
           </Link>
         ))}
       </div>
+      <AddCompetitionForm />
     </main>
   );
 }
