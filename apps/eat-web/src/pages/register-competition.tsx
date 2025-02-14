@@ -1,9 +1,9 @@
-import { AddCompetitionForm } from '@/components/forms/AddCompetitionForm';
+import { AddCompetitionForm } from '@/components/forms';
 
 export const CreateCompetition = () => {
-    return (
+  return (
     <div>
-      <AddCompetitionForm />      
+      <AddCompetitionForm />
     </div>
   );
 };
