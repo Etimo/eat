@@ -26,6 +26,13 @@ const isAuthed = middleware(async ({ ctx, next }) => {
     email: (ctx.req.user as any).email,
   });
 
+  if (!currentUser) {
+    throw new TRPCError({
+      code: 'UNAUTHORIZED',
+      message: 'User not found',
+    });
+  }
+
   return next({
     ctx: {
       db,
