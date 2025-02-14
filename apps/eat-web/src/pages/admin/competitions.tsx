@@ -1,3 +1,4 @@
+import { AddCompetitionForm } from '@/components/forms';
 import { Button } from '@/components/ui/button';
 import { Modal } from '@/components/ui/modal';
 import {
@@ -13,15 +14,15 @@ import { trpc } from '@/trpc';
 import dayjs from 'dayjs';
 
 export const CompetitionsPage = () => {
-  const { data } = trpc.competitions.list.useQuery();
-  const { modalName, open } = useModal();
+  const { data, refetch } = trpc.competitions.list.useQuery();
+  const { modalName, openModal, closeModal } = useModal();
 
   if (!data) return null;
   return (
     <div className="flex-1 flex flex-col gap-2 pt-4">
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-semibold">Tävlingar</h1>
-        <Button className="dark" onClick={() => open('comp')}>
+        <Button className="dark" onClick={() => openModal('comp')}>
           Lägg till
         </Button>
       </div>
@@ -48,7 +49,14 @@ export const CompetitionsPage = () => {
         </TableBody>
       </Table>
 
-      <Modal isOpen={modalName === 'comp'}>hej</Modal>
+      <Modal isOpen={modalName === 'comp'}>
+        <AddCompetitionForm
+          onFinish={() => {
+            closeModal();
+            refetch();
+          }}
+        />
+      </Modal>
     </div>
   );
 };

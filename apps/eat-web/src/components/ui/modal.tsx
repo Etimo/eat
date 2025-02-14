@@ -9,14 +9,14 @@ type Props = {
 export const Modal = (props: React.PropsWithChildren<Props>) => {
   const { children, isOpen } = props;
 
-  const { onClose } = useModal();
+  const { closeModal } = useModal();
 
   return (
     <Dialog
       open={isOpen}
       as="div"
       className="relative z-10 focus:outline-none"
-      onClose={onClose}
+      onClose={closeModal}
     >
       <DialogBackdrop className="fixed inset-0 bg-black/50" />
       <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
@@ -30,7 +30,7 @@ export const Modal = (props: React.PropsWithChildren<Props>) => {
                 data-testid="close-modal-button"
                 type="button"
                 className="cursor-pointer rounded-md text-gray-400 hover:text-gray-500 focus:outline-none"
-                onClick={onClose}
+                onClick={closeModal}
               >
                 <XIcon className="w-5 h-5" />
               </button>

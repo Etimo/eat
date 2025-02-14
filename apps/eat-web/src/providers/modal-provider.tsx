@@ -5,11 +5,11 @@ export const ModalProvider = (props: PropsWithChildren<{}>) => {
   const { children } = props;
 
   const [modalName, setModalName] = useState<string>('');
-  const onClose = () => setModalName('');
-  const open = (name: string) => setModalName(name);
+  const closeModal = () => setModalName('');
+  const openModal = (name: string) => setModalName(name);
 
   return (
-    <ModalContext.Provider value={{ modalName, open, onClose }}>
+    <ModalContext.Provider value={{ modalName, openModal, closeModal }}>
       {children}
     </ModalContext.Provider>
   );
