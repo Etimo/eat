@@ -17,7 +17,7 @@ const navigation = [
   { title: 'Lag', href: '/team' },
   { title: 'Historik', href: '/history' },
   { title: 'Standing', href: '/standings' },
-  { title: 'Admin', href: '/admin/competitions' },
+  { title: 'Admin', href: '/admin' },
 ];
 
 export const Navigation: FC = () => {

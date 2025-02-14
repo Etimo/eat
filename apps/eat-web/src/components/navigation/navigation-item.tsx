@@ -21,6 +21,7 @@ export const NavigationItem: FC<NavigationItemProps> = (props) => {
           'rounded-md px-3 py-2 text-sm font-medium',
         ].join(' ')
       }
+      end={false}
     >
       {title}
     </NavLink>

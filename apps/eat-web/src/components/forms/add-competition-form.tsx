@@ -45,12 +45,7 @@ export function AddCompetitionForm(props: Props) {
     },
   });
 
-  // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
-
     submitForm.mutate({
       name: values.name,
       startDate: dayjs(values.startDate).toISOString(),
@@ -64,7 +59,7 @@ export function AddCompetitionForm(props: Props) {
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex flex-col gap-2"
       >
-        <h2 className="text-lg font-semibold">Skapa ny tävling</h2>
+        <h2 className="text-lg font-semibold text-etimo">Skapa ny tävling</h2>
         <FormField
           control={form.control}
           name="name"
@@ -91,7 +86,10 @@ export function AddCompetitionForm(props: Props) {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+
+        <div className="pt-4 flex justify-end">
+          <Button type="submit">Skapa</Button>
+        </div>
       </form>
     </Form>
   );

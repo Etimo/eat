@@ -1,9 +1,10 @@
+import { AdminNavigation } from '@/components/navigation';
 import { Outlet } from 'react-router';
 
 export const AdminLayout = () => {
   return (
     <div>
-      Admin layout
+      <AdminNavigation />
       <Outlet />
     </div>
   );
