@@ -2,8 +2,7 @@ import { UserDto } from '#types';
 import axios from 'axios';
 import jwt from 'jsonwebtoken';
 
-const BACKEND_URL =
-  process.env.BACKEND_URL ?? 'http://host.docker.internal:3100';
+const BACKEND_URL = process.env.BACKEND_URL ?? 'http://localhost:3100';
 
 export const updateUser = async (user: {
   email: string;
