@@ -52,7 +52,7 @@ jobs:
       - uses: Etimo/etimo-kubernetes/.github/actions/deploy@main
         with:
           image: ghcr.io/etimo/eat-backend
-          tag: ${{ github.sha }}
+          tag: sha-${{ github.sha }}
           namespace: activity-tracker
           cluster: staging
           name: eat-backend
