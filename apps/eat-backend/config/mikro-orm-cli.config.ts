@@ -4,5 +4,5 @@ import config from './mikro-orm.config';
 export default defineConfig({
   ...config,
   host: 'localhost',
-  port: +(process.env.DB_PORT ?? 3306),
+  port: +(process.env.DB_MAIN_PORT ?? 3306),
 });
