@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router';
-import { HomePage, LoginPage } from './pages';
+import { CreateCompetition, HomePage, LoginPage } from './pages';
 
 export const Router = (): JSX.Element => {
   return (
@@ -10,8 +10,8 @@ export const Router = (): JSX.Element => {
       {/* Protected */}
       <Route index path="/" element={<HomePage />} />
 
-      {/* Catch all route */}
-      {/* <Route path="*" element={<Navigate to="/" replace />} /> */}
+      <Route index path="/competition" element={<CreateCompetition />} />
+      
     </Routes>
   );
 };
