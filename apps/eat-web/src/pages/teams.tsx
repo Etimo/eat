@@ -3,7 +3,7 @@ import { trpc } from '@/trpc';
 
 export const TeamsPage = () => {
   const query = trpc.teams.listActive.useQuery();
-  console.log(query.data);
+
   return (
     <div className="flex flex-col gap-2 px-4 pb-10">
       {(query.data ?? []).map((team) => (
