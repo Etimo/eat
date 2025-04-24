@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate } from 'react-router';
 import {
   AdminLayout,
+  CompetitionPage,
   CompetitionsPage,
   CreateCompetition,
   HomePage,
@@ -25,10 +26,11 @@ export const Router = (): JSX.Element => {
           />
           <Route path="competitions" element={<CompetitionsPage />} />
           <Route path="teams" element={<TeamsPage />} />
+          <Route path="competition/:id" element={<CompetitionPage />} />
         </Route>
       </Route>
-
       <Route index path="/competition" element={<CreateCompetition />} />
+      
     </Routes>
   );
 };
