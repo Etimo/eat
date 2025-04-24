@@ -32,7 +32,7 @@ export const Modal = (props: React.PropsWithChildren<Props>) => {
                 className="cursor-pointer rounded-md text-etimo hover:text-etimo/75 focus:outline-none"
                 onClick={closeModal}
               >
-                <XIcon className="w-5 h-5" />
+                <XIcon className="w-4 h-4" />
               </button>
             </div>
             {children}

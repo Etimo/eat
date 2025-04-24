@@ -18,10 +18,11 @@ import dayjs from 'dayjs';
 import { DatePicker } from '../datepicker';
 
 const formSchema = z.object({
-  activityType: z.string(),
+  activityType: z.string().min(1, { message: 'Aktivitetstyp krävs' }),
   date: z.date(),
-  time: z.number(),
+  time: z.coerce.number().min(1, { message: 'Minst 1 minut' }),
 });
+type FormInputs = z.infer<typeof formSchema>;
 
 type Props = {
   onFinish: () => void;
@@ -38,24 +39,22 @@ export function AddActivityForm(props: Props) {
     },
   });
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<FormInputs>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       activityType: '',
-      date: new Date(),
+      date: dayjs().toDate(),
       time: 0,
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-
+  const onSubmit = (values: FormInputs) => {
     submitForm.mutate({
       activityType: values.activityType,
-      date: dayjs(values.date).toISOString(),
+      date: dayjs(values.date).format('YYYY-MM-DD'),
       minutes: values.time,
     });
-  }
+  };
 
   return (
     <Form {...form}>
@@ -97,7 +96,7 @@ export function AddActivityForm(props: Props) {
             <FormItem className="flex flex-col">
               <FormLabel>Datum</FormLabel>
               <FormControl>
-                <DatePicker />
+                <DatePicker {...field} maxDate={dayjs().toDate()} />
               </FormControl>
               <FormMessage />
             </FormItem>

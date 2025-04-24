@@ -12,13 +12,13 @@ import {
   NavigationMenuTrigger,
 } from '../ui/navigation-menu';
 import { useAuth } from '@/hooks';
+import { RegisterActivity } from './register-activity';
 
 const navigation = [
   { title: 'Översikt', href: '/' },
   { title: 'Lag', href: '/teams' },
   { title: 'Aktiviteter', href: '/activities' },
   { title: 'Standing', href: '/standings' },
-  { title: 'Ny aktivtet', href: '/register-activity' },
 ];
 
 export const Navigation: FC = () => {
@@ -44,6 +44,7 @@ export const Navigation: FC = () => {
               )}
             </div>
             <div className="flex-1 flex justify-end items-center gap-3">
+              <RegisterActivity />
               <CurrentUserMenu />
             </div>
           </div>
@@ -91,7 +92,8 @@ export const Navigation: FC = () => {
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
-        <div className="flex-1 flex justify-end items-center px-2">
+        <div className="flex-1 flex justify-end items-center gap-2 px-2">
+          <RegisterActivity />
           <CurrentUserMenu />
         </div>
       </div>

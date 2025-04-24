@@ -1,41 +1,40 @@
-import * as React from "react"
-import { format } from "date-fns"
-import { CalendarIcon } from "lucide-react"
-
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Calendar } from "@/components/ui/calendar"
+import { format } from 'date-fns';
+import { Calendar as CalendarIcon } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
+} from '@/components/ui/popover';
+import { ControllerRenderProps } from 'react-hook-form';
 
-export function DatePicker() {
-  const [date, setDate] = React.useState<Date>()
-
+type DatePickerProps = ControllerRenderProps & { maxDate?: Date };
+export function DatePicker(field: DatePickerProps) {
   return (
     <Popover>
       <PopoverTrigger asChild>
         <Button
-          variant={"outline"}
+          variant={'outline'}
           className={cn(
-            "w-[240px] justify-start text-left font-normal",
-            !date && "text-muted-foreground"
+            'w-full pl-3 text-left font-normal text-foreground',
+            !field.value && 'text-muted-foreground',
           )}
         >
-          <CalendarIcon />
-          {date ? format(date, "PPP") : <span>Pick a date</span>}
+          {field.value ? format(field.value, 'PPP') : <span>Pick a date</span>}
+          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="start">
         <Calendar
           mode="single"
-          selected={date}
-          onSelect={setDate}
+          selected={field.value}
+          onSelect={field.onChange}
           initialFocus
+          disabled={(date) => (field.maxDate ? date > field.maxDate : false)}
         />
       </PopoverContent>
     </Popover>
-  )
+  );
 }
