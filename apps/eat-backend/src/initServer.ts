@@ -123,7 +123,7 @@ export const initServer = async (host = '0.0.0.0', port = 3101) => {
     '/auth/google/callback',
     fastifyPassport.authenticate('google', {
       failureRedirect: `${process.env.FRONTEND_URL || 'http://localhost:3000'}/login`,
-      successRedirect: process.env.FRONTEND_URL || 'http://localhost:3000',
+      successRedirect: `${process.env.FRONTEND_URL || 'http://localhost:3000'}`,
     }),
   );
 

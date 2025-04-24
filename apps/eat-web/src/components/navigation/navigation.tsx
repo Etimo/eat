@@ -11,16 +11,18 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from '../ui/navigation-menu';
+import { useAuth } from '@/hooks';
 
 const navigation = [
   { title: 'Översikt', href: '/' },
-  { title: 'Lag', href: '/team' },
+  { title: 'Lag', href: '/teams' },
   { title: 'Historik', href: '/history' },
   { title: 'Standing', href: '/standings' },
-  { title: 'Admin', href: '/admin' },
 ];
 
 export const Navigation: FC = () => {
+  const { isAdmin } = useAuth();
+
   return (
     <>
       {/* Desktop */}
@@ -33,9 +35,12 @@ export const Navigation: FC = () => {
               </div>
             </NavLink>
             <div className="hidden md:flex items-baseline space-x-2">
-              {navigation.map((item, index) => (
-                <NavigationItem key={index} {...item} />
+              {navigation.map((item) => (
+                <NavigationItem key={item.href} {...item} />
               ))}
+              {isAdmin && (
+                <NavigationItem key={'/admin'} href="/admin" title="Admin" />
+              )}
             </div>
             <div className="flex-1 flex justify-end items-center gap-3">
               <CurrentUserMenu />
@@ -70,6 +75,17 @@ export const Navigation: FC = () => {
                     </NavLink>
                   </NavigationMenuLink>
                 ))}
+
+                {isAdmin && (
+                  <NavigationMenuLink>
+                    <NavLink to="/admin" title="Admin">
+                      Admin
+                    </NavLink>
+                  </NavigationMenuLink>
+                )}
+                {isAdmin && (
+                  <NavigationItem key={'/admin'} href="/admin" title="Admin" />
+                )}
               </NavigationMenuContent>
             </NavigationMenuItem>
           </NavigationMenuList>
