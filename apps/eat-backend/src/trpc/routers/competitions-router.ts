@@ -1,7 +1,5 @@
 import z from 'zod';
 import { protectedProcedure, router } from '../init';
-import { Competition } from '../../entities';
-import { randomUUID } from 'crypto';
 
 export const competitionsRouter = router({
   list: protectedProcedure.query(async ({ ctx }) => {
