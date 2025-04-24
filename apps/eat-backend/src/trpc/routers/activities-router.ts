@@ -38,8 +38,23 @@ export const activitesRouter = router({
         { populate: ['user'] },
       );
 
+      const teamMembership = await db.teamMemberships.findOne(
+        { user: { id: currentUser.id } },
+        {
+          populate: [
+            'team',
+          ],
+        },
+      );
+      if (!teamMembership) {
+        throw new Error('Team not found');
+      }
+
       const teamActivities = await db.activities.find(
-        { user: { teamMemberships: { user: { id: currentUser.id } } } },
+        {
+          user: { teamMemberships: { team: { id: teamMembership.team.id } } },
+          date: { $gte: dayjs().format('YYYY-MM-DD') },
+        },
         {
           populate: [
             'activityType',
@@ -48,7 +63,7 @@ export const activitesRouter = router({
             'user.teamMemberships.team',
           ],
         },
-      );
+      );      
 
       return {
         user: userActivities.reduce(
@@ -69,8 +84,22 @@ export const activitesRouter = router({
         { populate: ['user'] },
       );
 
+      const teamMembership = await db.teamMemberships.findOne(
+        { user: { id: currentUser.id } },
+        {
+          populate: [
+            'team',
+          ],
+        },
+      );
+      if (!teamMembership) {
+        throw new Error('Team not found');
+      }
+
       const teamActivities = await db.activities.find(
-        { user: { teamMemberships: { user: { id: currentUser.id } } } },
+        {
+          user: { teamMemberships: { team: { id: teamMembership.team.id } } },
+        },
         {
           populate: [
             'activityType',
