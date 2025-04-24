@@ -28,7 +28,7 @@ COPY --from=builder /app/.yarn ./.yarn
 RUN yarn install
 # Copy built files from builder
 COPY --from=builder /app/apps/eat-backend/dist ./dist
-COPY --from=builder /app/apps/eat-backend/src/migrations ./dist/migrations
+COPY --from=builder /app/apps/eat-backend/dist/src/migrations ./dist/migrations
 
 # Set production environment
 ENV NODE_ENV=production
