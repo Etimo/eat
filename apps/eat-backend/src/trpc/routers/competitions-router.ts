@@ -41,8 +41,7 @@ export const competitionsRouter = router({
 
       const users = await db.users.findAll();
       users.sort(() => Math.random() - 0.5); // Shuffle users
-      for(let index = 0; index < users.length; index++) {
-        const user = users[index];
+      users.forEach((user, index) => {
         const teamIndex = index % input.teams;
         const team = teams[teamIndex];
 
@@ -50,7 +49,7 @@ export const competitionsRouter = router({
           team,
           user,
         });
-      }
+      })
       await db.em.flush();
 
       return competition;
