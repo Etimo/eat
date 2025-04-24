@@ -18,8 +18,7 @@ export const CompetitionPage = () => {
   const { id } = useParams();
   const { data, refetch } = trpc.competitions.get.useQuery(id!);
   const { modalName, closeModal } = useModal();
-  console.log(id)
-  console.log('HELLOOOOOO')
+
   if (!data) return null;
   return (
     <div className="flex-1 flex flex-col gap-2 pt-4">
