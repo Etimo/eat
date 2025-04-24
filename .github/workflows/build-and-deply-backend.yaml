@@ -58,7 +58,7 @@ jobs:
           name: eat-backend
           ingress: true
           private: false
-          targetPort: 80
+          targetPort: 3101
           memoryLimit: 512Mi
           env: |
             GOOGLE_CLIENT_ID=${{secrets.GOOGLE_CLIENT_ID}}
