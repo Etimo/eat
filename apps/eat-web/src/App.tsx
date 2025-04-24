@@ -38,10 +38,7 @@ export default function App() {
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
         <ModalProvider>
-          <main className="flex-1 flex flex-col">
-            <Navigation />
-            <Router />
-          </main>
+          <Router />
         </ModalProvider>
       </QueryClientProvider>
     </trpc.Provider>
