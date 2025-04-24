@@ -1,10 +1,11 @@
-import { ActivityTypeSeeder } from './ActivityTypeSeeder';
+import type { EntityManager } from '@mikro-orm/core';
 import { Seeder } from '@mikro-orm/seeder';
+import { ActivitySeeder } from './ActivitySeeder';
+import { ActivityTypeSeeder } from './ActivityTypeSeeder';
+import { CompetitionSeeder } from './CompetitionSeeder';
+import { TeamMembershipSeeder } from './TeamMembershipSeeder';
 import { TeamSeeder } from './TeamSeeder';
 import { UserSeeder } from './UserSeeder';
-import type { Dictionary, EntityManager } from '@mikro-orm/core';
-import { CompetitionSeeder } from './CompetitionSeeder';
-import { ActivitySeeder } from './ActivitySeeder';
 
 export class DatabaseSeeder extends Seeder {
   async run(em: EntityManager): Promise<void> {
@@ -13,7 +14,8 @@ export class DatabaseSeeder extends Seeder {
       ActivityTypeSeeder,
       TeamSeeder,
       UserSeeder,
-      ActivitySeeder
+      ActivitySeeder,
+      TeamMembershipSeeder,
     ]);
   }
 }

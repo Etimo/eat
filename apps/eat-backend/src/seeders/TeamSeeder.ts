@@ -13,6 +13,7 @@ export class TeamSeeder extends Seeder {
     ].map((name) =>
       em.create(Team, {
         name,
+        competition: context.competitions[1],
       }),
     );
   }
