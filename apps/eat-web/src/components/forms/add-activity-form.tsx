@@ -16,6 +16,13 @@ import { Input } from '@/components/ui/input';
 import { trpc } from '@/trpc';
 import dayjs from 'dayjs';
 import { DatePicker } from '../datepicker';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '../ui/select';
 
 const formSchema = z.object({
   activityType: z.string().min(1, { message: 'Aktivitetstyp krävs' }),
@@ -30,6 +37,7 @@ type Props = {
 export function AddActivityForm(props: Props) {
   const { onFinish } = props;
 
+  const activityTypesQuery = trpc.activityTypes.list.useQuery();
   const submitForm = trpc.activities.create.useMutation({
     onError: (error) => {
       console.log(error);
@@ -70,7 +78,21 @@ export function AddActivityForm(props: Props) {
             <FormItem>
               <FormLabel>Aktivtetstyp</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Välj typ av aktivitet..." />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {activityTypesQuery.data?.map((activityType) => (
+                      <SelectItem key={activityType.id} value={activityType.id}>
+                        {activityType.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </FormControl>
               <FormMessage />
             </FormItem>

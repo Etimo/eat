@@ -9,13 +9,17 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { ControllerRenderProps } from 'react-hook-form';
+import { useState } from 'react';
 
 type DatePickerProps = ControllerRenderProps & { maxDate?: Date };
 export function DatePicker(field: DatePickerProps) {
+  const [open, setOpen] = useState(false);
+
   return (
-    <Popover>
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
+          onClick={() => setOpen(!open)}
           variant={'outline'}
           className={cn(
             'w-full pl-3 text-left font-normal text-foreground',
@@ -30,7 +34,10 @@ export function DatePicker(field: DatePickerProps) {
         <Calendar
           mode="single"
           selected={field.value}
-          onSelect={field.onChange}
+          onSelect={(value) => {
+            field.onChange(value);
+            setOpen(false);
+          }}
           initialFocus
           disabled={(date) => (field.maxDate ? date > field.maxDate : false)}
         />
