@@ -15,5 +15,5 @@ docker compose up
 ```
 
 ```
-yarn dev --filter=web --filter='eat-backend'
+yarn dev
 ```
