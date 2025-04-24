@@ -3,7 +3,7 @@ import { HomePage, LoginPage, TeamsPage } from './pages';
 import { HTMLAttributes } from 'react';
 import { useAuth } from './hooks';
 import { Layout } from './layout';
-import { AdminLayout, CompetitionsPage } from './pages/admin';
+import { AdminLayout, CompetitionPage, CompetitionsPage } from './pages/admin';
 
 export const Router = (): JSX.Element => {
   const { isAuthenticated, isAdmin } = useAuth();
@@ -38,6 +38,7 @@ export const Router = (): JSX.Element => {
                   index
                   element={<Navigate to="/admin/competitions" replace />}
                 />
+                <Route path="competition/:id" element={<CompetitionPage />} />
                 <Route path="competitions" element={<CompetitionsPage />} />
                 <Route path="teams" element={<TeamsPage />} />
               </Route>
@@ -63,8 +64,8 @@ type ProtectedRouteProps = HTMLAttributes<HTMLDivElement> & {
   isAdmin?: boolean;
 };
 const ProtectedRoute = (props: ProtectedRouteProps) => {
-  const { children, isAdmin } = props;
-  const { isAuthenticated, user } = useAuth();
+  const { children } = props;
+  const { isAuthenticated } = useAuth();
 
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;

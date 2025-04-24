@@ -12,10 +12,13 @@ import {
 import { useModal } from '@/hooks/use-modal';
 import { trpc } from '@/trpc';
 import dayjs from 'dayjs';
+import { useNavigate } from 'react-router';
 
 export const CompetitionsPage = () => {
   const { data, refetch } = trpc.competitions.list.useQuery();
   const { modalName, openModal, closeModal } = useModal();
+  const navigate = useNavigate();
+
 
   if (!data) return null;
   return (
@@ -32,6 +35,7 @@ export const CompetitionsPage = () => {
             <TableHead>Tävling</TableHead>
             <TableHead>Startdatum</TableHead>
             <TableHead>Slutdatum</TableHead>
+            <TableHead></TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -43,6 +47,17 @@ export const CompetitionsPage = () => {
               </TableCell>
               <TableCell>
                 {dayjs(competition.endDate).format('YYYY-MM-DD')}
+              </TableCell>
+              <TableCell>
+                <Button
+                  variant="link"
+                  className='dark'
+                  onClick={() => {
+                    navigate(`/admin/competition/${competition.id}`);
+                  }}
+                >
+                  Visa
+                </Button>
               </TableCell>
             </TableRow>
           ))}
