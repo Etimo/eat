@@ -13,7 +13,7 @@ export class ActivitySeeder extends Seeder {
           competition:
             context.competitions[counter % context.competitions.length],
           user,
-          date: new Date(Date.now() - 86400000 * (index + 1)).toISOString(),
+          date: new Date(Date.now() - 86400000 * (index)).toISOString(),
           time: (counter + 1) * 10,
         }),
       ]));
