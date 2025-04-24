@@ -5,6 +5,9 @@ import { Activity, Team } from '.';
 @Entity({ tableName: 'competitions' })
 export class Competition extends BaseEntity {
   @Property({ type: 'string' })
+  name!: string;
+
+  @Property({ type: 'string' })
   startDate!: string;
 
   @Property({ type: 'string' })

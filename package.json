@@ -17,8 +17,8 @@
     "turbo": "^2.2.3"
   },
   "workspaces": [
-    "apps/*",
-    "packages/*"
+    "apps/eat-backend",
+    "apps/eat-web"
   ],
   "scripts": {
     "dev": "turbo dev",

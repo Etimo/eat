@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { LoginButton } from './components/login-button';
 import { trpc } from './trpc';
-import { httpLink } from '@trpc/client';
-import { QueryClient } from '@tanstack/react-query';
+import { httpBatchLink } from '@trpc/client';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Router } from './Router';
+import { Navigation } from './components/navigation';
+import { ModalProvider } from './providers/modal-provider';
 
 export default function App() {
   const [queryClient] = useState(
@@ -16,10 +17,11 @@ export default function App() {
         },
       }),
   );
+
   const [trpcClient] = useState(() =>
     trpc.createClient({
       links: [
-        httpLink({
+        httpBatchLink({
           url: 'http://localhost:3101/trpc',
           fetch(url, options) {
             return fetch(url, {
@@ -34,9 +36,11 @@ export default function App() {
 
   return (
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
-      <main className="text-4xl text-white h-dvh bg-gray-600 w-full flex justify-center items-center">
-        <Router />
-      </main>
+      <QueryClientProvider client={queryClient}>
+        <ModalProvider>
+          <Router />
+        </ModalProvider>
+      </QueryClientProvider>
     </trpc.Provider>
   );
 }

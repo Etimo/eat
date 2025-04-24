@@ -45,29 +45,5 @@ services:
   #   ports:
   #     - '3100:3100'
 
-  # auth:
-  #   container_name: eat-auth
-  #   build:
-  #     context: .
-  #     dockerfile: ./apps/auth/Dockerfile
-  #     target: dev
-  #   command: yarn dev --filter=auth
-  #   volumes:
-  #     - ./apps/auth/:/app/apps/auth
-  #   environment:
-  #     TZ: Europe/Stockholm
-  #     JWT_SECRET: EtimoActivityTracker
-  #     NODE_ENV: development
-  #     BACKEND_URL: http://host.docker.internal:3100
-  #     EAT_REDIS_HOST: redis
-  #     EAT_REDIS_PASSWORD: etimo
-  #     EAT_REDIS_PORT: 6379
-  #   depends_on:
-  #     - redis
-  #     # - backend
-  #   ports:
-  #     - '3101:3101'
-  #     - 9229:9229
-
 volumes:
   mysql:

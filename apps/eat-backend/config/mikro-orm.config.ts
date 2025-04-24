@@ -16,6 +16,7 @@ dotenv.config();
 const config = {
   dbName: process.env.DB_MAIN_NAME,
   debug: true,
+  allowGlobalContext: true,
   entities: [Activity, ActivityType, Competition, Team, TeamMembership, User],
   extensions: [SeedManager, Migrator],
   highlighter: new SqlHighlighter(),

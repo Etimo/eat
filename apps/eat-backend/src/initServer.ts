@@ -3,7 +3,6 @@ import { usersController } from './controllers';
 import { initORM, seedBaseData, seedUsers } from './db';
 import { NotFoundError, RequestContext } from '@mikro-orm/core';
 import { AuthError, ValidationError } from './types';
-import { validateToken } from './utils';
 import { User } from './entities';
 import {
   fastifyTRPCPlugin,
@@ -71,6 +70,8 @@ export const initServer = async (host = '0.0.0.0', port = 3101) => {
             picture: profile.photos?.[0]?.value ?? '',
           };
 
+          console.log('token', tokenUser);
+
           const user = await db.users.findOne({ email: tokenUser.email });
           let newUser: User;
           if (!user) {
@@ -80,6 +81,10 @@ export const initServer = async (host = '0.0.0.0', port = 3101) => {
               picture: tokenUser.picture,
               role: 'user',
             });
+          } else {
+            user.name = tokenUser.name;
+            user.picture = tokenUser.picture;
+            await db.em.persistAndFlush(user);
           }
 
           return done(null, user ?? newUser!);
@@ -118,7 +123,7 @@ export const initServer = async (host = '0.0.0.0', port = 3101) => {
     '/auth/google/callback',
     fastifyPassport.authenticate('google', {
       failureRedirect: `${process.env.FRONTEND_URL || 'http://localhost:3000'}/login`,
-      successRedirect: process.env.FRONTEND_URL || 'http://localhost:3000',
+      successRedirect: `${process.env.FRONTEND_URL || 'http://localhost:3000'}`,
     }),
   );
 
