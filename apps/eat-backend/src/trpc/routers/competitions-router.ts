@@ -1,6 +1,5 @@
 import z from 'zod';
 import { protectedProcedure, router } from '../init';
-import { Competition } from '../../entities';
 
 export const competitionsRouter = router({
   list: protectedProcedure.query(async ({ ctx }) => {
@@ -20,6 +19,7 @@ export const competitionsRouter = router({
     .input(
       z.object({
         name: z.string(),
+        teams: z.number().min(1).max(100),
         startDate: z.string(),
         endDate: z.string(),
       }),
@@ -32,6 +32,24 @@ export const competitionsRouter = router({
         startDate: input.startDate,
         endDate: input.endDate,
       });
+
+      // Create placeholder teams
+      const teams = Array.from({ length: input.teams }, (_, i) => db.teams.create({
+        name: `${input.name} - Team ${i + 1}`,
+        competition,
+      }));
+
+      const users = await db.users.findAll();
+      users.sort(() => Math.random() - 0.5); // Shuffle users
+      users.forEach((user, index) => {
+        const teamIndex = index % input.teams;
+        const team = teams[teamIndex];
+
+        db.teamMemberships.create({
+          team,
+          user,
+        });
+      })
       await db.em.flush();
 
       return competition;
