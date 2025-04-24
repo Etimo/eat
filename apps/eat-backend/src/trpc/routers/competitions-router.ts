@@ -19,6 +19,57 @@ export const competitionsRouter = router({
         }))
       : [];
   }),
+  getCurrent: protectedProcedure.query(async ({ ctx }) => {
+    const db = ctx.db;
+    const current = await db.competitions.findOne({
+      startDate: { $lte: dayjs().format('YYYY-MM-DD') },
+      endDate: { $gte: dayjs().format('YYYY-MM-DD') },
+    });
+
+    return current;
+  }),
+  setActive: protectedProcedure
+    .input(z.string())
+    .mutation(async ({ ctx, input: uuid }) => {
+      const db = ctx.db;
+      const target = await db.competitions.findOne({ id: uuid });
+      const competitions = await db.competitions.find({
+        id: { $ne: uuid },
+      });
+
+      if (!target) {
+        throw new Error('Competition not found');
+      }
+
+      // Set all else to false.
+      competitions.forEach((competition) => {
+        competition.isActive = false;
+      });
+      target.isActive = true;
+
+      await db.em.flush();
+
+      return {
+        id: target.id,
+        name: target.name,
+        startDate: target.startDate,
+        endDate: target.endDate,
+        isActive: target.isActive,
+      };
+    }),
+  setInactive: protectedProcedure.mutation(async ({ ctx }) => {
+    const db = ctx.db;
+    const competitions = await db.competitions.findAll();
+
+    // Set all to false.
+    competitions.forEach((competition) => {
+      competition.isActive = false;
+    });
+
+    await db.em.flush();
+
+    return true;
+  }),
   get: protectedProcedure
     .input(z.string())
     .query(async ({ ctx, input: uuid }) => {
@@ -81,18 +132,10 @@ export const competitionsRouter = router({
         name: competition.name,
         startDate: competition.startDate,
         endDate: competition.endDate,
+        isActive: competition.isActive,
         teams: teamsWithActivities,
       };
     }),
-  getCurrent: protectedProcedure.query(async ({ ctx }) => {
-    const db = ctx.db;
-    const current = await db.competitions.findOne({
-      startDate: { $lte: dayjs().format('YYYY-MM-DD') },
-      endDate: { $gte: dayjs().format('YYYY-MM-DD') },
-    });
-
-    return current;
-  }),
   create: protectedProcedure
     .input(
       z.object({
@@ -109,6 +152,7 @@ export const competitionsRouter = router({
         name: input.name,
         startDate: input.startDate,
         endDate: input.endDate,
+        isActive: false,
       });
 
       // Create placeholder teams
