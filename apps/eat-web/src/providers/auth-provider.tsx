@@ -1,16 +1,26 @@
 import { AuthContext, User } from '../contexts';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
 
   // Check auth status on mount
   useEffect(() => {
     checkAuthStatus();
   }, []);
+
+  const clearAuth = () => {
+    setUser(null);
+    setIsAuthenticated(false);
+    setIsAdmin(false);
+  };
 
   const checkAuthStatus = async () => {
     try {
@@ -19,12 +29,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       });
       if (response.ok) {
         const { user } = await response.json();
-        console.log('Auth check success', user);
         setUser(user);
+        setIsAuthenticated(true);
+        setIsAdmin(user.role === 'admin');
+        navigate('/');
       }
     } catch (error) {
       console.error('Auth check failed:', error);
-      setUser(null);
+      clearAuth();
     } finally {
       setIsLoading(false);
     }
@@ -39,11 +51,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     await fetch('http://localhost:3101/auth/logout', {
       credentials: 'include',
     });
-    setUser(null);
+    clearAuth();
+    navigate('/login');
   };
 
   return (
-    <AuthContext.Provider value={{ user, loginWithGoogle, logout, isLoading }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        loginWithGoogle,
+        logout,
+        isLoading,
+        isAuthenticated,
+        isAdmin,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

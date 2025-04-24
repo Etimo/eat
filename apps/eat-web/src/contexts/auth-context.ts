@@ -5,6 +5,7 @@ export interface User {
   email: string;
   name: string;
   picture: string;
+  role: string;
 }
 
 interface AuthContextType {
@@ -12,6 +13,8 @@ interface AuthContextType {
   loginWithGoogle: () => void;
   logout: () => Promise<void>;
   isLoading: boolean;
+  isAuthenticated: boolean;
+  isAdmin: boolean;
 }
 
 export const AuthContext = createContext<AuthContextType | null>(null);

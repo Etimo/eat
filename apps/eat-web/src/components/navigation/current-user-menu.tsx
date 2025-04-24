@@ -4,8 +4,6 @@ import { useAuth } from '../../hooks';
 export const CurrentUserMenu: FC = () => {
   const { user, logout } = useAuth();
 
-  console.log(user);
-
   return (
     <div className="h-12 w-12 rounded-full bg-etimo flex justify-center items-center">
       {user?.picture ? (

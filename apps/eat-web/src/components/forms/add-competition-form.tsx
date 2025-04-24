@@ -17,9 +17,10 @@ import { trpc } from '@/trpc';
 import dayjs from 'dayjs';
 
 const formSchema = z.object({
+  name: z.string().min(1, { message: 'Namn är obligatoriskt' }),
+  teams: z.preprocess(a => parseInt(z.string().parse(a), 10), z.number().min(1).max(100)),
   startDate: z.date(),
   endDate: z.date(),
-  name: z.string(),
 });
 
 type Props = {
@@ -41,13 +42,16 @@ export function AddCompetitionForm(props: Props) {
     resolver: zodResolver(formSchema),
     defaultValues: {
       startDate: new Date(),
+      teams: 4,
       endDate: dayjs().add(1, 'month').toDate(),
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  const onSubmit = (values: z.infer<typeof formSchema>) =>{
+    console.log(values);
     submitForm.mutate({
       name: values.name,
+      teams: values.teams,
       startDate: dayjs(values.startDate).toISOString(),
       endDate: dayjs(values.endDate).toISOString(),
     });
@@ -73,6 +77,20 @@ export function AddCompetitionForm(props: Props) {
             </FormItem>
           )}
         />
+        <FormField
+          control={form.control}
+          name="teams"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Antal lag</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+       
         <FormField
           control={form.control}
           name="endDate"

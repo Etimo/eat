@@ -9,6 +9,9 @@ export const teamsRouter = router({
 
     const teams = await db.teams.findAll({
       populate: ['teamMemberships', 'teamMemberships.user'],
+      orderBy: {
+        name: 'ASC',
+      }
     });
 
     return teams.map(({ id, name, teamMemberships }) => ({
