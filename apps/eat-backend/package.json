@@ -42,7 +42,7 @@
   },
   "scripts": {
     "dev": "nodemon src/main.ts",
-    "start": "node dist/main.js",
+    "start": "node dist/src/main.js",
     "build": "tsc",
     "test:integration": "bash ./startTestDb.sh && vitest run integration && bash ./clearTestDb.sh",
     "test:integration:watch": "bash ./startTestDb.sh && vitest watch integration && bash ./clearTestDb.sh"
