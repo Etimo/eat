@@ -16,7 +16,7 @@ import { useAuth } from '@/hooks';
 const navigation = [
   { title: 'Översikt', href: '/' },
   { title: 'Lag', href: '/teams' },
-  { title: 'Historik', href: '/history' },
+  { title: 'Aktiviteter', href: '/activities' },
   { title: 'Standing', href: '/standings' },
 ];
 

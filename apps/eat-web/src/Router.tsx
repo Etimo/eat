@@ -4,6 +4,7 @@ import { HTMLAttributes } from 'react';
 import { useAuth } from './hooks';
 import { Layout } from './layout';
 import { AdminLayout, CompetitionPage, CompetitionsPage } from './pages/admin';
+import { ActivitiesPage } from './pages/activities';
 
 export const Router = (): JSX.Element => {
   const { isAuthenticated, isAdmin } = useAuth();
@@ -23,7 +24,7 @@ export const Router = (): JSX.Element => {
         >
           <Route path="/" element={<HomePage />} />
           <Route path="teams" element={<TeamsPage />} />
-          <Route path="activity" element={<TeamsPage />} />
+          <Route path="activities" element={<ActivitiesPage />} />
 
           {isAdmin && (
             <Route path="admin">
