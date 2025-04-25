@@ -63,7 +63,7 @@ export const HomePage = () => {
       <div className="flex-1 flex flex-col gap-2 pt-4">
         <div className="flex items-center justify-center gap-2 mb-4">
           <Trophy className="w-8 h-8 text-yellow-500" />
-          <h2 className="text-2xl font-bold text-center">Leaderboard</h2>
+          <h2 className="text-2xl font-bold text-center">Topplista</h2>
         </div>
         <Table>
           <TableHeader>
