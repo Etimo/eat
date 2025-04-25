@@ -32,6 +32,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         setUser(user);
         setIsAuthenticated(true);
         setIsAdmin(user.role === 'admin');
+        navigate('/');
       }
     } catch (error) {
       console.error('Auth check failed:', error);
