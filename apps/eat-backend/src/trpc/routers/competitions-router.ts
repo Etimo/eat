@@ -13,9 +13,7 @@ export const competitionsRouter = router({
           name: competition.name,
           startDate: competition.startDate,
           endDate: competition.endDate,
-          isActive:
-            new Date(competition.startDate) <= new Date() &&
-            new Date(competition.endDate) >= new Date(),
+          isActive: competition.isActive,
         }))
       : [];
   }),

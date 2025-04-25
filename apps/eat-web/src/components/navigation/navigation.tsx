@@ -18,7 +18,6 @@ const navigation = [
   { title: 'Översikt', href: '/' },
   { title: 'Lag', href: '/teams' },
   { title: 'Aktiviteter', href: '/activities' },
-  { title: 'Standing', href: '/standings' },
 ];
 
 export const Navigation: FC = () => {

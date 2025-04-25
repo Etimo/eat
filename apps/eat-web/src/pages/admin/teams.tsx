@@ -1,4 +1,4 @@
-import { AddCompetitionForm, AddTeamForm } from '@/components/forms';
+import { AddTeamForm } from '@/components/forms';
 import { Button } from '@/components/ui/button';
 import { Modal } from '@/components/ui/modal';
 import {

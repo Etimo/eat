@@ -3,7 +3,12 @@ import { HomePage, LoginPage, TeamsPage } from './pages';
 import { HTMLAttributes } from 'react';
 import { useAuth } from './hooks';
 import { Layout } from './layout';
-import { AdminLayout, CompetitionPage, CompetitionsPage } from './pages/admin';
+import {
+  AdminLayout,
+  CompetitionPage,
+  CompetitionsPage,
+  TeamsPage as AdminTeamsPage,
+} from './pages/admin';
 import { ActivitiesPage } from './pages/activities';
 import { ActivityTypesPage } from './pages/admin/activity-types';
 
@@ -43,7 +48,7 @@ export const Router = (): JSX.Element => {
                 <Route path="activity-types" element={<ActivityTypesPage />} />
                 <Route path="competitions/:id" element={<CompetitionPage />} />
                 <Route path="competitions" element={<CompetitionsPage />} />
-                <Route path="teams" element={<TeamsPage />} />
+                <Route path="teams" element={<AdminTeamsPage />} />
               </Route>
             </Route>
           )}
