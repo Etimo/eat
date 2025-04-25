@@ -54,6 +54,22 @@ export const teamsRouter = router({
 
       return team;
     }),
+
+    update: protectedProcedure
+    .input(z.object({ id: z.string(), name: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const db = ctx.db;
+
+      const existingTeam = await db.teams.findOne({ id: input.id });
+      if (!existingTeam) {
+        throw new Error('Team not found');
+      }
+      // If team exists, just update the name and updated_at
+      existingTeam.name = input.name;
+      existingTeam.updatedAt = new Date().toISOString();
+      await db.em.flush();
+      return existingTeam;
+    }),
   leaderboard: protectedProcedure.query(async ({ ctx }) => {
     const db = ctx.db;
 

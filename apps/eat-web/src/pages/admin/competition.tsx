@@ -1,4 +1,5 @@
 import { AddCompetitionForm } from '@/components/forms';
+import { UpdateTeamForm } from '@/components/forms/update-team-form';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Modal } from '@/components/ui/modal';
@@ -18,7 +19,7 @@ import { useParams } from 'react-router';
 export const CompetitionPage = () => {
   const { id } = useParams();
   const { data, refetch } = trpc.competitions.get.useQuery(id!);
-  const { modalName, closeModal } = useModal();
+  const { modalName, closeModal, openModal, targetId } = useModal();
   const utils = trpc.useUtils();
 
   const setActiveMutation = trpc.competitions.setActive.useMutation({
@@ -103,6 +104,17 @@ export const CompetitionPage = () => {
               <TableCell>
                 {team.members.map((member) => member.name).join(', ')}
               </TableCell>
+              <TableCell>
+                <Button
+                  variant="link"
+                  className="dark"
+                  onClick={() => {
+                    openModal('update', team.id);
+                  }}
+                >
+                  Redigera
+                </Button>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -110,6 +122,15 @@ export const CompetitionPage = () => {
 
       <Modal isOpen={modalName === 'comp'}>
         <AddCompetitionForm
+          onFinish={() => {
+            closeModal();
+            refetch();
+          }}
+        />
+      </Modal>
+      <Modal isOpen={modalName === 'update'}>
+        <UpdateTeamForm
+          id={targetId!}
           onFinish={() => {
             closeModal();
             refetch();
