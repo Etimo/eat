@@ -1,6 +1,6 @@
+import { useNavigate } from 'react-router';
 import { AuthContext, User } from '../contexts';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router';
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -32,7 +32,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         setUser(user);
         setIsAuthenticated(true);
         setIsAdmin(user.role === 'admin');
-        navigate('/');
       }
     } catch (error) {
       console.error('Auth check failed:', error);
