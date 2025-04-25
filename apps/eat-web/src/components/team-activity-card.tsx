@@ -19,7 +19,7 @@ export const TeamActivityCard = (props: Props) => {
             <div className="flex flex-col">
               <div className="text-lg font-medium">Total aktivitet</div>
               <div className="text-xl font-semibold text-green-400">
-                {props.team.minutes} min
+                {props.team.minutes.toLocaleString('sv-SE')} min
               </div>
               <div className="text-lg font-medium">Antal aktiviteter</div>
               <div className="text-xl font-semibold text-green-400">
