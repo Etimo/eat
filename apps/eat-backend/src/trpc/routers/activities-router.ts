@@ -15,6 +15,9 @@ export const activitesRouter = router({
             'user.teamMemberships',
             'user.teamMemberships.team',
           ],
+          orderBy: {
+            date: 'desc',
+          },
         },
       );
 
@@ -44,9 +47,7 @@ export const activitesRouter = router({
       const teamMembership = await db.teamMemberships.findOne(
         { user: { id: currentUser.id } },
         {
-          populate: [
-            'team',
-          ],
+          populate: ['team'],
         },
       );
       if (!teamMembership) {
@@ -66,7 +67,7 @@ export const activitesRouter = router({
             'user.teamMemberships.team',
           ],
         },
-      );      
+      );
 
       return {
         user: userActivities.reduce(
@@ -90,9 +91,7 @@ export const activitesRouter = router({
       const teamMembership = await db.teamMemberships.findOne(
         { user: { id: currentUser.id } },
         {
-          populate: [
-            'team',
-          ],
+          populate: ['team'],
         },
       );
       if (!teamMembership) {
