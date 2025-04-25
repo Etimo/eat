@@ -9,11 +9,13 @@ export class CompetitionSeeder extends Seeder {
         name: 'Tävling inaktiv',
         startDate: new Date(Date.now() - 86400000 * 40).toISOString(),
         endDate: new Date(Date.now() - 86400000 * 10).toISOString(),
+        isActive: false,
       }),
       em.create(Competition, {
         name: 'Tävling aktiv',
         startDate: new Date(Date.now() - 86400000 * 5).toISOString(),
         endDate: new Date(Date.now() + 86400000 * 25).toISOString(),
+        isActive: true,
       }),
     ];
   }

@@ -1,32 +1,35 @@
 import dayjs from 'dayjs';
-import { protectedProcedure, router } from '../init';
 import z from 'zod';
+import { protectedProcedure, router } from '../init';
 
 export const activitesRouter = router({
-  list: protectedProcedure.input(z.string()).query(async ({ ctx, input: competitionId }) => {
-    const activities = await ctx.db.activities.find(
-      { competition: { id: competitionId } },
-      {
-        populate: [
-          'activityType',
-          'user',
-          'user.teamMemberships',
-          'user.teamMemberships.team',
-        ],
-      },
-    );
+  list: protectedProcedure
+    .input(z.string())
+    .query(async ({ ctx, input: competitionId }) => {
+      const activities = await ctx.db.activities.find(
+        { competition: { id: competitionId } },
+        {
+          populate: [
+            'activityType',
+            'user',
+            'user.teamMemberships',
+            'user.teamMemberships.team',
+          ],
+        },
+      );
 
-    return activities.map((activity) => ({
-      id: activity.id,
-      name: activity.user.name,
-      teamName: activity.user.teamMemberships.find(
-        (teamMembership) => teamMembership.team.competition?.id === activity.competition.id,
-      )?.team.name,
-      date: activity.date,
-      time: activity.time,
-      activityType: activity.activityType.name,
-    }));
-  }),
+      return activities.map((activity) => ({
+        id: activity.id,
+        name: activity.user.name,
+        teamName: activity.user.teamMemberships.find(
+          (teamMembership) =>
+            teamMembership.team.competition?.id === activity.competition.id,
+        )?.team.name,
+        date: activity.date,
+        time: activity.time,
+        activityType: activity.activityType.name,
+      }));
+    }),
 
   dashboard: router({
     today: protectedProcedure.query(async ({ ctx: { db, currentUser } }) => {
@@ -122,4 +125,32 @@ export const activitesRouter = router({
       };
     }),
   }),
+  create: protectedProcedure
+    .input(
+      z.object({
+        activityType: z.string(),
+        date: z.string(),
+        minutes: z.number(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const db = ctx.db;
+      const user = ctx.currentUser;
+      const currentCompetition = ctx.currentCompetition;
+
+      if (!currentCompetition) {
+        throw new Error('No active competition found');
+      }
+
+      const activity = db.activities.create({
+        activityType: input.activityType,
+        date: input.date,
+        time: input.minutes,
+        competition: currentCompetition.id,
+        user: user.id,
+      });
+      await db.em.flush();
+
+      return activity;
+    }),
 });
