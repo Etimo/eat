@@ -38,7 +38,6 @@ export function AddActivityTypeForm(props: Props) {
   });
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
     submitForm.mutate({
       name: values.name,
     });
