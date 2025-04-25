@@ -39,7 +39,7 @@ export const Router = (): JSX.Element => {
                   index
                   element={<Navigate to="/admin/competitions" replace />}
                 />
-                <Route path="competition/:id" element={<CompetitionPage />} />
+                <Route path="competitions/:id" element={<CompetitionPage />} />
                 <Route path="competitions" element={<CompetitionsPage />} />
                 <Route path="teams" element={<TeamsPage />} />
               </Route>

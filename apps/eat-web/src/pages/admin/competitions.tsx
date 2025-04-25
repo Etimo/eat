@@ -10,15 +10,16 @@ import {
   TableCell,
 } from '@/components/ui/table';
 import { useModal } from '@/hooks/use-modal';
+import { cn } from '@/lib/utils';
 import { trpc } from '@/trpc';
 import dayjs from 'dayjs';
+import { CheckCheck } from 'lucide-react';
 import { useNavigate } from 'react-router';
 
 export const CompetitionsPage = () => {
   const { data, refetch } = trpc.competitions.list.useQuery();
   const { modalName, openModal, closeModal } = useModal();
   const navigate = useNavigate();
-
 
   if (!data) return null;
   return (
@@ -32,6 +33,7 @@ export const CompetitionsPage = () => {
       <Table>
         <TableHeader>
           <TableRow className="hover:bg-transparent">
+            <TableHead className="w-5">Aktiv</TableHead>
             <TableHead>Tävling</TableHead>
             <TableHead>Startdatum</TableHead>
             <TableHead>Slutdatum</TableHead>
@@ -40,7 +42,14 @@ export const CompetitionsPage = () => {
         </TableHeader>
         <TableBody>
           {data?.map((competition) => (
-            <TableRow key={competition.id} className="whitespace-nowrap">
+            <TableRow key={competition.id} className={cn('whitespace-nowrap')}>
+              <TableCell className="">
+                {competition.isActive ? (
+                  <CheckCheck className="w-5 mx-auto" />
+                ) : (
+                  <></>
+                )}
+              </TableCell>
               <TableCell className="w-full">{competition.name}</TableCell>
               <TableCell>
                 {dayjs(competition.startDate).format('YYYY-MM-DD')}
@@ -51,9 +60,9 @@ export const CompetitionsPage = () => {
               <TableCell>
                 <Button
                   variant="link"
-                  className='dark'
+                  className="dark"
                   onClick={() => {
-                    navigate(`/admin/competition/${competition.id}`);
+                    navigate(`/admin/competitions/${competition.id}`);
                   }}
                 >
                   Visa
