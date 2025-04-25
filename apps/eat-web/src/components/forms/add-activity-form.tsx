@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -23,6 +24,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../ui/select';
+import { ActivityTypeAutocomplete } from '../activity-type-autocomplete';
+import { useState } from 'react';
 
 const formSchema = z.object({
   activityType: z.string().min(1, { message: 'Aktivitetstyp krävs' }),
@@ -78,21 +81,11 @@ export function AddActivityForm(props: Props) {
             <FormItem>
               <FormLabel>Aktivtetstyp</FormLabel>
               <FormControl>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Välj typ av aktivitet..." />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {activityTypesQuery.data?.map((activityType) => (
-                      <SelectItem key={activityType.id} value={activityType.id}>
-                        {activityType.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <ActivityTypeAutocomplete
+                  name="activityType"
+                  selectedValue={field.value}
+                  onSelectedValueChange={field.onChange}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
