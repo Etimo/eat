@@ -5,7 +5,7 @@ import {
   PopoverContent,
 } from '@radix-ui/react-popover';
 import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
-import { useWatch } from 'react-hook-form';
+import { useFormContext, useWatch } from 'react-hook-form';
 import { Command as CommandPrimitive } from 'cmdk';
 import {
   Command,
@@ -29,14 +29,24 @@ export function ActivityTypeAutocomplete(props: Props) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [searchValue, setSearchValue] = useState('');
 
-  const { data, isLoading } = trpc.activityTypes.list.useQuery();
-  // const createActivityTypeMutation = trpc.activityTypes.create.useMutation();
-
+  const form = useFormContext();
   const watch = useWatch({ name });
   const [open, setOpen] = useState(false);
   const [filteredData, setFilteredData] = useState<
     { id: string; name: string }[]
   >([]);
+
+  const { data, isLoading } = trpc.activityTypes.list.useQuery();
+  const utils = trpc.useUtils();
+  const createActivityTypeMutation = trpc.activityTypes.create.useMutation({
+    onSuccess: async (data) => {
+      setSearchValue(data.name);
+      form.setValue(name, data.id);
+      void form.trigger(name);
+      void utils.activityTypes.list.reset();
+      void utils.activityTypes.invalidate();
+    },
+  });
 
   const onSearchValueChange = useCallback((value: string) => {
     setSearchValue(value);
@@ -45,7 +55,7 @@ export function ActivityTypeAutocomplete(props: Props) {
   useEffect(() => {
     setFilteredData(
       (data ?? []).filter((item) =>
-        item.name.toLowerCase().includes(searchValue.toLowerCase()),
+        item.name.toLowerCase().startsWith(searchValue.toLowerCase()),
       ),
     );
   }, [data, searchValue]);
@@ -62,10 +72,7 @@ export function ActivityTypeAutocomplete(props: Props) {
     [data],
   );
 
-  const currentName = useMemo(() => {
-    console.log('watch', watch);
-    return mappedItems[watch];
-  }, [mappedItems, watch]);
+  const currentName = useMemo(() => mappedItems[watch], [mappedItems, watch]);
 
   const reset = useCallback(() => {
     onSelectedValueChange(null);
@@ -151,7 +158,18 @@ export function ActivityTypeAutocomplete(props: Props) {
                 </CommandGroup>
               ) : null}
               {!isLoading ? (
-                <CommandEmpty>Inga aktivitetstyper hittades</CommandEmpty>
+                <CommandEmpty>
+                  <button
+                    className="cursor-pointer py-1 px-2 hover:bg-gray-200 transition-colors rounded-md"
+                    onClick={() =>
+                      createActivityTypeMutation.mutate({ name: searchValue })
+                    }
+                    disabled={createActivityTypeMutation.isLoading}
+                  >
+                    Lägg till <span className="font-medium">{searchValue}</span>
+                    ...
+                  </button>
+                </CommandEmpty>
               ) : null}
             </CommandList>
           </PopoverContent>
