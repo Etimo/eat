@@ -5,6 +5,7 @@ import { useAuth } from './hooks';
 import { Layout } from './layout';
 import { AdminLayout, CompetitionPage, CompetitionsPage } from './pages/admin';
 import { ActivitiesPage } from './pages/activities';
+import { ActivityTypesPage } from './pages/admin/activity-types';
 
 export const Router = (): JSX.Element => {
   const { isAuthenticated, isAdmin } = useAuth();
@@ -39,6 +40,7 @@ export const Router = (): JSX.Element => {
                   index
                   element={<Navigate to="/admin/competitions" replace />}
                 />
+                <Route path="activity-types" element={<ActivityTypesPage />} />
                 <Route path="competitions/:id" element={<CompetitionPage />} />
                 <Route path="competitions" element={<CompetitionsPage />} />
                 <Route path="teams" element={<TeamsPage />} />
