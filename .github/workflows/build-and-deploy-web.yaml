@@ -62,5 +62,6 @@ jobs:
           memoryLimit: 512Mi
           env: |
             VITE_BACKEND_URL: "https://backend-activity-tracker.staging.k8s.etimo.se"
+            NODE_ENV="production"
           kubeconfig: ${{secrets.KUBECONFIG}}
           
