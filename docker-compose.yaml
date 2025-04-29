@@ -51,7 +51,7 @@ services:
       context: .
       dockerfile: ./apps/eat-web/Dockerfile
     environment:
-      VITE_BACKEND_URL: http://eat-backend:3101
+      VITE_BACKEND_URL: http://test:3101
     depends_on:
       - backend
     ports:

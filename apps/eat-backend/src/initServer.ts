@@ -59,7 +59,7 @@ export const initServer = async (host = '0.0.0.0', port = 3101) => {
       {
         clientID: process.env.GOOGLE_CLIENT_ID!,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-        callbackURL: 'http://localhost:3101/auth/google/callback',
+        callbackURL: `${process.env.BACKEND_URL || 'http://localhost:3101'}/auth/google/callback`,
         scope: ['email', 'profile'],
       },
       async (accessToken, refreshToken, profile, done) => {
