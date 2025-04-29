@@ -63,6 +63,8 @@ jobs:
           env: |
             GOOGLE_CLIENT_ID=${{secrets.GOOGLE_CLIENT_ID}}
             GOOGLE_CLIENT_SECRET=${{secrets.GOOGLE_CLIENT_SECRET}}
+            BACKEND_URL="https://backend-activity-tracker.staging.k8s.etimo.se"
+            FRONTEND_URL="https://web-activity-tracker.staging.k8s.etimo.se"
             NODE_ENV="production"
           kubeconfig: ${{secrets.KUBECONFIG}}
           
