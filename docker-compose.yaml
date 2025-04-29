@@ -24,38 +24,26 @@ services:
     ports:
       - '6379:6379'
 
-  backend:
-    container_name: eat-backend
-    build:
-      context: .
-      dockerfile: ./apps/eat-backend/Dockerfile
-    volumes:
-      - ./apps/eat-backend/:/app/apps/eat-backend
-    environment:
-      TZ: Europe/Stockholm
-      JWT_SECRET: EtimoActivityTracker
-      NODE_ENV: development
-      DB_MAIN_PRIVATE_HOST: mysql
-      DB_MAIN_USER: mysql-eat
-      DB_MAIN_PORT: 3306
-      DB_MAIN_PASSWORD: etimo
-      DB_MAIN_NAME: eat
-    depends_on:
-      - mysql
-    ports:
-      - '3101:3101'
-
-  web:
-    container_name: web
-    build:
-      context: .
-      dockerfile: ./apps/eat-web/Dockerfile
-    environment:
-      VITE_BACKEND_URL: http://test:3101
-    depends_on:
-      - backend
-    ports:
-      - '3000:3000'
+  # backend:
+  #   container_name: eat-backend
+  #   build:
+  #     context: .
+  #     dockerfile: ./apps/eat-backend/Dockerfile
+  #   volumes:
+  #     - ./apps/eat-backend/:/app/apps/eat-backend
+  #   environment:
+  #     TZ: Europe/Stockholm
+  #     JWT_SECRET: EtimoActivityTracker
+  #     NODE_ENV: development
+  #     DB_MAIN_PRIVATE_HOST: mysql
+  #     DB_MAIN_USER: mysql-eat
+  #     DB_MAIN_PORT: 3306
+  #     DB_MAIN_PASSWORD: etimo
+  #     DB_MAIN_NAME: eat
+  #   depends_on:
+  #     - mysql
+  #   ports:
+  #     - '3101:3101'
 
 volumes:
   mysql:
