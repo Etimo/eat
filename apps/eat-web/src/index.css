@@ -110,7 +110,6 @@
 
   body {
     @apply min-h-dvh flex flex-col;
-    @apply text-white;
     @apply bg-gradient-to-b from-gradient-start from-15% to-gradient-stop to-100%;
   }
 

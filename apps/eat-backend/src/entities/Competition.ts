@@ -13,6 +13,9 @@ export class Competition extends BaseEntity {
   @Property({ type: 'string' })
   endDate!: string;
 
+  @Property({ type: 'boolean', default: false })
+  isActive!: boolean;
+
   @OneToMany(() => Team, (t) => t.competition)
   teams = new Collection<Team>(this);
 

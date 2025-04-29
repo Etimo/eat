@@ -5,9 +5,9 @@ export const CurrentUserMenu: FC = () => {
   const { user, logout } = useAuth();
 
   return (
-    <div className="h-12 w-12 rounded-full bg-etimo flex justify-center items-center">
+    <div className="cursor-pointer h-12 w-12 rounded-full bg-etimo flex justify-center items-center" onClick={() => logout()}>
       {user?.picture ? (
-        <div onClick={() => logout()} className="cursor-pointer">
+        <div>
           <img
             src={user?.picture ?? '#'}
             alt={user?.name ?? '#'}

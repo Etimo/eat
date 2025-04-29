@@ -1,4 +1,6 @@
 import { AddCompetitionForm } from '@/components/forms';
+import { UpdateTeamForm } from '@/components/forms/update-team-form';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Modal } from '@/components/ui/modal';
 import {
@@ -11,34 +13,73 @@ import {
 } from '@/components/ui/table';
 import { useModal } from '@/hooks/use-modal';
 import { trpc } from '@/trpc';
+import dayjs from 'dayjs';
 import { useParams } from 'react-router';
-
 
 export const CompetitionPage = () => {
   const { id } = useParams();
   const { data, refetch } = trpc.competitions.get.useQuery(id!);
-  const { modalName, closeModal } = useModal();
+  const { modalName, closeModal, openModal, targetId } = useModal();
+  const utils = trpc.useUtils();
+
+  const setActiveMutation = trpc.competitions.setActive.useMutation({
+    onSuccess: async () => {
+      void utils.competitions.get.reset();
+      void utils.competitions.list.invalidate();
+    },
+  });
+  const setInactiveMutation = trpc.competitions.setInactive.useMutation({
+    onSuccess: async () => {
+      void utils.competitions.get.reset();
+      void utils.competitions.list.invalidate();
+    },
+  });
 
   if (!data) return null;
   return (
     <div className="flex-1 flex flex-col gap-2 pt-4">
       <Card className="flex-1 flex flex-col gap-2 p-4">
-        <CardHeader>
+        <CardHeader className="flex flex-row justify-between items-center">
           <CardTitle>{data.name}</CardTitle>
+          <div>
+            {data?.isActive ? (
+              <Button
+                variant="destructive"
+                onClick={() => setInactiveMutation.mutate()}
+              >
+                Avsluta tävling
+              </Button>
+            ) : (
+              <Button
+                variant="default"
+                onClick={() => setActiveMutation.mutate(id!)}
+              >
+                Starta tävling
+              </Button>
+            )}
+          </div>
         </CardHeader>
         <CardContent>
           <div className="flex justify-between items-center">
-            <div className="flex flex-col gap-1">
-              <div className="flex flex-col">
-                <div className="text-lg font-medium">Startdatum</div>
-                <div className="text-xl font-semibold text-green-400">
-                  {data?.startDate}
+            <div className="flex flex-col gap-1 w-full">
+              <div className="flex gap-8">
+                <div className="flex flex-col">
+                  <div className="text-lg font-medium">Startdatum</div>
+                  <div className="text-xl font-semibold text-green-400">
+                    {dayjs(data?.startDate).format('YYYY-MM-DD')}
+                  </div>
+                </div>
+                <div className="flex flex-col">
+                  <div className="text-lg font-medium">Slutdatum</div>
+                  <div className="text-xl font-semibold text-red-400">
+                    {dayjs(data?.endDate).format('YYYY-MM-DD')}
+                  </div>
                 </div>
               </div>
               <div className="flex flex-col">
-                <div className="text-lg font-medium">Slutdatum</div>
-                <div className="text-xl font-semibold text-red-400">
-                  {data?.endDate}
+                <div className="text-lg font-medium">Aktiv</div>
+                <div className="text-xl font-semibold">
+                  {data?.isActive ? 'Ja' : 'Nej'}
                 </div>
               </div>
             </div>
@@ -63,6 +104,17 @@ export const CompetitionPage = () => {
               <TableCell>
                 {team.members.map((member) => member.name).join(', ')}
               </TableCell>
+              <TableCell>
+                <Button
+                  variant="link"
+                  className="dark"
+                  onClick={() => {
+                    openModal('update', team.id);
+                  }}
+                >
+                  Redigera
+                </Button>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -70,6 +122,15 @@ export const CompetitionPage = () => {
 
       <Modal isOpen={modalName === 'comp'}>
         <AddCompetitionForm
+          onFinish={() => {
+            closeModal();
+            refetch();
+          }}
+        />
+      </Modal>
+      <Modal isOpen={modalName === 'update'}>
+        <UpdateTeamForm
+          id={targetId!}
           onFinish={() => {
             closeModal();
             refetch();

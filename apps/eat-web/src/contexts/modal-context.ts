@@ -2,7 +2,8 @@ import { createContext } from 'react';
 
 type ModalContextType = {
   modalName: string;
-  openModal: (modal: string) => void;
+  targetId: string | undefined;
+  openModal: (modal: string, targetId?: string) => void;
   closeModal: () => void;
 };
 

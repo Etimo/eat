@@ -1,9 +1,7 @@
 import { initTRPC, TRPCError } from '@trpc/server';
 import { type CreateFastifyContextOptions } from '@trpc/server/adapters/fastify';
 import { initORM } from '../db';
-import { SessionData } from '@fastify/secure-session';
-import { PassportUser } from 'fastify';
-import { User } from '../entities';
+import dayjs from 'dayjs';
 
 export async function createServerContext({
   req,
@@ -27,6 +25,10 @@ const isAuthed = middleware(async ({ ctx, next }) => {
   const currentUser = await db.users.findOne({
     email: (ctx.req.user as any).email,
   });
+  const currentCompetition = await db.competitions.findOne({
+    startDate: { $lte: dayjs().format('YYYY-MM-DD') },
+    endDate: { $gte: dayjs().format('YYYY-MM-DD') },
+  });
 
   if (!currentUser) {
     throw new TRPCError({
@@ -42,6 +44,7 @@ const isAuthed = middleware(async ({ ctx, next }) => {
       session: ctx.req.session,
       user: ctx.req.user,
       currentUser,
+      currentCompetition,
     },
   });
 });

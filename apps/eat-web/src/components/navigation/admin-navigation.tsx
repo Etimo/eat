@@ -4,6 +4,7 @@ import { NavigationItem } from './navigation-item';
 const navigation = [
   { title: 'Tävlingar', href: 'competitions' },
   { title: 'Lag', href: 'teams' },
+  { title: 'Aktivitetstyper', href: 'activity-types' },
 ];
 
 export const AdminNavigation: FC = () => {

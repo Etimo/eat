@@ -1,7 +1,7 @@
 import type { Dictionary, EntityManager } from '@mikro-orm/core';
 import { Seeder } from '@mikro-orm/seeder';
 import { User } from '../entities';
-import { v4 as uuidv4 } from 'uuid';
+import { v5 as uuidv5 } from 'uuid';
 
 export class UserSeeder extends Seeder {
   async run(em: EntityManager, context: Dictionary): Promise<void> {
@@ -59,22 +59,25 @@ export class UserSeeder extends Seeder {
         email: `saga.swahn@etimo.se`.toLowerCase(),
       },
     ];
-    var promises = users.map((u) => this.createUserIfNotExists(em, u));
-    await Promise.all(promises);
+    const promises = users.map((u) => this.createUserIfNotExists(em, u));
+    const upsertedUsers = await Promise.all(promises);
+    if (context) context.users = upsertedUsers
   }
 
   async createUserIfNotExists(
     em: EntityManager,
     user: { name: string; email: string },
-  ): Promise<void> {
+  ) {
     const existingUser = await em.findOne(User, { email: user.email });
     if (!existingUser) {
-      em.create(User, {
+      return em.create(User, {
+        id: uuidv5(user.name, uuidv5.URL),
         name: user.name,
         email: user.email,
         picture: 'https://i.imgur.com/hE5XaTq.png',
         role: 'member',
       });
     }
+    return existingUser
   }
 }

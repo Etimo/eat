@@ -8,12 +8,11 @@ Från root i projektet
 
 ```
 yarn
-```
-
-```
-docker compose up
-```
-
-```
+docker compose up -d
 yarn dev
+```
+
+To re-seed db:
+```
+(cd apps/eat-backend && npm run db:seed)
 ```

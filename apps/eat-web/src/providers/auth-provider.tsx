@@ -1,6 +1,6 @@
+import { useNavigate } from 'react-router';
 import { AuthContext, User } from '../contexts';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router';
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
