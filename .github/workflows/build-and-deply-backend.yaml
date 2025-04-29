@@ -65,4 +65,3 @@ jobs:
             GOOGLE_CLIENT_SECRET=${{secrets.GOOGLE_CLIENT_SECRET}}
             NODE_ENV="production"
           kubeconfig: ${{secrets.KUBECONFIG}}
-          
