@@ -1,4 +1,4 @@
-name: Build and deploy backend
+name: Build and deploy web
 on:
   pull_request:
   workflow_dispatch:
@@ -6,9 +6,9 @@ on:
     branches:
       - main
     paths:
-      - apps/eat-backend/**
+      - apps/eat-web/**
 
-concurrency: deploy-backend
+concurrency: deploy-web
 jobs:
   build-docker:
     runs-on: ubuntu-latest
@@ -32,7 +32,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/etimo/eat-backend
+          images: ghcr.io/etimo/eat-web
           tags: type=sha,format=long
           
       - name: Build and push
@@ -40,7 +40,7 @@ jobs:
         with:
           push: true
           context: .
-          file: apps/eat-backend/Dockerfile
+          file: apps/eat-web/Dockerfile
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
         
@@ -51,17 +51,16 @@ jobs:
     steps:
       - uses: Etimo/etimo-kubernetes/.github/actions/deploy@main
         with:
-          image: ghcr.io/etimo/eat-backend
+          image: ghcr.io/etimo/eat-web
           tag: sha-${{ github.sha }}
           namespace: activity-tracker
           cluster: staging
-          name: eat-backend
+          name: web
           ingress: true
           private: false
-          targetPort: 3101
+          targetPort: 3100
           memoryLimit: 512Mi
           env: |
-            GOOGLE_CLIENT_ID=${{secrets.GOOGLE_CLIENT_ID}}
-            GOOGLE_CLIENT_SECRET=${{secrets.GOOGLE_CLIENT_SECRET}}
-            NODE_ENV="production"
+            VITE_BACKEND_URL: https://backend-activity-tracker.staging.k8s.etimo.se
           kubeconfig: ${{secrets.KUBECONFIG}}
+          
