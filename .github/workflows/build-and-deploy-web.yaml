@@ -58,7 +58,7 @@ jobs:
           name: web
           ingress: true
           private: false
-          targetPort: 3100
+          targetPort: 3000
           memoryLimit: 512Mi
           env: |
             VITE_BACKEND_URL="https://backend-activity-tracker.staging.k8s.etimo.se"
