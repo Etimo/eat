@@ -2,6 +2,8 @@ import { useNavigate } from 'react-router';
 import { AuthContext, User } from '../contexts';
 import { useEffect, useState } from 'react';
 
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
@@ -24,7 +26,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const checkAuthStatus = async () => {
     try {
-      const response = await fetch('http://localhost:3101/auth/user', {
+      const response = await fetch(`${backendUrl}/auth/user`, {
         credentials: 'include',
       });
       if (response.ok) {
@@ -44,11 +46,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const loginWithGoogle = () => {
     // Redirect to Google login
-    window.location.href = 'http://localhost:3101/auth/google';
+    window.location.href = `${backendUrl}/auth/google`;
   };
 
   const logout = async () => {
-    await fetch('http://localhost:3101/auth/logout', {
+    await fetch(`${backendUrl}/auth/logout`, {
       credentials: 'include',
     });
     clearAuth();

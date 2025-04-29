@@ -38,7 +38,17 @@ export const initORM = async (options?: Options): Promise<DatabaseServices> => {
     return cache;
   }
 
-  const orm = await MikroORM.init({ ...config, ...options });
+  const orm = await MikroORM.init({
+    ...config,
+    ...options,
+    driverOptions: {
+      connection: {
+        ssl: {
+          rejectUnauthorized: false,
+        },
+      },
+    },
+  });
 
   return (cache = {
     orm,

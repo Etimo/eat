@@ -14,13 +14,13 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const config = {
-  dbName: process.env.DB_DATABASENAME,
+  dbName: process.env.DB_MAIN_NAME,
   debug: true,
   allowGlobalContext: true,
   entities: [Activity, ActivityType, Competition, Team, TeamMembership, User],
   extensions: [SeedManager, Migrator],
   highlighter: new SqlHighlighter(),
-  password: process.env.DB_PASSWORD,
-  user: process.env.DB_USER,
+  password: process.env.DB_MAIN_PASSWORD,
+  user: process.env.DB_MAIN_USER,
 };
 export default config;

@@ -42,7 +42,7 @@
   },
   "scripts": {
     "dev": "nodemon src/main.ts",
-    "start": "node dist/main.js",
+    "start": "node dist/src/main.js",
     "build": "tsc",
     "db:seed": "mikro-orm migration:fresh --seed",
     "test:integration": "bash ./startTestDb.sh && vitest run integration && bash ./clearTestDb.sh",

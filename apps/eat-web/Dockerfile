@@ -10,10 +10,10 @@ WORKDIR /app
 COPY . .
 
 # Install all dependencies (using npm for simplicity)
-RUN cd apps/eat-backend && yarn install
+RUN cd apps/eat-web && yarn install
 
 # Build the application
-RUN cd apps/eat-backend && yarn run build
+RUN cd apps/eat-web && yarn run build
 
 # Production stage
 FROM node:23-slim as production
@@ -21,20 +21,15 @@ FROM node:23-slim as production
 # Set working directory
 WORKDIR /app
 
-
-COPY --from=builder /app/apps/eat-backend/package.json ./
-COPY --from=builder /app/.yarnrc.yml ./.yarnrc.yml
-COPY --from=builder /app/.yarn ./.yarn
-RUN yarn install
+RUN npm i -g serve
 # Copy built files from builder
-COPY --from=builder /app/apps/eat-backend/dist ./dist
-COPY --from=builder /app/apps/eat-backend/dist/src/migrations ./migrations
+COPY --from=builder /app/apps/eat-web/dist ./dist
 
 # Set production environment
 ENV NODE_ENV=production
 
 # Expose port
-EXPOSE 3101
+EXPOSE 3000
 
 # Start application with the correct path
-CMD ["node", "dist/src/main.js"]
+CMD [ "serve", "-s", "dist" ]

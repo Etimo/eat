@@ -6,6 +6,8 @@ import { Router } from './Router';
 import { Navigation } from './components/navigation';
 import { ModalProvider } from './providers/modal-provider';
 
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
 export default function App() {
   const [queryClient] = useState(
     () =>
@@ -22,7 +24,7 @@ export default function App() {
     trpc.createClient({
       links: [
         httpBatchLink({
-          url: 'http://localhost:3101/trpc',
+          url: `${backendUrl}/trpc`,
           fetch(url, options) {
             return fetch(url, {
               ...options,
