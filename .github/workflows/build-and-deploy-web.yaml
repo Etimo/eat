@@ -59,6 +59,7 @@ jobs:
           private: false
           targetPort: 3000
           memoryLimit: 128Mi
+          memoryRequests: 64Mi
           env: |
             VITE_BACKEND_URL="https://backend-activity-tracker.k8s.etimo.se"
           kubeconfig: ${{secrets.KUBECONFIG}}

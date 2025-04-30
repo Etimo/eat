@@ -59,6 +59,7 @@ jobs:
           private: false
           targetPort: 3101
           memoryLimit: 512Mi
+          memoryRequests: 64Mi
           env: |
             GOOGLE_CLIENT_ID=${{secrets.GOOGLE_CLIENT_ID}}
             GOOGLE_CLIENT_SECRET=${{secrets.GOOGLE_CLIENT_SECRET}}
