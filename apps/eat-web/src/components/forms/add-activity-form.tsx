@@ -1,13 +1,10 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-
 import { Button } from '@/components/ui/button';
-
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -17,15 +14,7 @@ import { Input } from '@/components/ui/input';
 import { trpc } from '@/trpc';
 import dayjs from 'dayjs';
 import { DatePicker } from '../datepicker';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '../ui/select';
 import { ActivityTypeAutocomplete } from '../activity-type-autocomplete';
-import { useState } from 'react';
 
 const formSchema = z.object({
   activityType: z.string().min(1, { message: 'Aktivitetstyp krävs' }),
@@ -40,7 +29,6 @@ type Props = {
 export function AddActivityForm(props: Props) {
   const { onFinish } = props;
 
-  const activityTypesQuery = trpc.activityTypes.list.useQuery();
   const submitForm = trpc.activities.create.useMutation({
     onError: (error) => {
       console.log(error);

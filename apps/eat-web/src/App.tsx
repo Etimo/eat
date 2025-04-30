@@ -3,7 +3,6 @@ import { trpc } from './trpc';
 import { httpBatchLink } from '@trpc/client';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Router } from './Router';
-import { Navigation } from './components/navigation';
 import { ModalProvider } from './providers/modal-provider';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;

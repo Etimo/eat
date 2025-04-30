@@ -18,9 +18,14 @@ import dayjs from 'dayjs';
 
 const formSchema = z.object({
   name: z.string().min(1, { message: 'Namn är obligatoriskt' }),
-  teams: z.preprocess(a => parseInt(z.string().parse(a), 10), z.number().min(1).max(100)),
-  startDate: z.date(),
-  endDate: z.date(),
+  teams: z.preprocess(
+    (a) => parseInt(z.coerce.string().parse(a), 10),
+    z.number().min(1).max(100),
+  ),
+  range: z.object({
+    from: z.date(),
+    to: z.date(),
+  }),
 });
 
 type Props = {
@@ -41,21 +46,22 @@ export function AddCompetitionForm(props: Props) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      startDate: new Date(),
+      range: {
+        from: new Date(),
+        to: dayjs().add(1, 'month').toDate(),
+      },
       teams: 4,
-      endDate: dayjs().add(1, 'month').toDate(),
     },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) =>{
-    console.log(values);
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
     submitForm.mutate({
       name: values.name,
       teams: values.teams,
-      startDate: dayjs(values.startDate).toISOString(),
-      endDate: dayjs(values.endDate).toISOString(),
+      startDate: dayjs(values.range.from).format('YYYY-MM-DD'),
+      endDate: dayjs(values.range.to).format('YYYY-MM-DD'),
     });
-  }
+  };
 
   return (
     <Form {...form}>
@@ -84,21 +90,21 @@ export function AddCompetitionForm(props: Props) {
             <FormItem>
               <FormLabel>Antal lag</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Input {...field} value={field.value.toString()} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-       
+
         <FormField
           control={form.control}
-          name="endDate"
+          name="range"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Datum</FormLabel>
               <FormControl>
-                <DatePickerWithRange />
+                <DatePickerWithRange {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

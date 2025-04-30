@@ -4,6 +4,7 @@ import { useMemo } from 'react';
 
 export const TodaysActivityCard = () => {
   const { data } = trpc.activities.dashboard.today.useQuery();
+  const { data: currentTeam } = trpc.teams.getCurrentUserTeam.useQuery();
 
   const { user, team, total } = useMemo(() => {
     const user = data?.user ?? 0;
@@ -28,7 +29,9 @@ export const TodaysActivityCard = () => {
               </div>
             </div>
             <div className="flex flex-col">
-              <div className="text-lg font-medium">Lag</div>
+              <div className="text-lg font-medium">
+                {currentTeam?.name ?? 'Lag'}
+              </div>
               <div className="text-xl font-semibold text-red-400">
                 {team} min
               </div>

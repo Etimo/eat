@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { CalendarIcon } from 'lucide-react';
 import { DateRange } from 'react-day-picker';
 
@@ -11,17 +10,12 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import dayjs from 'dayjs';
+import { ControllerRenderProps } from 'react-hook-form';
 
-export function DatePickerWithRange({
-  className,
-}: React.HTMLAttributes<HTMLDivElement>) {
-  const [date, setDate] = React.useState<DateRange | undefined>({
-    from: new Date(),
-    to: dayjs().add(1, 'month').toDate(),
-  });
-
+type DatePickerWithRangeProps = ControllerRenderProps & { maxDate?: Date };
+export const DatePickerWithRange = (field: DatePickerWithRangeProps) => {
   return (
-    <div className={cn('grid gap-2', className)}>
+    <div className={cn('grid gap-2')}>
       <Popover>
         <PopoverTrigger asChild>
           <Button
@@ -29,18 +23,18 @@ export function DatePickerWithRange({
             variant={'outline'}
             className={cn(
               'w-full justify-start text-left font-normal text-foreground',
-              !date && 'text-muted-foreground',
+              !field.value && 'text-muted-foreground',
             )}
           >
             <CalendarIcon />
-            {date?.from ? (
-              date.to ? (
+            {field.value.from ? (
+              field.value.to ? (
                 <>
-                  {dayjs(date.from).format('YYYY-MM-DD')} -{' '}
-                  {dayjs(date.to).format('YYYY-MM-DD')}
+                  {dayjs(field.value.from).format('YYYY-MM-DD')} -{' '}
+                  {dayjs(field.value.to).format('YYYY-MM-DD')}
                 </>
               ) : (
-                dayjs(date.from).format('YYYY-MM-DD')
+                dayjs(field.value.from).format('YYYY-MM-DD')
               )
             ) : (
               <span>Pick a date</span>
@@ -51,13 +45,13 @@ export function DatePickerWithRange({
           <Calendar
             initialFocus
             mode="range"
-            defaultMonth={date?.from}
-            selected={date}
-            onSelect={setDate}
+            defaultMonth={field.value?.from}
+            selected={field.value as DateRange}
+            onSelect={field.onChange as (date: DateRange | undefined) => void}
             numberOfMonths={2}
           />
         </PopoverContent>
       </Popover>
     </div>
   );
-}
+};

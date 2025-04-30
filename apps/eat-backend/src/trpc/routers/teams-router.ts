@@ -1,69 +1,79 @@
 import z from 'zod';
 import { protectedProcedure, router } from '../init';
-import dayjs from 'dayjs';
+import { Competition } from 'src/entities';
 
 export const teamsRouter = router({
   list: protectedProcedure.query(async ({ ctx }) => {
     const db = ctx.db;
 
     const teams = await db.teams.findAll({
-      populate: ['teamMemberships', 'teamMemberships.user'],
+      populate: ['teamMemberships', 'teamMemberships.user', 'competition'],
       orderBy: {
         name: 'ASC',
       },
     });
 
-    return teams.map(({ id, name, teamMemberships }) => ({
+    return teams.map(({ id, name, teamMemberships, competition }) => ({
       id,
       name,
       users: teamMemberships.map(({ user }) => ({
         id: user.id,
         name: user.name,
       })),
+      competition: { id: competition?.id, name: competition?.name },
     }));
   }),
   listActive: protectedProcedure.query(async ({ ctx }) => {
     const db = ctx.db;
     const currentUser = ctx.currentUser;
 
+    const competition = await db.competitions.findOne({
+      isActive: true,
+    });
+
     const teams = await db.teams.findAll({
       where: {
         competition: {
-          startDate: {
-            $lte: dayjs().format('YYYY-MM-DD'),
-          },
-          endDate: {
-            $gte: dayjs().format('YYYY-MM-DD'),
-          }
-        }
+          isActive: true,
+        },
       },
       populate: ['teamMemberships', 'teamMemberships.user', 'competition'],
       orderBy: {
         name: 'ASC',
-      }
+      },
     });
 
     const activites = await db.activities.findAll({
       where: {
-        user: { teamMemberships: { team: { id: teams.map((team) => team.id) } } },
-        competition: teams[0].competition
-      }
-    })
-    const stats = activites.reduce((acc, activity) => {
-      const team = teams.find((team) => team.id === team.teamMemberships.find(
-        (teamMembership) => teamMembership.user.id === activity.user.id,
-      )?.team.id);
-      if (!team) return acc;
-      if (!acc[team.id]) {
-        acc[team.id] = {
-          activities: new Set(),
-          minutes: 0,
-        };
-      }
-      acc[team.id].activities.add(activity.activityType.id);
-      acc[team.id].minutes += activity.time;
-      return acc
-    }, {} as Record<string, {minutes: number, activities: Set<string>}>);
+        user: {
+          teamMemberships: { team: { id: teams.map((team) => team.id) } },
+        },
+        competition: { id: competition?.id },
+      },
+      populate: ['*'],
+    });
+    const stats = activites.reduce(
+      (acc, activity) => {
+        const team = teams.find(
+          (team) =>
+            team.id ===
+            team.teamMemberships.find(
+              (teamMembership) => teamMembership.user.id === activity.user.id,
+            )?.team.id,
+        );
+        if (!team) return acc;
+        if (!acc[team.id]) {
+          acc[team.id] = {
+            activities: new Set(),
+            minutes: 0,
+          };
+        }
+        acc[team.id].activities.add(activity.activityType.id);
+        acc[team.id].minutes += activity.time;
+        return acc;
+      },
+      {} as Record<string, { minutes: number; activities: Set<string> }>,
+    );
 
     return teams.map(({ id, name, teamMemberships }) => ({
       id,
@@ -98,6 +108,22 @@ export const teamsRouter = router({
         })),
       };
     }),
+  getCurrentUserTeam: protectedProcedure.query(async ({ ctx }) => {
+    const db = ctx.db;
+    const currentUser = ctx.currentUser;
+
+    const { id, name, teamMemberships } = await db.teams.findOneOrFail(
+      { teamMemberships: { user: { id: currentUser.id } } },
+      {
+        populate: ['teamMemberships', 'teamMemberships.user'],
+      },
+    );
+
+    return {
+      id,
+      name,
+    };
+  }),
   create: protectedProcedure
     .input(z.object({ name: z.string() }))
     .mutation(async ({ ctx, input }) => {
@@ -111,7 +137,7 @@ export const teamsRouter = router({
       return team;
     }),
 
-    update: protectedProcedure
+  update: protectedProcedure
     .input(z.object({ id: z.string(), name: z.string() }))
     .mutation(async ({ ctx, input }) => {
       const db = ctx.db;

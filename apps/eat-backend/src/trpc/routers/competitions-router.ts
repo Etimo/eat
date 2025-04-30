@@ -148,8 +148,8 @@ export const competitionsRouter = router({
 
       const competition = db.competitions.create({
         name: input.name,
-        startDate: input.startDate,
-        endDate: input.endDate,
+        startDate: dayjs(input.startDate).format('YYYY-MM-DD'),
+        endDate: dayjs(input.endDate).format('YYYY-MM-DD'),
         isActive: false,
       });
 

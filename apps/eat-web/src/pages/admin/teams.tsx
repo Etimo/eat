@@ -30,6 +30,7 @@ export const TeamsPage = () => {
           <TableRow className="hover:bg-transparent">
             <TableHead>Namn</TableHead>
             <TableHead>Medlemmar</TableHead>
+            <TableHead>Tävling</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -41,6 +42,7 @@ export const TeamsPage = () => {
                   ? team.users.map(({ name }) => name).join(', ')
                   : 'Inga medlemmar'}
               </TableCell>
+              <TableCell>{team.competition.name}</TableCell>
             </TableRow>
           ))}
         </TableBody>
