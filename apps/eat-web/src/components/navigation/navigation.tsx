@@ -84,9 +84,6 @@ export const Navigation: FC = () => {
                     </NavLink>
                   </NavigationMenuLink>
                 )}
-                {isAdmin && (
-                  <NavigationItem key={'/admin'} href="/admin" title="Admin" />
-                )}
               </NavigationMenuContent>
             </NavigationMenuItem>
           </NavigationMenuList>

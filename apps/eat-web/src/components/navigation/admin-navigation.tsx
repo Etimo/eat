@@ -12,7 +12,7 @@ export const AdminNavigation: FC = () => {
     <>
       <nav className="bg-transparent">
         <div className="max-w-4xl mx-auto flex items-center gap-8 px-4">
-          <div className="hidden md:flex items-baseline space-x-2">
+          <div className="flex items-baseline space-x-2">
             {navigation.map((item, index) => (
               <NavigationItem key={index} {...item} />
             ))}
