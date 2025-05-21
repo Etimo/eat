@@ -14,9 +14,7 @@ import {
 } from './entities';
 import config from '../config/mikro-orm-app.config';
 import {
-  ActivityTypeSeeder,
   DatabaseSeeder,
-  TeamSeeder,
   UserSeeder,
 } from './seeders';
 

@@ -129,7 +129,7 @@ export const activitesRouter = router({
       z.object({
         activityType: z.string(),
         date: z.string(),
-        minutes: z.number(),
+        minutes: z.number().positive()
       }),
     )
     .mutation(async ({ ctx, input }) => {
