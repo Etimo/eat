@@ -70,9 +70,11 @@ export const HomePage = () => {
             <TableRow className="hover:bg-transparent border-b border-slate-700">
               <TableHead>Placering</TableHead>
               <TableHead>Lag</TableHead>
-              <TableHead>Minuter</TableHead>
-              <TableHead>Aktiviteter</TableHead>
+              <TableHead>Snittpoäng</TableHead>
               <TableHead>Totalpoäng</TableHead>
+              <TableHead>Minuter</TableHead>
+              <TableHead>Snittminuter</TableHead>
+              <TableHead>Aktiviteter</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -101,20 +103,31 @@ export const HomePage = () => {
                   {team.name}
                 </TableCell>
                 <TableCell>
+                  <span
+                    className={`font-bold ${index < 3 ? 'text-xl text-yellow-500' : 'text-lg'}`}>
+                    {team.averagePoints}
+                  </span>
+                </TableCell>
+                <TableCell>
+                  <span
+                    className="font-bold"
+                  >
+                    {(team.totalPoints) }
+                  </span>
+                </TableCell>
+                <TableCell>
                   <span className="text-emerald-400 font-medium">
                     {team.totalMinutes} min
                   </span>
                 </TableCell>
                 <TableCell>
-                  <span className="text-sky-400 font-medium">
-                    {team.totalUniqueActivities}
+                  <span className="text-emerald-400 font-medium">
+                    {team.averageMinutes} min
                   </span>
                 </TableCell>
                 <TableCell>
-                  <span
-                    className={`font-bold ${index < 3 ? 'text-xl text-yellow-500' : 'text-lg'}`}
-                  >
-                    {team.totalMinutes + team.totalUniqueActivities * 30}
+                  <span className="text-sky-400 font-medium">
+                    {team.totalUniqueActivities}
                   </span>
                 </TableCell>
               </TableRow>
