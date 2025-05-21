@@ -195,7 +195,7 @@ export const teamsRouter = router({
         0,
       );
 
-      const averageMinutes = Number((totalMinutes / users.length).toFixed(1));
+      const averageMinutes = Number((totalMinutes / users.length).toFixed(0));
 
       const totalUniqueActivities = [
         ...new Set(
@@ -206,7 +206,7 @@ export const teamsRouter = router({
       ].length;
 
       const totalPoints = totalMinutes + totalUniqueActivities * 30
-      const averagePoints = Number((totalPoints / users.length).toFixed(1));
+      const averagePoints = Number((totalPoints / users.length).toFixed(0));
 
       return {
         id: team.id,
