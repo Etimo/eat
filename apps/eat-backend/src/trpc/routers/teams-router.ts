@@ -195,6 +195,19 @@ export const teamsRouter = router({
         0,
       );
 
+      const averageMinutes = Number((totalMinutes / users.length).toFixed(1));
+
+      const totalUniqueActivities = [
+        ...new Set(
+          activitiesInCompetition
+            .flat()
+            .map((activity) => activity.activityType.id),
+        ),
+      ].length;
+
+      const totalPoints = totalMinutes + totalUniqueActivities * 30
+      const averagePoints = Number((totalPoints / users.length).toFixed(1));
+
       return {
         id: team.id,
         name: team.name,
@@ -202,16 +215,13 @@ export const teamsRouter = router({
           id: user.id,
           name: user.name,
         })),
-        totalUniqueActivities: [
-          ...new Set(
-            activitiesInCompetition
-              .flat()
-              .map((activity) => activity.activityType.id),
-          ),
-        ].length,
+        totalUniqueActivities,
+        totalPoints,
+        averagePoints,
         totalMinutes,
+        averageMinutes,
       };
     });
-    return teamsWithActivities.sort((a, b) => b.totalMinutes - a.totalMinutes);
+    return teamsWithActivities.sort((a, b) => b.averagePoints - a.averagePoints);
   }),
 });
