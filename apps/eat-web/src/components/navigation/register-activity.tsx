@@ -6,6 +6,10 @@ import { trpc } from '@/trpc';
 
 export const RegisterActivity = () => {
   const { openModal, closeModal, modalName } = useModal();
+  const currentCompetitionQuery = trpc.competitions.getCurrent.useQuery();
+
+  if(!currentCompetitionQuery.data) return null;
+
   const utils = trpc.useUtils();
   return (
     <>
@@ -18,6 +22,10 @@ export const RegisterActivity = () => {
 
       <Modal isOpen={modalName === 'register-activity'}>
         <AddActivityForm
+        dateInterval={{
+          start: new Date(currentCompetitionQuery.data.startDate),
+          end: new Date(currentCompetitionQuery.data.endDate),
+        }}
           onFinish={() => {
             closeModal();
             void utils.activities.invalidate();

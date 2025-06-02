@@ -15,6 +15,7 @@ import { trpc } from '@/trpc';
 import dayjs from 'dayjs';
 import { DatePicker } from '../datepicker';
 import { ActivityTypeAutocomplete } from '../activity-type-autocomplete';
+import { useState } from 'react';
 
 const formSchema = z.object({
   activityType: z.string().min(1, { message: 'Aktivitetstyp krävs' }),
@@ -24,14 +25,18 @@ const formSchema = z.object({
 type FormInputs = z.infer<typeof formSchema>;
 
 type Props = {
+  dateInterval: { start: Date; end: Date };
   onFinish: () => void;
 };
 export function AddActivityForm(props: Props) {
   const { onFinish } = props;
 
+  const [error, setError] = useState<string | null>(null);
+
   const submitForm = trpc.activities.create.useMutation({
     onError: (error) => {
       console.log(error);
+      setError('Ett fel uppstod!');
     },
     onSuccess: () => {
       onFinish();
@@ -99,12 +104,18 @@ export function AddActivityForm(props: Props) {
             <FormItem className="flex flex-col">
               <FormLabel>Datum</FormLabel>
               <FormControl>
-                <DatePicker {...field} maxDate={dayjs().toDate()} />
+                <DatePicker {...field} maxDate={props.dateInterval.end} minDate={props.dateInterval.start} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
+
+        {error && (
+          <div className="text-red-500 text-sm mt-2">
+            {error}
+          </div>
+        )}
 
         <div className="flex justify-end pt-4">
           <Button type="submit">Lägg till</Button>

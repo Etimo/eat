@@ -19,10 +19,15 @@ export const competitionsRouter = router({
   }),
   getCurrent: protectedProcedure.query(async ({ ctx }) => {
     const db = ctx.db;
-    const current = await db.competitions.findOne({
-      startDate: { $lte: dayjs().format('YYYY-MM-DD') },
-      endDate: { $gte: dayjs().format('YYYY-MM-DD') },
-    });
+const current = await db.competitions.findOne(
+  {
+    startDate: { $lte: dayjs().format('YYYY-MM-DD') },
+    isActive: true,
+  },
+  {
+    orderBy: { startDate: 'DESC' },
+  }
+);
 
     return current;
   }),

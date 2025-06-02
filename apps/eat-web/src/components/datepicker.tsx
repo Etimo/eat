@@ -11,7 +11,7 @@ import {
 import { ControllerRenderProps } from 'react-hook-form';
 import { useState } from 'react';
 
-type DatePickerProps = ControllerRenderProps & { maxDate?: Date };
+type DatePickerProps = ControllerRenderProps & { maxDate?: Date, minDate?: Date };
 export function DatePicker(field: DatePickerProps) {
   const [open, setOpen] = useState(false);
 
@@ -35,11 +35,15 @@ export function DatePicker(field: DatePickerProps) {
           mode="single"
           selected={field.value}
           onSelect={(value) => {
-            field.onChange(value);
-            setOpen(false);
+        field.onChange(value);
+        setOpen(false);
           }}
           initialFocus
-          disabled={(date) => (field.maxDate ? date > field.maxDate : false)}
+          disabled={(date) => {
+        const afterMax = field.maxDate ? date > field.maxDate : false;
+        const beforeMin = field.minDate ? date < field.minDate : false;
+        return afterMax || beforeMin;
+          }}
         />
       </PopoverContent>
     </Popover>

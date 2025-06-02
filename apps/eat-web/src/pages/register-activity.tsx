@@ -7,6 +7,7 @@ import { trpc } from '@/trpc';
 
 export const AddActivityPage = () => {
   const { data, refetch } = trpc.competitions.list.useQuery();
+  const currentCompetitionQuery = trpc.competitions.getCurrent.useQuery();
   const { modalName, openModal, closeModal } = useModal();
 
   if (!data) return null;
@@ -14,18 +15,26 @@ export const AddActivityPage = () => {
     <div className="flex-1 flex flex-col gap-2 pt-4">
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-semibold">Aktivitet</h1>
-        <Button className="dark" onClick={() => openModal('comp')}>
-          Lägg till
-        </Button>
-      </div>      
-      <Modal isOpen={modalName === 'comp'}>
-        <AddActivityForm
-          onFinish={() => {
-            closeModal();
-            refetch();
-          }}
-        />
-      </Modal>
+        {currentCompetitionQuery.data && (
+          <Button className="dark" onClick={() => openModal('comp')}>
+            Lägg till
+          </Button>
+        )}
+      </div>
+      {currentCompetitionQuery.data && (
+        <Modal isOpen={modalName === 'comp'}>
+          <AddActivityForm
+            dateInterval={{
+          start: new Date(currentCompetitionQuery.data.startDate),
+          end: new Date(currentCompetitionQuery.data.endDate),
+            }}
+            onFinish={() => {
+              closeModal();
+              refetch();
+            }}
+          />
+        </Modal>
+      )}
     </div>
   );
 };
