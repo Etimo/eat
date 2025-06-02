@@ -141,6 +141,10 @@ export const activitesRouter = router({
         throw new Error('No active competition found');
       }
 
+      if(input.date > currentCompetition.endDate || input.date < currentCompetition.startDate) {
+        throw new Error('Activity date must be within the competition period');
+      }
+
       const activity = db.activities.create({
         activityType: input.activityType,
         date: input.date,

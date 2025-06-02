@@ -25,10 +25,17 @@ const isAuthed = middleware(async ({ ctx, next }) => {
   const currentUser = await db.users.findOne({
     email: (ctx.req.user as any).email,
   });
-  const currentCompetition = await db.competitions.findOne({
+
+const currentCompetition = await db.competitions.findOne(
+  {
     startDate: { $lte: dayjs().format('YYYY-MM-DD') },
-    endDate: { $gte: dayjs().format('YYYY-MM-DD') },
-  });
+    isActive: true,
+  },
+  {
+    orderBy: { startDate: 'DESC' },
+  }
+);
+
 
   if (!currentUser) {
     throw new TRPCError({
